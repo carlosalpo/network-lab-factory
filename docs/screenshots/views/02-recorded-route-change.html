@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Observed routing through the backup path</title><style>*{box-sizing:border-box}body{margin:0;background:#eef2f5;color:#162839;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.4}main{width:1280px;padding:34px 48px 30px;background:#fff}header{border-bottom:2px solid #173d58;padding-bottom:20px;margin-bottom:22px}.eyebrow{font-size:13px;letter-spacing:1.2px;font-weight:750;color:#33627d;text-transform:uppercase}h1{font-size:32px;line-height:1.2;margin:8px 0 10px;letter-spacing:-.7px}h2{font-size:20px;margin:18px 0 7px}.meta{font-size:15px;color:#43586a;margin:5px 0}.note{padding:12px 16px;background:#f0f5f8;border-left:4px solid #315e7a;margin:15px 0;font-size:16px}.stats{display:flex;gap:18px;margin:16px 0}.stats>div{flex:1;border:1px solid #cad5dd;padding:12px 16px}.stats strong{font-size:25px;display:block}.stats span{font-size:14px}table{border-collapse:collapse;width:100%;font-size:15px}th{text-align:left;background:#173d58;color:#fff;padding:9px 14px}td{padding:5px 14px;border-bottom:1px solid #dbe3e8}tr.group td{border-top:2px solid #a4b7c5}tr.alert td{background:#fff3eb}.passed{color:#146344;font-weight:650}.failed{color:#ae351c;font-weight:750}code,pre{font-family:Menlo,Consolas,monospace}pre{font-size:14px;line-height:1.55;margin:0;background:#f3f6f8;padding:16px 20px;border:1px solid #d6e0e6;white-space:pre-wrap;overflow-wrap:anywhere;color:#172d3d}footer{border-top:1px solid #adbdc8;margin-top:22px;padding-top:12px;font-size:13px;color:#43586a}footer p{margin:4px 0}a{color:inherit;text-decoration:none}.runs{font-family:Menlo,monospace;font-size:12px;margin:12px 0;line-height:1.7}.block{margin-bottom:18px}.record{font-size:13px;color:#526676;margin:4px 0 8px}.command{font-weight:700;color:#173d58}.execution{margin-bottom:14px}.execution pre{font-size:15px}.exit{font-size:12px;color:#146344;text-align:right;margin-top:3px}</style><main><header><div class="eyebrow">Network Lab Factory / RECORDED LIVE EVIDENCE</div><h1>Observed routing through the backup path</h1><p class="meta">Recorded 2026-10-29 · EVE-NG Professional 7.2.0-4 · IOSv 15.9(3)M6</p><p class="meta">v0.1.1 · Commit <code>137a2cb89460</code> · Captured 2026-10-29</p></header><section class="block"><h2>Baseline · primary next hop</h2><p class="record">Branch router · 2026-10-29T17:39:43.867044+00:00 · complete route output + last 3 ping lines</p><pre>show ip route 198.19.0.4
+Routing entry for 198.19.0.4/32
+  Known via &quot;ospf 1&quot;, distance 110, metric 21, type intra area
+  Last update from 198.18.0.2 on GigabitEthernet0/1, 00:00:57 ago
+  Routing Descriptor Blocks:
+  * 198.18.0.2, from 198.19.0.4, 00:00:57 ago, via GigabitEthernet0/1
+      Route metric is 21, traffic share count is 1
+
+Packet sent with a source address of 198.19.0.1 
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 6/8/11 ms</pre></section><section class="block"><h2>Primary-link fault · backup next hop</h2><p class="record">Branch router · 2026-10-29T17:40:31.930491+00:00 · complete route output + last 3 ping lines</p><pre>show ip route 198.19.0.4
+Routing entry for 198.19.0.4/32
+  Known via &quot;ospf 1&quot;, distance 110, metric 201, type intra area
+  Last update from 198.18.0.10 on GigabitEthernet0/2, 00:00:40 ago
+  Routing Descriptor Blocks:
+  * 198.18.0.10, from 198.19.0.4, 00:00:40 ago, via GigabitEthernet0/2
+      Route metric is 201, traffic share count is 1
+
+Packet sent with a source address of 198.19.0.1 
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 4/7/11 ms</pre></section><section class="block"><h2>Recovery · primary next hop restored</h2><p class="record">Branch router · 2026-10-29T17:41:34.581035+00:00 · complete route output + last 3 ping lines</p><pre>show ip route 198.19.0.4
+Routing entry for 198.19.0.4/32
+  Known via &quot;ospf 1&quot;, distance 110, metric 21, type intra area
+  Last update from 198.18.0.2 on GigabitEthernet0/1, 00:00:44 ago
+  Routing Descriptor Blocks:
+  * 198.18.0.2, from 198.19.0.4, 00:00:44 ago, via GigabitEthernet0/1
+      Route metric is 21, traffic share count is 1
+
+Packet sent with a source address of 198.19.0.1 
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 6/7/10 ms</pre></section><div class="note">OSPF next hop: 198.18.0.2 → 198.18.0.10 → 198.18.0.2. These are settled snapshots; the 45-second wait is not a convergence measurement.</div><footer><p><strong>Source:</strong> <a href="https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/failover-observations.json">failover-observations.json</a></p><p>github.com/carlosalpo/network-lab-factory · <code>137a2cb89460b080253fdce07f7e6ba397962347</code></p><p>Verbatim IOS stdout excerpts from the synthetic lab. No continuous traffic or packet-loss measurement during switchover.</p></footer></main></html>

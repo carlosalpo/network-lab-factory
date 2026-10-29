@@ -1,0 +1,21 @@
+{
+  "collected_at": "2026-10-29T17:42:48.250160+00:00",
+  "eve_ng": "Professional 7.2.0-4",
+  "ios": "15.9(3)M6",
+  "python": "3.12.3",
+  "ansible_core": "ansible [core 2.19.14]",
+  "collections": {
+    "cisco.ios": "11.6.0",
+    "ansible.netcommon": "8.7.1",
+    "ansible.utils": "6.1.1"
+  },
+  "qemu": "2.4.0",
+  "router_cpu": 1,
+  "router_ram_mib": 512,
+  "routers": 4,
+  "host_key_checking": true,
+  "host_keys_verified_against_console": true,
+  "controller": "Temporary Linux network namespace on the EVE host; no default route",
+  "startup_and_console_method": "Private test harness using EVE wrapper and console; not a shipped lifecycle feature",
+  "sanitization": "Per-router exports retain stdout, target, host and evidence identity; Ansible invocation metadata omitted. Router console outputs contain only synthetic lab data."
+}

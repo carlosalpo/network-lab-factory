@@ -20,6 +20,11 @@ after recovery. The fault report correctly identifies two lost adjacencies.
 See the [experiment and reviewed evidence](docs/live-validation.md) for exact
 versions, corrections and limits. Convergence time and loss during switchover were not measured.
 
+Browse the [visual evidence gallery](docs/screenshots/README.md) for recorded
+baseline/fault/recovery reports, route observations, repeatability and fresh local tests.
+
+![Recorded baseline, deliberate fault and recovery](docs/screenshots/images/01-recorded-verification.jpg)
+
 ## What is included
 
 | Stage | Deliverable |

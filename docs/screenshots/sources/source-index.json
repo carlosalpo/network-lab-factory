@@ -1,0 +1,74 @@
+[
+  {
+    "path": "sources/recorded/baseline/report.json",
+    "repository_path": "docs/evidence/2026-10-29/baseline/report.json",
+    "sha256": "8f28bd149eb3764fce1ec21bfcc1bb6a964aa92244f9515403a635f36c6254d2",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/baseline/report.json"
+  },
+  {
+    "path": "sources/recorded/baseline/report.md",
+    "repository_path": "docs/evidence/2026-10-29/baseline/report.md",
+    "sha256": "687ea39f30e66da2d7e7cfd2f928daec7933a095b260f0bf610c07ec65a820e7",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/baseline/report.md"
+  },
+  {
+    "path": "sources/recorded/fault/report.json",
+    "repository_path": "docs/evidence/2026-10-29/fault/report.json",
+    "sha256": "d69fe202345038e255cf1e8e3354ed253d777f18506ea70f2c7ac6ccdfad3ae0",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/fault/report.json"
+  },
+  {
+    "path": "sources/recorded/fault/report.md",
+    "repository_path": "docs/evidence/2026-10-29/fault/report.md",
+    "sha256": "8c5bebe54d98dbccb17bb0da2a8844ce8377e7708571a773639cce78ddf168f6",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/fault/report.md"
+  },
+  {
+    "path": "sources/recorded/recovery/report.json",
+    "repository_path": "docs/evidence/2026-10-29/recovery/report.json",
+    "sha256": "d550b766417d31007e6de13925735a6fe2ffad57b97891db82bcf38ab533e1ec",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/recovery/report.json"
+  },
+  {
+    "path": "sources/recorded/recovery/report.md",
+    "repository_path": "docs/evidence/2026-10-29/recovery/report.md",
+    "sha256": "459be137c052c930b2aef2dd727f95e1fc2ce38aa469924550a17fb21db0e9ed",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/recovery/report.md"
+  },
+  {
+    "path": "sources/recorded/configure-first-recap.txt",
+    "repository_path": "docs/evidence/2026-10-29/configure-first-recap.txt",
+    "sha256": "5b180b100fe4db799f7878e24c7a22a1e39271934360b5a43648e77654602713",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/configure-first-recap.txt"
+  },
+  {
+    "path": "sources/recorded/configure-second-recap.txt",
+    "repository_path": "docs/evidence/2026-10-29/configure-second-recap.txt",
+    "sha256": "019d536460597c88ac87f11af3c5f58d2a0893e4b2e90d743cbb8d6490c2000b",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/configure-second-recap.txt"
+  },
+  {
+    "path": "sources/recorded/failover-observations.json",
+    "repository_path": "docs/evidence/2026-10-29/failover-observations.json",
+    "sha256": "49e0c01deef60c9944f95e3ae337fa627b48c3365f52b6ba05fb61f977e312f3",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/failover-observations.json"
+  },
+  {
+    "path": "sources/recorded/environment.json",
+    "repository_path": "docs/evidence/2026-10-29/environment.json",
+    "sha256": "19d5893cec7d2c9701b1f45f54311818fa59ac9dd7600da2ddb591f7da5eb354",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/environment.json"
+  },
+  {
+    "path": "sources/recorded/tested-source-sha256.json",
+    "repository_path": "docs/evidence/2026-10-29/tested-source-sha256.json",
+    "sha256": "0015f273d31a4f40051f731427d3052e7a2032c8e5155285889709dcfad8766d",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/tested-source-sha256.json"
+  },
+  {
+    "path": "sources/recorded/live-validation.md",
+    "repository_path": "docs/live-validation.md",
+    "sha256": "5654553ee35fe6cbe9c887a561aa1d9d52691fb0b349e9238dcc335aec5de818",
+    "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/live-validation.md"
+  }
+]

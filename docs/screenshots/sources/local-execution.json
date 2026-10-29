@@ -1,0 +1,32 @@
+[
+  {
+    "command": ".venv/bin/python --version",
+    "started_at": "2026-10-29T18:27:46.048240+00:00",
+    "exit_code": 0,
+    "stdout": "Python 3.12.14\n"
+  },
+  {
+    "command": ".venv/bin/python -m pytest -q -p no:cacheprovider",
+    "started_at": "2026-10-29T18:27:46.069034+00:00",
+    "exit_code": 0,
+    "stdout": ".................................................................        [100%]\n65 passed in 0.20s\n"
+  },
+  {
+    "command": ".venv/bin/python -m ruff check --no-cache src tests",
+    "started_at": "2026-10-29T18:27:46.431255+00:00",
+    "exit_code": 0,
+    "stdout": "All checks passed!\n"
+  },
+  {
+    "command": ".venv/bin/python -m netlab.cli validate examples/dual-wan.yml",
+    "started_at": "2026-10-29T18:27:46.520865+00:00",
+    "exit_code": 0,
+    "stdout": "Valid: dual-wan (4 routers, 4 links)\n"
+  },
+  {
+    "command": ".venv/bin/python -m netlab.cli build examples/dual-wan.yml --output ../../work/evidence-captures/network-lab-factory/offline-build/dual-wan",
+    "started_at": "2026-10-29T18:27:59.019764+00:00",
+    "exit_code": 0,
+    "stdout": "Built ../../work/evidence-captures/network-lab-factory/offline-build/dual-wan: EVE-NG lab, inventory, routing configs and integrity manifest\n"
+  }
+]

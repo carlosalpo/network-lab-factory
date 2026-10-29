@@ -1,0 +1,154 @@
+{
+  "project": "Network Lab Factory",
+  "release": "v0.1.1",
+  "commit": "137a2cb89460b080253fdce07f7e6ba397962347",
+  "public_release_ref": "https://api.github.com/repos/carlosalpo/network-lab-factory/git/ref/tags/v0.1.1",
+  "release_ref_verified": true,
+  "recorded_tested_source_fingerprints_match": true,
+  "manifest_created_at_utc": "2026-10-29T18:32:15.397404+00:00",
+  "display_timezone": "America/Tegucigalpa",
+  "evidence_date": "2026-10-29",
+  "capture_method": "Full-page JPEG screenshot from the Codex in-app browser of a local HTML view generated directly from source records. Images were not generated or edited after capture.",
+  "limitations": [
+    "Recorded live experiment covers EVE-NG Professional 7.2.0-4 and IOSv 15.9(3)M6 only.",
+    "No convergence time, packet loss during transition, throughput, jitter, application availability or SLA measured.",
+    "The 45-second settling wait is not measured convergence.",
+    "The local 65-test run includes replay of recorded IOS data; it is not a new live test or a GitHub Actions run."
+  ],
+  "privacy_review": {
+    "rfc1918_addresses_found": false,
+    "credential_patterns_found": false,
+    "personal_paths_or_email_found": false,
+    "visual_review": "All four JPEGs inspected; all content readable with no clipping. Only synthetic router names and benchmarking addresses appear.",
+    "source_scope": "Public repository evidence files at the pinned commit; no private harness files or infrastructure UI used."
+  },
+  "product_repository_changes": false,
+  "infrastructure_accessed": false,
+  "images": [
+    {
+      "file": "images/01-recorded-verification.jpg",
+      "title": "Recorded verification across three phases",
+      "portfolio_selected": true,
+      "caption_en": "Recorded EVE-NG/IOSv validation: 20/20 baseline checks, 18/20 during a deliberate primary-link fault, and 20/20 after recovery. Both lost OSPF adjacencies are reported while all 12 loopback probes pass during the fault.",
+      "proves": "All 60 check outcomes from three recorded reports; fault detection remains visible despite successful forwarding.",
+      "evidence_type": "recorded_live_evidence",
+      "event_date": "2026-10-29",
+      "capture_date": "2026-10-29",
+      "release": "v0.1.1",
+      "commit": "137a2cb89460b080253fdce07f7e6ba397962347",
+      "width": 1280,
+      "height": 1285,
+      "sha256": "fef52632bd41c9f68b31ee76eb989c090dcb31c11d65333e46d8bce05e93ce07",
+      "view": "views/01-recorded-verification.html",
+      "sources": [
+        {
+          "path": "sources/recorded/baseline/report.json",
+          "repository_path": "docs/evidence/2026-10-29/baseline/report.json",
+          "sha256": "8f28bd149eb3764fce1ec21bfcc1bb6a964aa92244f9515403a635f36c6254d2",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/baseline/report.json"
+        },
+        {
+          "path": "sources/recorded/fault/report.json",
+          "repository_path": "docs/evidence/2026-10-29/fault/report.json",
+          "sha256": "d69fe202345038e255cf1e8e3354ed253d777f18506ea70f2c7ac6ccdfad3ae0",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/fault/report.json"
+        },
+        {
+          "path": "sources/recorded/recovery/report.json",
+          "repository_path": "docs/evidence/2026-10-29/recovery/report.json",
+          "sha256": "d550b766417d31007e6de13925735a6fe2ffad57b97891db82bcf38ab533e1ec",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/recovery/report.json"
+        }
+      ],
+      "rendering": "All checks aligned by router and check label; status strings preserved; counts calculated directly from recorded checks.",
+      "run_ids": [
+        "20261029T173935Z-d10039fa",
+        "20261029T174033Z-0fc525fa",
+        "20261029T174127Z-80224454"
+      ]
+    },
+    {
+      "file": "images/02-recorded-route-change.jpg",
+      "title": "Recorded primary and backup routing",
+      "portfolio_selected": true,
+      "caption_en": "Recorded IOSv route snapshots show the branch switching to the backup next hop during the primary-link fault and returning to the primary next hop after restoration. Each settled snapshot includes a successful five-packet probe; convergence time and loss during switchover were not measured.",
+      "proves": "Observed primary to backup to primary next-hop changes for the headquarters loopback in the synthetic lab.",
+      "evidence_type": "recorded_live_evidence",
+      "event_date": "2026-10-29",
+      "capture_date": "2026-10-29",
+      "release": "v0.1.1",
+      "commit": "137a2cb89460b080253fdce07f7e6ba397962347",
+      "width": 1280,
+      "height": 1444,
+      "sha256": "53d08d8b6e9dfdcd2464218218f2ad75c0745bf92b4c5a5f0902509dfe7ae884",
+      "view": "views/02-recorded-route-change.html",
+      "sources": [
+        {
+          "path": "sources/recorded/failover-observations.json",
+          "repository_path": "docs/evidence/2026-10-29/failover-observations.json",
+          "sha256": "49e0c01deef60c9944f95e3ae337fa627b48c3365f52b6ba05fb61f977e312f3",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/failover-observations.json"
+        }
+      ],
+      "rendering": "Complete route stdout for each phase plus the final three lines of each ping stdout; CRLF normalized for browser display; source fields otherwise unchanged.",
+      "run_ids": []
+    },
+    {
+      "file": "images/03-recorded-idempotence.jpg",
+      "title": "Recorded configuration repeatability",
+      "portfolio_selected": false,
+      "caption_en": "Recorded Ansible configuration recaps show changed=5 on the first apply and changed=0 on the second apply for all four IOSv routers, with no unreachable hosts or failed tasks.",
+      "proves": "Idempotence of the corrected configuration playbook for this tested scenario.",
+      "evidence_type": "recorded_live_evidence",
+      "event_date": "2026-10-29",
+      "capture_date": "2026-10-29",
+      "release": "v0.1.1",
+      "commit": "137a2cb89460b080253fdce07f7e6ba397962347",
+      "width": 1280,
+      "height": 829,
+      "sha256": "cf4a8a67487bf5ea358e5474c585f4449b4936282478dd012c7dcf1cf34505a1",
+      "view": "views/03-recorded-idempotence.html",
+      "sources": [
+        {
+          "path": "sources/recorded/configure-first-recap.txt",
+          "repository_path": "docs/evidence/2026-10-29/configure-first-recap.txt",
+          "sha256": "5b180b100fe4db799f7878e24c7a22a1e39271934360b5a43648e77654602713",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/configure-first-recap.txt"
+        },
+        {
+          "path": "sources/recorded/configure-second-recap.txt",
+          "repository_path": "docs/evidence/2026-10-29/configure-second-recap.txt",
+          "sha256": "019d536460597c88ac87f11af3c5f58d2a0893e4b2e90d743cbb8d6490c2000b",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/137a2cb89460b080253fdce07f7e6ba397962347/docs/evidence/2026-10-29/configure-second-recap.txt"
+        }
+      ],
+      "rendering": "Complete published recap text with trailing newline removed for display.",
+      "run_ids": []
+    },
+    {
+      "file": "images/04-local-tests-and-build.jpg",
+      "title": "Current offline execution",
+      "portfolio_selected": false,
+      "caption_en": "Local validation of Network Lab Factory v0.1.1 on 29 October 2026: all 65 offline tests passed, Ruff reported no findings, and the example scenario validated and generated EVE-NG, inventory, routing and integrity artifacts. This run did not contact network devices.",
+      "proves": "Successful local offline test, lint, scenario validation and build commands on Python 3.12.14; not a CI screenshot or live device rerun.",
+      "evidence_type": "current_local_execution",
+      "event_date": "2026-10-29",
+      "capture_date": "2026-10-29",
+      "release": "v0.1.1",
+      "commit": "137a2cb89460b080253fdce07f7e6ba397962347",
+      "width": 1280,
+      "height": 1162,
+      "sha256": "dfc9db3b90be2a3e9dcf19375a9b38b9619718f029a061d82ae4b8c5d693620d",
+      "view": "views/04-local-tests-and-build.html",
+      "sources": [
+        {
+          "path": "sources/local-execution.json",
+          "sha256": "ddbc66380fe3053c8ce5fffba35d27e16dcb6815bffe0f4f3d3e4bf5665b27a6",
+          "url": null
+        }
+      ],
+      "rendering": "Exact recorded command strings and stdout rendered as text; commands marked with a display-only dollar prompt; exit codes displayed from subprocess results.",
+      "run_ids": []
+    }
+  ]
+}
