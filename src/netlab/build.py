@@ -120,6 +120,9 @@ def eve_xml(data):
             },
         )
         for port in range(4):
+            # EVE rejects network_id=0; omit disconnected interface records.
+            if port != 0 and (node["name"], port) not in wiring:
+                continue
             ET.SubElement(
                 element,
                 "interface",
@@ -127,7 +130,7 @@ def eve_xml(data):
                     "id": str(port),
                     "name": f"Gi0/{port}",
                     "type": "ethernet",
-                    "network_id": str(1 if port == 0 else wiring.get((node["name"], port), 0)),
+                    "network_id": str(1 if port == 0 else wiring[(node["name"], port)]),
                 },
             )
     ET.indent(root, space="  ")
@@ -227,8 +230,8 @@ def bootstrap(data, username, password, destination):
     validate(data)
     if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,31}", username):
         raise ValueError("Invalid lab username")
-    if not re.fullmatch(r"[A-Za-z0-9_!@%+=.,:-]{12,128}", password):
-        raise ValueError("Use a 12-128 character lab password: letters, numbers or _!@%+=.,:-")
+    if not re.fullmatch(r"[A-Za-z0-9_!@%+=.,:-]{12,25}", password):
+        raise ValueError("Use a 12-25 character lab password: letters, numbers or _!@%+=.,:-")
     out = Path(destination)
     out.mkdir(mode=0o700, parents=True, exist_ok=False)
     mask = str(ipaddress.IPv4Network(data["management"]["network"]).netmask)

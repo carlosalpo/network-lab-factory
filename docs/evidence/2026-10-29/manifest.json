@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "lab": "nlf-dual-wan-20261029",
+  "scenario_sha256": "93c8e2c9b350154df9360d95611928d4277287e3fffca0b40f5e5f5aa0140b0c",
+  "lab_file": "nlf-dual-wan-20261029.unl",
+  "image": "vios-adventerprisek9-m.spa.159-3",
+  "management_bridge": "pnet9",
+  "expected": {
+    "branch": {
+      "neighbors": [
+        "198.19.0.2",
+        "198.19.0.3"
+      ],
+      "targets": [
+        "198.19.0.2",
+        "198.19.0.3",
+        "198.19.0.4"
+      ]
+    },
+    "wan-primary": {
+      "neighbors": [
+        "198.19.0.1",
+        "198.19.0.4"
+      ],
+      "targets": [
+        "198.19.0.1",
+        "198.19.0.3",
+        "198.19.0.4"
+      ]
+    },
+    "wan-backup": {
+      "neighbors": [
+        "198.19.0.1",
+        "198.19.0.4"
+      ],
+      "targets": [
+        "198.19.0.1",
+        "198.19.0.2",
+        "198.19.0.4"
+      ]
+    },
+    "headquarters": {
+      "neighbors": [
+        "198.19.0.2",
+        "198.19.0.3"
+      ],
+      "targets": [
+        "198.19.0.1",
+        "198.19.0.2",
+        "198.19.0.3"
+      ]
+    }
+  },
+  "artifacts": {
+    "nlf-dual-wan-20261029.unl": "711f5dabb840daa8011a590d11ae531cba241313f32e6b3783420f3ce427414a",
+    "scenario.yml": "88dc1995ab229208df934ab7386782b76a6744500b0cc949a2db521098c36907",
+    "inventory.yml": "426e039a24aa3e7fdd49618cb62e1b3e3ded3227ca4646c3b438fc9cb5319173",
+    "configs/branch.cfg": "11fce42a9858fc58b4909eea9b15a5fe8b98f06eccf050797412c13cd3e3ab5a",
+    "configs/wan-primary.cfg": "82916750a68fe9fba3e0d43ff677d441f0a0bdd1e52cb2f3790e999922ed316a",
+    "configs/wan-backup.cfg": "3cda7e3f42d3a426dbd2bf8b8f4f2d8ca25cb25a477d8b75d8acb7db15be793e",
+    "configs/headquarters.cfg": "5e537b162b87bb678d7abee5c3d70f22c373d4cc5e12c84cff1ac99dc1be2c93"
+  }
+}

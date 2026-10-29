@@ -1,0 +1,68 @@
+schema_version: 1
+name: nlf-dual-wan-20261029
+image: vios-adventerprisek9-m.spa.159-3
+management:
+  network: 192.0.2.0/24
+  bridge: pnet9
+nodes:
+- name: branch
+  management_ip: 192.0.2.11
+  loopback: 198.19.0.1
+  x: 150
+  y: 250
+- name: wan-primary
+  management_ip: 192.0.2.12
+  loopback: 198.19.0.2
+  x: 450
+  y: 100
+- name: wan-backup
+  management_ip: 192.0.2.13
+  loopback: 198.19.0.3
+  x: 450
+  y: 400
+- name: headquarters
+  management_ip: 192.0.2.14
+  loopback: 198.19.0.4
+  x: 750
+  y: 250
+links:
+- name: branch-primary
+  subnet: 198.18.0.0/30
+  cost: 10
+  endpoints:
+  - node: branch
+    port: 1
+    ip: 198.18.0.1
+  - node: wan-primary
+    port: 1
+    ip: 198.18.0.2
+- name: primary-hq
+  subnet: 198.18.0.4/30
+  cost: 10
+  endpoints:
+  - node: wan-primary
+    port: 2
+    ip: 198.18.0.5
+  - node: headquarters
+    port: 1
+    ip: 198.18.0.6
+- name: branch-backup
+  subnet: 198.18.0.8/30
+  cost: 100
+  endpoints:
+  - node: branch
+    port: 2
+    ip: 198.18.0.9
+  - node: wan-backup
+    port: 1
+    ip: 198.18.0.10
+- name: backup-hq
+  subnet: 198.18.0.12/30
+  cost: 100
+  endpoints:
+  - node: wan-backup
+    port: 2
+    ip: 198.18.0.13
+  - node: headquarters
+    port: 2
+    ip: 198.18.0.14

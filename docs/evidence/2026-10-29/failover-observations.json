@@ -1,0 +1,22 @@
+{
+  "baseline": {
+    "collected_at": "2026-10-29T17:39:43.867044+00:00",
+    "route": "show ip route 198.19.0.4\r\nRouting entry for 198.19.0.4/32\r\n  Known via \"ospf 1\", distance 110, metric 21, type intra area\r\n  Last update from 198.18.0.2 on GigabitEthernet0/1, 00:00:57 ago\r\n  Routing Descriptor Blocks:\r\n  * 198.18.0.2, from 198.19.0.4, 00:00:57 ago, via GigabitEthernet0/1\r\n      Route metric is 21, traffic share count is 1\r\n",
+    "ping": "ping 198.19.0.4 source Loopback0 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 198.19.0.4, timeout is 1 seconds:\r\nPacket sent with a source address of 198.19.0.1 \r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 6/8/11 ms\r\n",
+    "neighbors": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n198.19.0.3        0   FULL/  -        00:00:33    198.18.0.10     GigabitEthernet0/2\r\n198.19.0.2        0   FULL/  -        00:00:37    198.18.0.2      GigabitEthernet0/1\r\n"
+  },
+  "fault_requested_at": "2026-10-29T17:39:45.669906+00:00",
+  "fault": {
+    "collected_at": "2026-10-29T17:40:31.930491+00:00",
+    "route": "show ip route 198.19.0.4\r\nRouting entry for 198.19.0.4/32\r\n  Known via \"ospf 1\", distance 110, metric 201, type intra area\r\n  Last update from 198.18.0.10 on GigabitEthernet0/2, 00:00:40 ago\r\n  Routing Descriptor Blocks:\r\n  * 198.18.0.10, from 198.19.0.4, 00:00:40 ago, via GigabitEthernet0/2\r\n      Route metric is 201, traffic share count is 1\r\n",
+    "ping": "ping 198.19.0.4 source Loopback0 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 198.19.0.4, timeout is 1 seconds:\r\nPacket sent with a source address of 198.19.0.1 \r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 4/7/11 ms\r\n",
+    "neighbors": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n198.19.0.3        0   FULL/  -        00:00:33    198.18.0.10     GigabitEthernet0/2\r\n"
+  },
+  "restore_requested_at": "2026-10-29T17:40:42.438840+00:00",
+  "recovery": {
+    "collected_at": "2026-10-29T17:41:34.581035+00:00",
+    "route": "show ip route 198.19.0.4\r\nRouting entry for 198.19.0.4/32\r\n  Known via \"ospf 1\", distance 110, metric 21, type intra area\r\n  Last update from 198.18.0.2 on GigabitEthernet0/1, 00:00:44 ago\r\n  Routing Descriptor Blocks:\r\n  * 198.18.0.2, from 198.19.0.4, 00:00:44 ago, via GigabitEthernet0/1\r\n      Route metric is 21, traffic share count is 1\r\n",
+    "ping": "ping 198.19.0.4 source Loopback0 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 198.19.0.4, timeout is 1 seconds:\r\nPacket sent with a source address of 198.19.0.1 \r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 6/7/10 ms\r\n",
+    "neighbors": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n198.19.0.3        0   FULL/  -        00:00:39    198.18.0.10     GigabitEthernet0/2\r\n198.19.0.2        0   FULL/  -        00:00:34    198.18.0.2      GigabitEthernet0/1\r\n"
+  }
+}

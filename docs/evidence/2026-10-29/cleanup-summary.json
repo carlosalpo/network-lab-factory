@@ -1,0 +1,10 @@
+{
+  "dedicated_routers_stopped": 4,
+  "controller_namespace_removed": true,
+  "temporary_veth_removed": true,
+  "existing_lab_files_checked": 2,
+  "existing_lab_files_unchanged": true,
+  "management_bridge_has_no_ports": true,
+  "host_has_no_test_subnet_route": true,
+  "lab_topology_and_saved_router_config_retained": true
+}

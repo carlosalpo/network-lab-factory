@@ -1,0 +1,32 @@
+{
+  "host": "headquarters",
+  "run_id": "20261029T174127Z-80224454",
+  "scenario_sha256": "93c8e2c9b350154df9360d95611928d4277287e3fffca0b40f5e5f5aa0140b0c",
+  "neighbors": {
+    "stdout": [
+      "Neighbor ID     Pri   State           Dead Time   Address         Interface\n198.19.0.3        0   FULL/  -        00:00:38    198.18.0.13     GigabitEthernet0/2\n198.19.0.2        0   FULL/  -        00:00:35    198.18.0.5      GigabitEthernet0/1"
+    ]
+  },
+  "pings": {
+    "results": [
+      {
+        "item": "198.19.0.1",
+        "stdout": [
+          "Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to 198.19.0.1, timeout is 1 seconds:\nPacket sent with a source address of 198.19.0.4 \n!!!!!\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 3/8/13 ms"
+        ]
+      },
+      {
+        "item": "198.19.0.2",
+        "stdout": [
+          "Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to 198.19.0.2, timeout is 1 seconds:\nPacket sent with a source address of 198.19.0.4 \n!!!!!\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 3/5/11 ms"
+        ]
+      },
+      {
+        "item": "198.19.0.3",
+        "stdout": [
+          "Type escape sequence to abort.\nSending 5, 100-byte ICMP Echos to 198.19.0.3, timeout is 1 seconds:\nPacket sent with a source address of 198.19.0.4 \n!!!!!\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 3/4/5 ms"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "src/netlab/build.py": "271dbeffeabfbc041156c7f3a0a2c6e3c0c16c1ad2115a8c7499d73d45853eef",
+  "src/netlab/cli.py": "992918c2c2042443bbea5dc605673dd3a259b94724ff553ab3d952086fc2e57f",
+  "src/netlab/model.py": "d488e9b4f986b83da4664a33cf901778925103ef5c122020db87c138d27b0fca",
+  "src/netlab/report.py": "149686310570dd6880bcac40284c1116ada12ea16ee50c95bd4248378d73dc73",
+  "ansible/provision.yml": "676581e3fedf93789da5649ac6cdafb0923b8566703afce93c61522894385db2",
+  "ansible/configure.yml": "3c85c50617e6082d76c9c4c123f343eee712fcd26eacc82b9756928756e92f3f",
+  "ansible/verify.yml": "78506b4be9da3600283bd6598f397d40152af4aa6dee859d19ad6e3a52b94e3c"
+}

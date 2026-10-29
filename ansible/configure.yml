@@ -26,7 +26,15 @@
           - ip ospf network point-to-point
           - "ip ospf cost {{ item.cost }}"
           - ip ospf 1 area 0
-          - no shutdown
+      loop: "{{ lab_interfaces }}"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: Enable data interfaces
+      cisco.ios.ios_interfaces:
+        config:
+          - name: "{{ item.name }}"
+            enabled: true
+        state: merged
       loop: "{{ lab_interfaces }}"
       loop_control:
         label: "{{ item.name }}"

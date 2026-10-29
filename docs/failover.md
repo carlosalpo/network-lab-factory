@@ -1,7 +1,8 @@
 # Manual primary-path failure and recovery
 
-Use only the dedicated, synthetic `dual-wan` scenario. This is an experiment guide,
-not a recorded successful test or an automatic failover feature.
+Use only the dedicated, synthetic `dual-wan` scenario. This is an experiment guide;
+the [2026-10-29 validation](live-validation.md) records one successful execution.
+Automatic fault injection is not a shipped feature.
 
 ## Establish the baseline
 

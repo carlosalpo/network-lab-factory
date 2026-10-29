@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "network-lab-factory"
-version = "0.1.0"
+version = "0.1.1"
 description = "Compile validated network scenarios into EVE-NG labs and Ansible inventories."
 readme = "README.md"
 requires-python = ">=3.11"

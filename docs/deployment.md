@@ -1,7 +1,8 @@
 # Deploy the dual-WAN lab
 
-The commands below are a lab runbook. The initial release has not been exercised
-against an EVE-NG installation; see [validation.md](validation.md).
+The commands below are a lab runbook. Version 0.1.1 has a
+[recorded EVE-NG Professional 7.2.0-4 / IOSv 15.9(3)M6 run](live-validation.md).
+Other combinations require their own validation; see [validation.md](validation.md).
 
 ## 1. Prepare an isolated environment
 
@@ -73,7 +74,9 @@ This writes `secrets/bootstrap/<router>.txt` with directory mode 0700 and file m
 0600. **These snippets contain the password in plaintext**, even though IOS stores
 it as a secret after applying the configuration. They are excluded from Git. Paste
 each snippet into that router's EVE console, then remove the snippets when done.
-Use a dedicated lab credential, never a reused production password. RSA key generation
+Use a dedicated lab credential of 12–25 supported characters, never a reused production
+password. The upper bound matches the tested IOSv `username ... secret 0` command.
+RSA key generation
 is intended for fresh routers, not routers with existing keys or production configuration.
 
 Set runtime credentials in the current shell without entering the password into
@@ -105,8 +108,8 @@ interfaces, OSPF process 1, router IDs, costs and passive defaults. Use only fre
 dedicated IOSv routers. Changing router IDs in an established OSPF process may need
 manual process restart; the playbook does not perform one automatically.
 
-For a fixed design, rerun configure and inspect the change summary. Live idempotence
-has not yet been demonstrated for any image version. If the scenario changes, create
+For a fixed design, rerun configure and inspect the change summary. The recorded
+IOSv 15.9(3)M6 run reported zero changes on all four routers. If the scenario changes, create
 a fresh lab; additive configuration does not remove old interface or OSPF settings.
 
 ## 6. Collect live evidence

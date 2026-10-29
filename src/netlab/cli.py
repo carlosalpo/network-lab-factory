@@ -15,7 +15,7 @@ from .report import evaluate, write_report
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Build repeatable EVE-NG + Ansible labs")
-    parser.add_argument("--version", action="version", version="Network Lab Factory 0.1.0")
+    parser.add_argument("--version", action="version", version="Network Lab Factory 0.1.1")
     commands = parser.add_subparsers(dest="command", required=True)
     validate = commands.add_parser("validate", help="Validate a scenario without network access")
     validate.add_argument("scenario", type=Path)

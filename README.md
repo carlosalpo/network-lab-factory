@@ -13,10 +13,12 @@ OSPF costs prefer the primary path; loopback probes test the data plane independ
 of the management network. The WAN routers are a teaching abstraction, not a model
 of a commercial carrier service or SD-WAN product.
 
-**v0.1.0 is an initial implementation for review.** The compiler and evidence evaluator
-have automated tests. The playbooks are syntax-checked. EVE-NG import, IOSv boot,
-SSH bootstrap, configuration convergence and failover still need a real lab run.
-No end-to-end hardware or emulator validation is claimed.
+**v0.1.1 includes a recorded live validation** on EVE-NG Professional 7.2.0-4 and
+IOSv 15.9(3)M6: 20/20 baseline checks, zero changes on a second configuration run,
+forwarding over the backup path during a primary-link failure, and 20/20 checks
+after recovery. The fault report correctly identifies two lost adjacencies.
+See the [experiment and reviewed evidence](docs/live-validation.md) for exact
+versions, corrections and limits. Convergence time and loss during switchover were not measured.
 
 ## What is included
 
@@ -147,7 +149,7 @@ recovery without claiming a measured convergence SLA.
 
 ## Next milestones
 
-1. Record a real EVE-NG/IOSv compatibility run with exact versions and redacted evidence.
+1. Extend compatibility testing to additional EVE-NG and IOSv versions.
 2. Automate node startup and management onboarding for that tested combination.
 3. Add a GNS3 adapter against a pinned, tested API version.
 4. Add controlled fault injection, recovery checks and measured convergence experiments.

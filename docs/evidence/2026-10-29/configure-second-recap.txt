@@ -1,0 +1,4 @@
+branch                     : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+headquarters               : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+wan-backup                 : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+wan-primary                : ok=7    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

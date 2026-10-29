@@ -30,6 +30,8 @@ def test_reproducible_build_and_physical_wiring(scenario, tmp_path):
         interfaces = node.findall("interface")
         assert interfaces[0].get("network_id") == "1"
         assert node.get("config") == "0"  # no undocumented startup-config embedding
+        assert node.get("ethernet") == "4"
+        assert {p.get("id") for p in interfaces} == {"0", "1", "2"}
         for port in interfaces[1:]:
             nid = port.get("network_id")
             counts[nid] = counts.get(nid, 0) + 1
@@ -93,6 +95,7 @@ def test_bootstrap_is_private_and_not_in_build(scenario, tmp_path):
         ("admin", "weak"),
         ("admin", "test\nshutdown"),
         ("admin", "Space Is Not OK123"),
+        ("admin", "A" * 26),
     ],
 )
 def test_bootstrap_rejects_cli_injection(scenario, tmp_path, username, password):
