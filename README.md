@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/carlosalpo/network-lab-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/carlosalpo/network-lab-factory/actions/workflows/ci.yml)
 
+![A miniature network lab with four routers and two WAN paths](docs/illustrations/network-lab-factory-cover-v1.png)
+
 **Turn a network scenario into a repeatable EVE-NG lab and an Ansible workflow.**
 
 Network experiments are easier to trust when the topology, addressing, configuration
@@ -26,6 +28,10 @@ baseline/fault/recovery reports, route observations, repeatability and fresh loc
 ![Recorded baseline, deliberate fault and recovery](docs/screenshots/images/01-recorded-verification.jpg)
 
 ## What is included
+
+![An engineering workbench connecting a scenario, network experiment and evidence archive](docs/illustrations/network-lab-factory-detail-v1.png)
+
+*Conceptual illustrations of the lab and engineering workflow. See the [dual-WAN scenario](examples/dual-wan.yml) for the exact topology and [live validation](docs/live-validation.md) for measured results.*
 
 | Stage | Deliverable |
 |---|---|
