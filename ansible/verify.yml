@@ -1,0 +1,35 @@
+---
+- name: Collect live IOS evidence without changing configuration
+  hosts: routers
+  gather_facts: false
+  tasks:
+    - name: Require an isolated evidence run
+      ansible.builtin.assert:
+        that:
+          - report_dir is defined
+          - run_id is defined
+          - scenario_sha256 is defined
+          - not ansible_check_mode
+        fail_msg: "Run nlf verify; check mode is not live verification."
+    - name: Read OSPF neighbors
+      cisco.ios.ios_command:
+        commands:
+          - show ip ospf neighbor
+      register: neighbor_evidence
+      ignore_errors: true
+    - name: Probe every other loopback using the data plane
+      cisco.ios.ios_command:
+        commands:
+          - "ping {{ item }} source Loopback0 repeat 5 timeout 1"
+      loop: "{{ probe_targets }}"
+      register: ping_evidence
+      ignore_errors: true
+    - name: Save this router's evidence on the controller
+      ansible.builtin.copy:
+        content: >-
+          {{ {'host': inventory_hostname, 'run_id': run_id,
+              'scenario_sha256': scenario_sha256,
+              'neighbors': neighbor_evidence, 'pings': ping_evidence} | to_nice_json }}
+        dest: "{{ report_dir }}/{{ inventory_hostname }}.json"
+        mode: "0600"
+      delegate_to: localhost

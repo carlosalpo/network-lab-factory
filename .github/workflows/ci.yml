@@ -1,0 +1,35 @@
+name: CI
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install development dependencies
+        run: python -m pip install -e '.[dev,ansible]'
+      - name: Install network collections
+        run: ansible-galaxy collection install -r ansible/requirements.yml
+      - name: Check Python
+        run: |
+          ruff check src tests
+          pytest -q
+      - name: Exercise the offline workflow
+        run: |
+          nlf validate examples/dual-wan.yml
+          nlf build examples/dual-wan.yml --output build/dual-wan
+          ansible-inventory -i build/dual-wan/inventory.yml --list > /dev/null
+      - name: Check playbook syntax
+        run: |
+          ansible-playbook -i build/dual-wan/inventory.yml ansible/configure.yml --syntax-check
+          ansible-playbook -i build/dual-wan/inventory.yml ansible/verify.yml --syntax-check
+          ansible-playbook -i ansible/eve-host.example.yml ansible/provision.yml --syntax-check

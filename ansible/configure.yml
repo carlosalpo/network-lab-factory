@@ -1,0 +1,49 @@
+---
+- name: Configure the dedicated IOSv lab data plane
+  hosts: routers
+  gather_facts: false
+  tasks:
+    - name: Require runtime credentials
+      ansible.builtin.assert:
+        that:
+          - lookup('ansible.builtin.env', 'LAB_USERNAME') | length > 0
+          - lookup('ansible.builtin.env', 'LAB_PASSWORD') | length > 0
+        fail_msg: "Set LAB_USERNAME and LAB_PASSWORD. Bootstrap a privilege-15 lab account first."
+      no_log: true
+    - name: Configure verification loopback
+      cisco.ios.ios_config:
+        parents: interface Loopback0
+        lines:
+          - description NLF verification endpoint
+          - "ip address {{ loopback }} 255.255.255.255"
+          - ip ospf 1 area 0
+    - name: Configure point-to-point data interfaces
+      cisco.ios.ios_config:
+        parents: "interface {{ item.name }}"
+        lines:
+          - "description {{ item.description }}"
+          - "ip address {{ item.ip }} {{ item.mask }}"
+          - ip ospf network point-to-point
+          - "ip ospf cost {{ item.cost }}"
+          - ip ospf 1 area 0
+          - no shutdown
+      loop: "{{ lab_interfaces }}"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: Set OSPF identity and passive default
+      cisco.ios.ios_config:
+        parents: router ospf 1
+        lines:
+          - "router-id {{ loopback }}"
+          - passive-interface default
+    - name: Enable OSPF only on data links
+      cisco.ios.ios_config:
+        parents: router ospf 1
+        lines:
+          - "no passive-interface {{ item.name }}"
+      loop: "{{ lab_interfaces }}"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: Save changed configuration
+      cisco.ios.ios_config:
+        save_when: modified

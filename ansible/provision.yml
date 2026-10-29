@@ -1,0 +1,60 @@
+---
+- name: Provision a new EVE-NG lab file without replacing existing labs
+  hosts: eve
+  gather_facts: false
+  become: true
+  vars:
+    build_dir: "{{ playbook_dir }}/../build/dual-wan"
+    manifest: "{{ lookup('ansible.builtin.file', build_dir ~ '/manifest.json') | from_json }}"
+    remote_lab: "/opt/unetlab/labs/{{ manifest.lab_file }}"
+  tasks:
+    - name: Validate deployment metadata
+      ansible.builtin.assert:
+        that:
+          - manifest.lab is match('^[a-z][a-z0-9-]{0,47}$')
+          - manifest.lab_file == manifest.lab ~ '.unl'
+          - manifest.image is match('^vios-[A-Za-z0-9._-]+$')
+          - "'REPLACE' not in manifest.image"
+          - manifest.management_bridge is match('^pnet[1-9]$')
+        fail_msg: "Build a local scenario with your installed IOSv image and isolated management bridge."
+    - name: Read generated lab file integrity
+      ansible.builtin.stat:
+        path: "{{ build_dir }}/{{ manifest.lab_file }}"
+        checksum_algorithm: sha256
+      delegate_to: localhost
+      become: false
+      register: local_lab
+    - name: Require unchanged generated topology
+      ansible.builtin.assert:
+        that:
+          - local_lab.stat.checksum == manifest.artifacts[manifest.lab_file]
+    - name: Check installed image
+      ansible.builtin.stat:
+        path: "/opt/unetlab/addons/qemu/{{ manifest.image }}/virtioa.qcow2"
+      register: image_file
+    - name: Check isolated management bridge exists
+      ansible.builtin.stat:
+        path: "/sys/class/net/{{ manifest.management_bridge }}/bridge"
+      register: management_bridge
+    - name: Check target lab
+      ansible.builtin.stat:
+        path: "{{ remote_lab }}"
+      register: existing_lab
+    - name: Refuse a missing image, missing bridge or existing lab
+      ansible.builtin.assert:
+        that:
+          - image_file.stat.exists
+          - management_bridge.stat.exists
+          - not existing_lab.stat.exists
+        fail_msg: "Check IOSv image and bridge. Existing lab names are never overwritten; choose a new name."
+    - name: Install generated lab
+      ansible.builtin.copy:
+        src: "{{ build_dir }}/{{ manifest.lab_file }}"
+        dest: "{{ remote_lab }}"
+        owner: www-data
+        group: www-data
+        mode: "0664"
+        force: false
+    - name: Explain next step
+      ansible.builtin.debug:
+        msg: "Open {{ manifest.lab }} in EVE-NG, start nodes and bootstrap management SSH before configure.yml."

@@ -1,0 +1,10 @@
+# Copy to eve-host.local.yml and use your own isolated EVE server address.
+all:
+  children:
+    eve:
+      hosts:
+        eve-lab:
+          ansible_host: 192.0.2.100
+          ansible_user: root
+          ansible_python_interpreter: /usr/bin/python3
+# SSH key authentication is expected; no passwords belong in this file.
