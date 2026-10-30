@@ -1,0 +1,222 @@
+{
+  "scenario": "A02",
+  "backend": "gns3",
+  "mode": "practice",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "nxosv9k-9300v-9.3.9",
+    "vios-adventerprisek9-m.spa.159-3"
+  ],
+  "source_result_sha256": "f4839aad2e2453e1850b10eee468fc11f383081015378736edf8b44def5403ec",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "leaf01",
+          "command": "ping 10.240.0.2 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.2",
+          "passed": true,
+          "output": "ping 10.240.0.2 count 3\r\r\nPING 10.240.0.2 (10.240.0.2): 56 data bytes\r\n64 bytes from 10.240.0.2: icmp_seq=0 ttl=254 time=5.191 ms\r\n64 bytes from 10.240.0.2: icmp_seq=1 ttl=254 time=3.908 ms\r\n64 bytes from 10.240.0.2: icmp_seq=2 ttl=254 time=4.259 ms\r\n\r\n--- 10.240.0.2 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 3.908/4.452/5.191 ms\r\n"
+        },
+        {
+          "node": "spine01",
+          "command": "ping 10.240.0.1 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.1",
+          "passed": true,
+          "output": "ping 10.240.0.1 count 3\r\r\nPING 10.240.0.1 (10.240.0.1): 56 data bytes\r\n64 bytes from 10.240.0.1: icmp_seq=0 ttl=254 time=7.206 ms\r\n64 bytes from 10.240.0.1: icmp_seq=1 ttl=254 time=8.083 ms\r\n64 bytes from 10.240.0.1: icmp_seq=2 ttl=254 time=14.573 ms\r\n\r\n--- 10.240.0.1 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 7.206/9.953/14.573 ms\r\n"
+        },
+        {
+          "node": "leaf01",
+          "command": "ping 10.240.0.6 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.6",
+          "passed": true,
+          "output": "ping 10.240.0.6 count 3\r\r\nPING 10.240.0.6 (10.240.0.6): 56 data bytes\r\n64 bytes from 10.240.0.6: icmp_seq=0 ttl=254 time=4.797 ms\r\n64 bytes from 10.240.0.6: icmp_seq=1 ttl=254 time=4.716 ms\r\n64 bytes from 10.240.0.6: icmp_seq=2 ttl=254 time=3.298 ms\r\n\r\n--- 10.240.0.6 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 3.298/4.27/4.797 ms\r\n"
+        },
+        {
+          "node": "spine02",
+          "command": "ping 10.240.0.5 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.5",
+          "passed": true,
+          "output": "ping 10.240.0.5 count 3\r\r\nPING 10.240.0.5 (10.240.0.5): 56 data bytes\r\n64 bytes from 10.240.0.5: icmp_seq=0 ttl=254 time=7.972 ms\r\n64 bytes from 10.240.0.5: icmp_seq=1 ttl=254 time=3.853 ms\r\n64 bytes from 10.240.0.5: icmp_seq=2 ttl=254 time=5.286 ms\r\n\r\n--- 10.240.0.5 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 3.853/5.703/7.972 ms\r\n"
+        },
+        {
+          "node": "leaf02",
+          "command": "ping 10.240.0.10 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.10",
+          "passed": true,
+          "output": "ping 10.240.0.10 count 3\r\r\nPING 10.240.0.10 (10.240.0.10): 56 data bytes\r\n64 bytes from 10.240.0.10: icmp_seq=0 ttl=254 time=4.784 ms\r\n64 bytes from 10.240.0.10: icmp_seq=1 ttl=254 time=5.314 ms\r\n64 bytes from 10.240.0.10: icmp_seq=2 ttl=254 time=5.407 ms\r\n\r\n--- 10.240.0.10 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 4.784/5.168/5.407 ms\r\n"
+        },
+        {
+          "node": "spine01",
+          "command": "ping 10.240.0.9 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.9",
+          "passed": true,
+          "output": "ping 10.240.0.9 count 3\r\r\nPING 10.240.0.9 (10.240.0.9): 56 data bytes\r\n64 bytes from 10.240.0.9: icmp_seq=0 ttl=254 time=4.304 ms\r\n64 bytes from 10.240.0.9: icmp_seq=1 ttl=254 time=4.307 ms\r\n64 bytes from 10.240.0.9: icmp_seq=2 ttl=254 time=4.528 ms\r\n\r\n--- 10.240.0.9 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 4.304/4.379/4.528 ms\r\n"
+        },
+        {
+          "node": "leaf02",
+          "command": "ping 10.240.0.14 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.14",
+          "passed": true,
+          "output": "ping 10.240.0.14 count 3\r\r\nPING 10.240.0.14 (10.240.0.14): 56 data bytes\r\n64 bytes from 10.240.0.14: icmp_seq=0 ttl=254 time=7.331 ms\r\n64 bytes from 10.240.0.14: icmp_seq=1 ttl=254 time=7.22 ms\r\n64 bytes from 10.240.0.14: icmp_seq=2 ttl=254 time=6.362 ms\r\n\r\n--- 10.240.0.14 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 6.362/6.971/7.331 ms\r\n"
+        },
+        {
+          "node": "spine02",
+          "command": "ping 10.240.0.13 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.13",
+          "passed": true,
+          "output": "ping 10.240.0.13 count 3\r\r\nPING 10.240.0.13 (10.240.0.13): 56 data bytes\r\n64 bytes from 10.240.0.13: icmp_seq=0 ttl=254 time=6.9 ms\r\n64 bytes from 10.240.0.13: icmp_seq=1 ttl=254 time=5.269 ms\r\n64 bytes from 10.240.0.13: icmp_seq=2 ttl=254 time=4.525 ms\r\n\r\n--- 10.240.0.13 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 4.525/5.564/6.9 ms\r\n"
+        },
+        {
+          "node": "leaf01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.1\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.1        1 FULL/BDR         00:01:10 10.240.0.2      Eth1/1 \r\n 10.241.0.2        1 FULL/BDR         00:00:58 10.240.0.6      Eth1/2 \r\n"
+        },
+        {
+          "node": "spine01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.3\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.3        1 FULL/DR          00:01:11 10.240.0.1      Eth1/1 \r\n 10.241.0.4        1 FULL/DR          00:01:10 10.240.0.9      Eth1/2 \r\n"
+        },
+        {
+          "node": "leaf01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.2\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.1        1 FULL/BDR         00:01:11 10.240.0.2      Eth1/1 \r\n 10.241.0.2        1 FULL/BDR         00:00:58 10.240.0.6      Eth1/2 \r\n"
+        },
+        {
+          "node": "spine02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.3\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.3        1 FULL/DR          00:00:59 10.240.0.5      Eth1/1 \r\n 10.241.0.4        1 FULL/DR          00:00:58 10.240.0.13     Eth1/2 \r\n"
+        },
+        {
+          "node": "leaf02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.1\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.1        1 FULL/BDR         00:01:10 10.240.0.10     Eth1/1 \r\n 10.241.0.2        1 FULL/BDR         00:00:58 10.240.0.14     Eth1/2 \r\n"
+        },
+        {
+          "node": "spine01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.4\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.3        1 FULL/DR          00:01:12 10.240.0.1      Eth1/1 \r\n 10.241.0.4        1 FULL/DR          00:01:11 10.240.0.9      Eth1/2 \r\n"
+        },
+        {
+          "node": "leaf02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.2\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.1        1 FULL/BDR         00:01:11 10.240.0.10     Eth1/1 \r\n 10.241.0.2        1 FULL/BDR         00:00:59 10.240.0.14     Eth1/2 \r\n"
+        },
+        {
+          "node": "spine02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.4\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 2\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.3        1 FULL/DR          00:00:59 10.240.0.5      Eth1/1 \r\n 10.241.0.4        1 FULL/DR          00:00:59 10.240.0.13     Eth1/2 \r\n"
+        },
+        {
+          "node": "spine01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+spine01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname spine01\r\n"
+        },
+        {
+          "node": "spine02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+spine02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname spine02\r\n"
+        },
+        {
+          "node": "leaf01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+leaf01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname leaf01\r\n"
+        },
+        {
+          "node": "leaf02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+leaf02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname leaf02\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+h01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname h01\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+h02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname h02\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "pending"
+    },
+    "status": "ready"
+  }
+}

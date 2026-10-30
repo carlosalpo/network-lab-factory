@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "network-lab-factory"
-version = "0.1.1"
-description = "Compile validated network scenarios into EVE-NG labs and Ansible inventories."
+version = "0.2.0"
+description = "Prepare and verify repeatable EVE-NG and GNS3 labs through a guided terminal."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [{name = "Carlos Alvarado"}]
-dependencies = ["PyYAML>=6.0.2,<7"]
+dependencies = ["PyYAML>=6.0.2,<7", "textual>=8.2.8,<9"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.14,<1"]
@@ -21,6 +21,9 @@ nlf = "netlab.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+netlab = ["*.tcss", "data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

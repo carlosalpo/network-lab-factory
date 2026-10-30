@@ -1,0 +1,44 @@
+{
+  "event": "result",
+  "preparation": {
+    "status": "passed",
+    "scope": "preparation",
+    "checks": [
+      {
+        "node": "r01",
+        "passed": true,
+        "interfaces": "show ip interface brief\r\nInterface                  IP-Address      OK? Method Status                Protocol\r\nGigabitEthernet0/0         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/1         10.240.0.5      YES manual up                    up      \r\nGigabitEthernet0/2         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/3         unassigned      YES unset  administratively down down    \r\nLoopback0                  10.241.1.1      YES manual up                    up      \r\n",
+        "ping": "ping 10.240.0.6 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 10.240.0.6, timeout is 1 seconds:\r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 3/5/10 ms\r\n",
+        "neighbors": ""
+      },
+      {
+        "node": "r02",
+        "passed": true,
+        "interfaces": "s\r\n*Oct 29 22:38:54.218: %OSPF-5-ADJCHG: Process 1, Nbr 10.241.1.1 on GigabitEthernet0/1 from LOADING to FULL, Loading Donehow ip interface brief\r\nInterface                  IP-Address      OK? Method Status                Protocol\r\nGigabitEthernet0/0         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/1         10.240.0.6      YES manual up                    up      \r\nGigabitEthernet0/2         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/3         unassigned      YES unset  administratively down down    \r\nLoopback0                  10.241.1.2      YES manual up                    up      \r\n",
+        "ping": "ping 10.240.0.5 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 10.240.0.5, timeout is 1 seconds:\r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 3/5/7 ms\r\n",
+        "neighbors": ""
+      }
+    ]
+  },
+  "exercise": {
+    "status": "passed",
+    "scope": "exercise",
+    "checks": [
+      {
+        "node": "r01",
+        "passed": true,
+        "interfaces": "show ip interface brief\r\nInterface                  IP-Address      OK? Method Status                Protocol\r\nGigabitEthernet0/0         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/1         10.240.0.5      YES manual up                    up      \r\nGigabitEthernet0/2         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/3         unassigned      YES unset  administratively down down    \r\nLoopback0                  10.241.1.1      YES manual up                    up      \r\n",
+        "ping": "ping 10.241.1.2 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 10.241.1.2, timeout is 1 seconds:\r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 4/5/10 ms\r\n",
+        "neighbors": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n10.241.1.2        0   FULL/  -        00:00:34    10.240.0.6      GigabitEthernet0/1\r\n"
+      },
+      {
+        "node": "r02",
+        "passed": true,
+        "interfaces": "show ip interface brief\r\nInterface                  IP-Address      OK? Method Status                Protocol\r\nGigabitEthernet0/0         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/1         10.240.0.6      YES manual up                    up      \r\nGigabitEthernet0/2         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/3         unassigned      YES unset  administratively down down    \r\nLoopback0                  10.241.1.2      YES manual up                    up      \r\n",
+        "ping": "ping 10.241.1.1 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 10.241.1.1, timeout is 1 seconds:\r\n!!!!!\r\nSuccess rate is 100 percent (5/5), round-trip min/avg/max = 6/6/8 ms\r\n",
+        "neighbors": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n10.241.1.1        0   FULL/  -        00:00:37    10.240.0.5      GigabitEthernet0/1\r\n"
+      }
+    ]
+  },
+  "status": "ready"
+}

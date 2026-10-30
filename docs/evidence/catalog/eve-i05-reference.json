@@ -1,0 +1,143 @@
+{
+  "scenario": "I05",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "vios-adventerprisek9-m.spa.159-3"
+  ],
+  "source_result_sha256": "2ffcf80685fc51a7c723fc36e7f7cd7601474a5f09885e4f79cb9947e2b21dca",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "ping 10.240.0.2 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.2",
+          "passed": true,
+          "output": "ping 10.240.0.2 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.2, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 4/5/7 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping 10.240.0.1 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.1",
+          "passed": true,
+          "output": "ping 10.240.0.1 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.1, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 4/5/6 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping 10.240.0.6 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.6",
+          "passed": true,
+          "output": "ping 10.240.0.6 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.6, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 3/4/5 ms\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "ping 10.240.0.5 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.5",
+          "passed": true,
+          "output": "ping 10.240.0.5 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.5, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 4/4/5 ms\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r01\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r02\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r03",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r03\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "show ip bgp neighbors 10.240.0.2",
+          "pattern": "BGP state = Established",
+          "kind": "regex",
+          "label": "show ip bgp neighbors 10.240.0.2",
+          "passed": true,
+          "output": "show ip bgp neighbors 10.240.0.2\r\nBGP neighbor is 10.240.0.2,  remote AS 65002, external link\r\n  BGP version 4, remote router ID 10.241.0.2\r\n  BGP state = Established, up for 00:00:29\r\n  Last read 00:00:29, last write 00:00:29, hold time is 180, keepalive interval is 60 seconds\r\n  Neighbor sessions:\r\n    1 active, is not multisession capable (disabled)\r\n  Neighbor capabilities:\r\n    Route refresh: advertised and received(new)\r\n    Four-octets ASN Capability: advertised and received\r\n    Address family IPv4 Unicast: advertised and received\r\n    Enhanced Refresh Capability: advertised and received\r\n    Multisession Capability: \r\n    Stateful switchover support enabled: NO for session 1\r\n  Message statistics:\r\n    InQ depth is 0\r\n    OutQ depth is 0\r\n    \r\n                         Sent       Rcvd\r\n    Opens:                  1          1\r\n    Notifications:          0          0\r\n    Updates:                0          0\r\n    Keepalives:             1          1\r\n    Route Refresh:          0          0\r\n    Total:                  2          2\r\n  Do log neighbor state changes (via global configuration)\r\n  Default minimum time between advertisement runs is 30 seconds\r\n\r\n For address family: IPv4 Unicast\r\n  Session: 10.240.0.2\r\n  BGP table version 1, neighbor version 1/0\r\n  Output queue size : 0\r\n  Index 1, Advertise bit 0\r\n  1 update-group member\r\n  Slow-peer detection is disabled\r\n  Slow-peer split-update-group dynamic is disabled\r\n                                 Sent       Rcvd\r\n  Prefix activity:               ----       ----\r\n    Prefixes Current:               0          0\r\n    Prefixes Total:                 0          0\r\n    Implicit Withdraw:              0          0\r\n    Explicit Withdraw:              0          0\r\n    Used as bestpath:             n/a          0\r\n    Used as multipath:            n/a          0\r\n    Used as secondary:            n/a          0\r\n\r\n                                   Outbound    Inbound\r\n  Local Policy Denied Prefixes:    --------    -------\r\n    Total:                                0          0\r\n  Number of NLRIs in the update sent: max 0, min 0\r\n  Last detected as dynamic slow peer: never\r\n  Dynamic slow peer recovered: never\r\n  Refresh Epoch: 1\r\n  Last Sent Refresh Start-of-rib: never\r\n  Last Sent Refresh End-of-rib: never\r\n  Last Received Refresh Start-of-rib: never\r\n  Last Received Refresh End-of-rib: never\r\n\t\t\t\t       Sent\t  Rcvd\r\n\tRefresh activity:\t       ----\t  ----\r\n\t  Refresh Start-of-RIB          0          0\r\n\t  Refresh End-of-RIB            0          0\r\n\r\n  Address tracking is enabled, the RIB does have a route to 10.240.0.2\r\n  Route to peer address reachability Up: 1; Down: 0\r\n    Last notification 00:00:36\r\n  Connections established 1; dropped 0\r\n  Last reset never\r\n  External BGP neighbor configured for connected checks (single-hop no-disable-connected-check)\r\n  Interface associated: GigabitEthernet0/1 (peering address in same link)\r\n  Transport(tcp) path-mtu-discovery is enabled\r\n  Graceful-Restart is disabled\r\n  SSO is disabled\r\nConnection state is ESTAB, I/O status: 1, unread input bytes: 0            \r\nConnection is ECN Disabled, Mininum incoming TTL 0, Outgoing TTL 1\r\nLocal host: 10.240.0.1, Local port: 50556\r\nForeign host: 10.240.0.2, Foreign port: 179\r\nConnection tableid (VRF): 0\r\nMaximum output segment queue size: 50\r\n\r\nEnqueued packets for retransmit: 0, input: 0  mis-ordered: 0 (0 bytes)\r\n\r\nEvent Timers (current time is 0x2A076):\r\nTimer          Starts    Wakeups            Next\r\nRetrans             4          1             0x0\r\nTimeWait            0          0             0x0\r\nAckHold             2          0             0x0\r\nSendWnd             0          0             0x0\r\nKeepAlive           0          0             0x0\r\nGiveUp              0          0             0x0\r\nPmtuAger            1          0         0xB5522\r\nDeadWait            0          0             0x0\r\nLinger              0          0             0x0\r\nProcessQ            0          0             0x0\r\n\r\niss: 4171551318  snduna: 4171551395  sndnxt: 4171551395\r\nirs:  669900096  rcvnxt:  669900173\r\n\r\nsndwnd:  16308  scale:      0  maxrcvwnd:  16384\r\nrcvwnd:  16308  scale:      0  delrcvwnd:     76\r\n\r\nSRTT: 234 ms, RTTO: 2984 ms, RTV: 2750 ms, KRTT: 0 ms\r\nminRTT: 4 ms, maxRTT: 1000 ms, ACK hold: 200 ms\r\nuptime: 31477 ms, Sent idletime: 29389 ms, Receive idletime: 29151 ms \r\nStatus Flags: active open\r\nOption Flags: nagle, path mtu capable\r\nIP Precedence value : 6\r\n\r\nDatagrams (max data segment is 1460 bytes):\r\nRcvd: 5 (out of order: 0), with data: 2, total data bytes: 76\r\nSent: 5 (retransmit: 1, fastretransmit: 0, partialack: 0, Second Congestion: 0), with data: 2, total data bytes: 76\r\n\r\n Packets received in fast path: 0, fast processed: 0, slow path: 0\r\n fast lock acquisition failures: 0, slow path: 0\r\nTCP Semaphore      0x106BF7DC  FREE \r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show ip bgp neighbors 10.240.0.1",
+          "pattern": "BGP state = Established",
+          "kind": "regex",
+          "label": "show ip bgp neighbors 10.240.0.1",
+          "passed": true,
+          "output": "show ip bgp neighbors 10.240.0.1\r\nBGP neighbor is 10.240.0.1,  remote AS 65001, external link\r\n  BGP version 4, remote router ID 10.241.0.1\r\n  BGP state = Established, up for 00:00:33\r\n  Last read 00:00:33, last write 00:00:33, hold time is 180, keepalive interval is 60 seconds\r\n  Neighbor sessions:\r\n    1 active, is not multisession capable (disabled)\r\n  Neighbor capabilities:\r\n    Route refresh: advertised and received(new)\r\n    Four-octets ASN Capability: advertised and received\r\n    Address family IPv4 Unicast: advertised and received\r\n    Enhanced Refresh Capability: advertised and received\r\n    Multisession Capability: \r\n    Stateful switchover support enabled: NO for session 1\r\n  Message statistics:\r\n    InQ depth is 0\r\n    OutQ depth is 0\r\n    \r\n                         Sent       Rcvd\r\n    Opens:                  1          1\r\n    Notifications:          0          0\r\n    Updates:                0          0\r\n    Keepalives:             1          1\r\n    Route Refresh:          0          0\r\n    Total:                  2          2\r\n  Do log neighbor state changes (via global configuration)\r\n  Default minimum time between advertisement runs is 30 seconds\r\n\r\n For address family: IPv4 Unicast\r\n  Session: 10.240.0.1\r\n  BGP table version 1, neighbor version 1/0\r\n  Output queue size : 0\r\n  Index 1, Advertise bit 0\r\n  1 update-group member\r\n  Slow-peer detection is disabled\r\n  Slow-peer split-update-group dynamic is disabled\r\n                                 Sent       Rcvd\r\n  Prefix activity:               ----       ----\r\n    Prefixes Current:               0          0\r\n    Prefixes Total:                 0          0\r\n    Implicit Withdraw:              0          0\r\n    Explicit Withdraw:              0          0\r\n    Used as bestpath:             n/a          0\r\n    Used as multipath:            n/a          0\r\n    Used as secondary:            n/a          0\r\n\r\n                                   Outbound    Inbound\r\n  Local Policy Denied Prefixes:    --------    -------\r\n    Total:                                0          0\r\n  Number of NLRIs in the update sent: max 0, min 0\r\n  Last detected as dynamic slow peer: never\r\n  Dynamic slow peer recovered: never\r\n  Refresh Epoch: 1\r\n  Last Sent Refresh Start-of-rib: never\r\n  Last Sent Refresh End-of-rib: never\r\n  Last Received Refresh Start-of-rib: never\r\n  Last Received Refresh End-of-rib: never\r\n\t\t\t\t       Sent\t  Rcvd\r\n\tRefresh activity:\t       ----\t  ----\r\n\t  Refresh Start-of-RIB          0          0\r\n\t  Refresh End-of-RIB            0          0\r\n\r\n  Address tracking is enabled, the RIB does have a route to 10.240.0.1\r\n  Route to peer address reachability Up: 1; Down: 0\r\n    Last notification 00:00:36\r\n  Connections established 1; dropped 0\r\n  Last reset never\r\n  External BGP neighbor configured for connected checks (single-hop no-disable-connected-check)\r\n  Interface associated: GigabitEthernet0/1 (peering address in same link)\r\n  Transport(tcp) path-mtu-discovery is enabled\r\n  Graceful-Restart is disabled\r\n  SSO is disabled\r\nConnection state is ESTAB, I/O status: 1, unread input bytes: 0            \r\nConnection is ECN Disabled, Mininum incoming TTL 0, Outgoing TTL 1\r\nLocal host: 10.240.0.2, Local port: 179\r\nForeign host: 10.240.0.1, Foreign port: 50556\r\nConnection tableid (VRF): 0\r\nMaximum output segment queue size: 50\r\n\r\nEnqueued packets for retransmit: 0, input: 0  mis-ordered: 0 (0 bytes)\r\n\r\nEvent Timers (current time is 0x2B164):\r\nTimer          Starts    Wakeups            Next\r\nRetrans             2          0             0x0\r\nTimeWait            0          0             0x0\r\nAckHold             2          1             0x0\r\nSendWnd             0          0             0x0\r\nKeepAlive           0          0             0x0\r\nGiveUp              0          0             0x0\r\nPmtuAger            0          0             0x0\r\nDeadWait            0          0             0x0\r\nLinger              0          0             0x0\r\nProcessQ            0          0             0x0\r\n\r\niss:  669900096  snduna:  669900173  sndnxt:  669900173\r\nirs: 4171551318  rcvnxt: 4171551395\r\n\r\nsndwnd:  16308  scale:      0  maxrcvwnd:  16384\r\nrcvwnd:  16308  scale:      0  delrcvwnd:     76\r\n\r\nSRTT: 234 ms, RTTO: 2984 ms, RTV: 2750 ms, KRTT: 0 ms\r\nminRTT: 12 ms, maxRTT: 1000 ms, ACK hold: 200 ms\r\nuptime: 33730 ms, Sent idletime: 33419 ms, Receive idletime: 33636 ms \r\nStatus Flags: passive open, gen tcbs\r\nOption Flags: nagle, path mtu capable\r\nIP Precedence value : 6\r\n\r\nDatagrams (max data segment is 1460 bytes):\r\nRcvd: 5 (out of order: 0), with data: 2, total data bytes: 76\r\nSent: 5 (retransmit: 0, fastretransmit: 0, partialack: 0, Second Congestion: 0), with data: 2, total data bytes: 76\r\n\r\n Packets received in fast path: 0, fast processed: 0, slow path: 0\r\n fast lock acquisition failures: 0, slow path: 0\r\nTCP Semaphore      0x106BF7DC  FREE \r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show ip bgp neighbors 10.240.0.6",
+          "pattern": "BGP state = Established",
+          "kind": "regex",
+          "label": "show ip bgp neighbors 10.240.0.6",
+          "passed": true,
+          "output": "show ip bgp neighbors 10.240.0.6\r\nBGP neighbor is 10.240.0.6,  remote AS 65003, external link\r\n  BGP version 4, remote router ID 10.241.0.3\r\n  BGP state = Established, up for 00:00:32\r\n  Last read 00:00:32, last write 00:00:32, hold time is 180, keepalive interval is 60 seconds\r\n  Neighbor sessions:\r\n    1 active, is not multisession capable (disabled)\r\n  Neighbor capabilities:\r\n    Route refresh: advertised and received(new)\r\n    Four-octets ASN Capability: advertised and received\r\n    Address family IPv4 Unicast: advertised and received\r\n    Enhanced Refresh Capability: advertised and received\r\n    Multisession Capability: \r\n    Stateful switchover support enabled: NO for session 1\r\n  Message statistics:\r\n    InQ depth is 0\r\n    OutQ depth is 0\r\n    \r\n                         Sent       Rcvd\r\n    Opens:                  1          1\r\n    Notifications:          0          0\r\n    Updates:                0          0\r\n    Keepalives:             1          1\r\n    Route Refresh:          0          0\r\n    Total:                  2          2\r\n  Do log neighbor state changes (via global configuration)\r\n  Default minimum time between advertisement runs is 30 seconds\r\n\r\n For address family: IPv4 Unicast\r\n  Session: 10.240.0.6\r\n  BGP table version 1, neighbor version 1/0\r\n  Output queue size : 0\r\n  Index 1, Advertise bit 0\r\n  1 update-group member\r\n  Slow-peer detection is disabled\r\n  Slow-peer split-update-group dynamic is disabled\r\n                                 Sent       Rcvd\r\n  Prefix activity:               ----       ----\r\n    Prefixes Current:               0          0\r\n    Prefixes Total:                 0          0\r\n    Implicit Withdraw:              0          0\r\n    Explicit Withdraw:              0          0\r\n    Used as bestpath:             n/a          0\r\n    Used as multipath:            n/a          0\r\n    Used as secondary:            n/a          0\r\n\r\n                                   Outbound    Inbound\r\n  Local Policy Denied Prefixes:    --------    -------\r\n    Total:                                0          0\r\n  Number of NLRIs in the update sent: max 0, min 0\r\n  Last detected as dynamic slow peer: never\r\n  Dynamic slow peer recovered: never\r\n  Refresh Epoch: 1\r\n  Last Sent Refresh Start-of-rib: never\r\n  Last Sent Refresh End-of-rib: never\r\n  Last Received Refresh Start-of-rib: never\r\n  Last Received Refresh End-of-rib: never\r\n\t\t\t\t       Sent\t  Rcvd\r\n\tRefresh activity:\t       ----\t  ----\r\n\t  Refresh Start-of-RIB          0          0\r\n\t  Refresh End-of-RIB            0          0\r\n\r\n  Address tracking is enabled, the RIB does have a route to 10.240.0.6\r\n  Route to peer address reachability Up: 1; Down: 0\r\n    Last notification 00:00:42\r\n  Connections established 1; dropped 0\r\n  Last reset never\r\n  External BGP neighbor configured for connected checks (single-hop no-disable-connected-check)\r\n  Interface associated: GigabitEthernet0/2 (peering address in same link)\r\n  Transport(tcp) path-mtu-discovery is enabled\r\n  Graceful-Restart is disabled\r\n  SSO is disabled\r\nConnection state is ESTAB, I/O status: 1, unread input bytes: 0            \r\nConnection is ECN Disabled, Mininum incoming TTL 0, Outgoing TTL 1\r\nLocal host: 10.240.0.5, Local port: 51922\r\nForeign host: 10.240.0.6, Foreign port: 179\r\nConnection tableid (VRF): 0\r\nMaximum output segment queue size: 50\r\n\r\nEnqueued packets for retransmit: 0, input: 0  mis-ordered: 0 (0 bytes)\r\n\r\nEvent Timers (current time is 0x2CDB1):\r\nTimer          Starts    Wakeups            Next\r\nRetrans             4          1             0x0\r\nTimeWait            0          0             0x0\r\nAckHold             3          1             0x0\r\nSendWnd             0          0             0x0\r\nKeepAlive           0          0             0x0\r\nGiveUp              0          0             0x0\r\nPmtuAger            1          0         0xB774E\r\nDeadWait            0          0             0x0\r\nLinger              0          0             0x0\r\nProcessQ            0          0             0x0\r\n\r\niss: 2200014769  snduna: 2200014846  sndnxt: 2200014846\r\nirs: 1677933090  rcvnxt: 1677933167\r\n\r\nsndwnd:  16308  scale:      0  maxrcvwnd:  16384\r\nrcvwnd:  16308  scale:      0  delrcvwnd:     76\r\n\r\nSRTT: 234 ms, RTTO: 2984 ms, RTV: 2750 ms, KRTT: 0 ms\r\nminRTT: 164 ms, maxRTT: 1000 ms, ACK hold: 200 ms\r\nuptime: 37170 ms, Sent idletime: 31908 ms, Receive idletime: 31885 ms \r\nStatus Flags: active open\r\nOption Flags: nagle, path mtu capable\r\nIP Precedence value : 6\r\n\r\nDatagrams (max data segment is 1460 bytes):\r\nRcvd: 5 (out of order: 0), with data: 2, total data bytes: 76\r\nSent: 5 (retransmit: 1, fastretransmit: 0, partialack: 0, Second Congestion: 0), with data: 2, total data bytes: 76\r\n\r\n Packets received in fast path: 0, fast processed: 0, slow path: 0\r\n fast lock acquisition failures: 0, slow path: 0\r\nTCP Semaphore      0x106BF76C  FREE \r\n"
+        },
+        {
+          "node": "r03",
+          "command": "show ip bgp neighbors 10.240.0.5",
+          "pattern": "BGP state = Established",
+          "kind": "regex",
+          "label": "show ip bgp neighbors 10.240.0.5",
+          "passed": true,
+          "output": "show ip bgp neighbors 10.240.0.5\r\nBGP neighbor is 10.240.0.5,  remote AS 65002, external link\r\n  BGP version 4, remote router ID 10.241.0.2\r\n  BGP state = Established, up for 00:00:38\r\n  Last read 00:00:38, last write 00:00:38, hold time is 180, keepalive interval is 60 seconds\r\n  Neighbor sessions:\r\n    1 active, is not multisession capable (disabled)\r\n  Neighbor capabilities:\r\n    Route refresh: advertised and received(new)\r\n    Four-octets ASN Capability: advertised and received\r\n    Address family IPv4 Unicast: advertised and received\r\n    Enhanced Refresh Capability: advertised and received\r\n    Multisession Capability: \r\n    Stateful switchover support enabled: NO for session 1\r\n  Message statistics:\r\n    InQ depth is 0\r\n    OutQ depth is 0\r\n    \r\n                         Sent       Rcvd\r\n    Opens:                  1          1\r\n    Notifications:          0          0\r\n    Updates:                0          0\r\n    Keepalives:             1          1\r\n    Route Refresh:          0          0\r\n    Total:                  2          2\r\n  Do log neighbor state changes (via global configuration)\r\n  Default minimum time between advertisement runs is 30 seconds\r\n\r\n For address family: IPv4 Unicast\r\n  Session: 10.240.0.5\r\n  BGP table version 1, neighbor version 1/0\r\n  Output queue size : 0\r\n  Index 1, Advertise bit 0\r\n  1 update-group member\r\n  Slow-peer detection is disabled\r\n  Slow-peer split-update-group dynamic is disabled\r\n                                 Sent       Rcvd\r\n  Prefix activity:               ----       ----\r\n    Prefixes Current:               0          0\r\n    Prefixes Total:                 0          0\r\n    Implicit Withdraw:              0          0\r\n    Explicit Withdraw:              0          0\r\n    Used as bestpath:             n/a          0\r\n    Used as multipath:            n/a          0\r\n    Used as secondary:            n/a          0\r\n\r\n                                   Outbound    Inbound\r\n  Local Policy Denied Prefixes:    --------    -------\r\n    Total:                                0          0\r\n  Number of NLRIs in the update sent: max 0, min 0\r\n  Last detected as dynamic slow peer: never\r\n  Dynamic slow peer recovered: never\r\n  Refresh Epoch: 1\r\n  Last Sent Refresh Start-of-rib: never\r\n  Last Sent Refresh End-of-rib: never\r\n  Last Received Refresh Start-of-rib: never\r\n  Last Received Refresh End-of-rib: never\r\n\t\t\t\t       Sent\t  Rcvd\r\n\tRefresh activity:\t       ----\t  ----\r\n\t  Refresh Start-of-RIB          0          0\r\n\t  Refresh End-of-RIB            0          0\r\n\r\n  Address tracking is enabled, the RIB does have a route to 10.240.0.5\r\n  Route to peer address reachability Up: 1; Down: 0\r\n    Last notification 00:00:40\r\n  Connections established 1; dropped 0\r\n  Last reset never\r\n  External BGP neighbor configured for connected checks (single-hop no-disable-connected-check)\r\n  Interface associated: GigabitEthernet0/1 (peering address in same link)\r\n  Transport(tcp) path-mtu-discovery is enabled\r\n  Graceful-Restart is disabled\r\n  SSO is disabled\r\nConnection state is ESTAB, I/O status: 1, unread input bytes: 0            \r\nConnection is ECN Disabled, Mininum incoming TTL 0, Outgoing TTL 1\r\nLocal host: 10.240.0.6, Local port: 179\r\nForeign host: 10.240.0.5, Foreign port: 51922\r\nConnection tableid (VRF): 0\r\nMaximum output segment queue size: 50\r\n\r\nEnqueued packets for retransmit: 0, input: 0  mis-ordered: 0 (0 bytes)\r\n\r\nEvent Timers (current time is 0x2BDEE):\r\nTimer          Starts    Wakeups            Next\r\nRetrans             4          1             0x0\r\nTimeWait            0          0             0x0\r\nAckHold             2          1             0x0\r\nSendWnd             0          0             0x0\r\nKeepAlive           0          0             0x0\r\nGiveUp              0          0             0x0\r\nPmtuAger            0          0             0x0\r\nDeadWait            0          0             0x0\r\nLinger              0          0             0x0\r\nProcessQ            0          0             0x0\r\n\r\niss: 1677933090  snduna: 1677933167  sndnxt: 1677933167\r\nirs: 2200014769  rcvnxt: 2200014846\r\n\r\nsndwnd:  16308  scale:      0  maxrcvwnd:  16384\r\nrcvwnd:  16308  scale:      0  delrcvwnd:     76\r\n\r\nSRTT: 234 ms, RTTO: 2984 ms, RTV: 2750 ms, KRTT: 0 ms\r\nminRTT: 21 ms, maxRTT: 1000 ms, ACK hold: 200 ms\r\nuptime: 40753 ms, Sent idletime: 38397 ms, Receive idletime: 38417 ms \r\nStatus Flags: passive open, gen tcbs\r\nOption Flags: nagle, path mtu capable\r\nIP Precedence value : 6\r\n\r\nDatagrams (max data segment is 1460 bytes):\r\nRcvd: 5 (out of order: 0), with data: 2, total data bytes: 76\r\nSent: 5 (retransmit: 1, fastretransmit: 0, partialack: 0, Second Congestion: 0), with data: 2, total data bytes: 76\r\n\r\n Packets received in fast path: 0, fast processed: 0, slow path: 0\r\n fast lock acquisition failures: 0, slow path: 0\r\nTCP Semaphore      0x106BF8BC  FREE \r\n"
+        },
+        {
+          "node": "r01",
+          "command": "ping 10.241.0.3 repeat 3 timeout 1 source Loopback0",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.3",
+          "passed": true,
+          "output": "ping 10.241.0.3 repeat 3 timeout 1 source Loopback0\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.3, timeout is 1 seconds:\r\nPacket sent with a source address of 10.241.0.1 \r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 5/5/6 ms\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "ping 10.241.0.1 repeat 3 timeout 1 source Loopback0",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.1",
+          "passed": true,
+          "output": "ping 10.241.0.1 repeat 3 timeout 1 source Loopback0\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.1, timeout is 1 seconds:\r\nPacket sent with a source address of 10.241.0.3 \r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 6/7/9 ms\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

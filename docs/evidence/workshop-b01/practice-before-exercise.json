@@ -1,0 +1,21 @@
+{
+  "event": "verification",
+  "status": "failed",
+  "scope": "exercise",
+  "checks": [
+    {
+      "node": "r01",
+      "passed": false,
+      "interfaces": "show ip interface brief\r\nInterface                  IP-Address      OK? Method Status                Protocol\r\nGigabitEthernet0/0         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/1         10.240.0.1      YES manual up                    up      \r\nGigabitEthernet0/2         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/3         unassigned      YES unset  administratively down down    \r\nLoopback0                  10.241.0.1      YES manual up                    up      \r\n",
+      "ping": "ping 10.241.0.2 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 10.241.0.2, timeout is 1 seconds:\r\n.....\r\nSuccess rate is 0 percent (0/5)\r\n",
+      "neighbors": "show ip ospf neighbor\r\n"
+    },
+    {
+      "node": "r02",
+      "passed": false,
+      "interfaces": "show ip interface brief\r\nInterface                  IP-Address      OK? Method Status                Protocol\r\nGigabitEthernet0/0         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/1         10.240.0.2      YES manual up                    up      \r\nGigabitEthernet0/2         unassigned      YES unset  administratively down down    \r\nGigabitEthernet0/3         unassigned      YES unset  administratively down down    \r\nLoopback0                  10.241.0.2      YES manual up                    up      \r\n",
+      "ping": "ping 10.241.0.1 repeat 5 timeout 1\r\nType escape sequence to abort.\r\nSending 5, 100-byte ICMP Echos to 10.241.0.1, timeout is 1 seconds:\r\n.....\r\nSuccess rate is 0 percent (0/5)\r\n",
+      "neighbors": "show ip ospf neighbor\r\n"
+    }
+  ]
+}

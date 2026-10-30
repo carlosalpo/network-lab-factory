@@ -1,0 +1,48 @@
+Screen { background: $background; color: $text; }
+#brand { height: 2; padding: 0 2; color: $primary; text-style: bold; background: $surface; }
+#location { height: 1; margin: 0 2; color: $text-muted; }
+#body { height: 1fr; }
+#rail { width: 23; padding: 1 2; color: $text-muted; border-right: solid $panel; }
+#pages { width: 1fr; }
+.page { padding: 1 3; }
+Static { height: auto; }
+.title { text-style: bold; margin-bottom: 1; }
+.muted { color: $text-muted; margin: 1 0; }
+.section { margin: 1 0; color: $primary; text-style: bold; }
+.label { color: $text-muted; margin-top: 1; }
+.error { color: $error; margin: 1 0; }
+.error:empty { display: none; }
+.columns { height: auto; }
+.column { width: 1fr; margin-right: 3; }
+Input { width: 1fr; border: solid $panel; }
+Input:focus { border: solid $primary; }
+RadioSet { width: 1fr; height: auto; border: none; padding: 0; background: $surface; }
+RadioButton { height: auto; min-height: 2; padding: 0 1; }
+RadioButton:focus { text-style: bold underline; }
+Button { margin: 1 1 0 0; min-width: 14; height: 3; border: solid $panel; }
+Button.-primary { background: $primary; color: $background; text-style: bold; }
+Button:focus { border: double $primary; text-style: bold underline; }
+Button.-primary:focus { border: double $foreground; }
+.actions { height: auto; }
+Collapsible { margin: 1 0; padding: 0; border: none; background: $background; }
+Collapsible > Contents { padding: 0 1; }
+#mode-note { margin-top: 1; }
+#topology { margin: 0 0 1 0; }
+#review-summary, #result-summary, #failure-summary { margin-bottom: 1; }
+#confirmation { max-width: 32; }
+#stages { margin: 1 0; }
+#events { height: 10; background: $surface; }
+#navigation { height: 4; padding: 0 2; border-top: solid $panel; }
+#navigation Button { margin: 0; }
+#nav-space { width: 1fr; }
+#cancel { color: $text-muted; }
+#hint { height: 1; padding: 0 2; color: $text-muted; background: $surface; }
+Footer { background: $surface; }
+#too-small { display: none; height: 1fr; padding: 1; }
+.compact .columns { layout: vertical; }
+.compact .column { width: 1fr; margin-right: 0; }
+.narrow #rail { display: none; }
+.narrow .page { padding: 1 2; }
+.narrow .actions { layout: vertical; }
+Dialog { align: center middle; background: $background 80%; }
+#dialog { width: 70; max-width: 95%; height: auto; max-height: 90%; padding: 1 2; border: solid $primary; background: $surface; }

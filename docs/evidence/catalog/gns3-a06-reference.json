@@ -1,0 +1,89 @@
+{
+  "scenario": "A06",
+  "backend": "gns3",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "asav-9-18-4"
+  ],
+  "source_result_sha256": "10313819a655230aa7eb7902bfd72e7b3ed246b20b1a8367a6f32e5aa73f818f",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.1",
+          "passed": true,
+          "output": "ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=1.124 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=1.709 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=1.588 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.1.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.1.1",
+          "passed": true,
+          "output": "ping 10.242.1.1 -c 3\r\n\r\n84 bytes from 10.242.1.1 icmp_seq=1 ttl=255 time=1.133 ms\r\n84 bytes from 10.242.1.1 icmp_seq=2 ttl=255 time=1.850 ms\r\n84 bytes from 10.242.1.1 icmp_seq=3 ttl=255 time=1.146 ms\r\n\r\n"
+        },
+        {
+          "node": "h03",
+          "command": "ping 10.242.2.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.2.1",
+          "passed": true,
+          "output": "ping 10.242.2.1 -c 3\r\n\r\n84 bytes from 10.242.2.1 icmp_seq=1 ttl=255 time=1.016 ms\r\n84 bytes from 10.242.2.1 icmp_seq=2 ttl=255 time=1.370 ms\r\n84 bytes from 10.242.2.1 icmp_seq=3 ttl=255 time=1.529 ms\r\n\r\n"
+        },
+        {
+          "node": "fw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+fw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname fw01\r\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "h01",
+          "command": "ping 10.242.1.10 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.1.10",
+          "passed": true,
+          "output": "ping 10.242.1.10 -c 3\r\n\r\n84 bytes from 10.242.1.10 icmp_seq=1 ttl=64 time=2.168 ms\r\n84 bytes from 10.242.1.10 icmp_seq=2 ttl=64 time=2.081 ms\r\n84 bytes from 10.242.1.10 icmp_seq=3 ttl=64 time=2.170 ms\r\n\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.2.10 -c 3",
+          "pattern": "",
+          "kind": "unreachable",
+          "label": "Aislamiento a 10.242.2.10",
+          "passed": true,
+          "output": "ping 10.242.2.10 -c 3\r\n\r\n10.242.2.10 icmp_seq=1 timeout\r\n10.242.2.10 icmp_seq=2 timeout\r\n10.242.2.10 icmp_seq=3 timeout\r\n\r\n"
+        },
+        {
+          "node": "fw01",
+          "command": "show access-list INSIDE",
+          "pattern": "hitcnt=[1-9]",
+          "kind": "regex",
+          "label": "show access-list INSIDE",
+          "passed": true,
+          "output": "show access-list INSIDE\r\r\naccess-list INSIDE; 2 elements; name hash: 0xdedb237a\r\r\naccess-list INSIDE line 1 extended permit icmp host 10.242.0.10 host 10.242.1.10 (hitcnt=6) 0x06c02b39 \r\r\naccess-list INSIDE line 2 extended deny ip host 10.242.0.10 host 10.242.2.10 (hitcnt=3) 0xc5feb961 \r\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

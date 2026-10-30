@@ -1,0 +1,59 @@
+{
+  "scenario": "A06",
+  "backend": "gns3",
+  "mode": "practice",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "asav-9-18-4"
+  ],
+  "source_result_sha256": "8e577adba1155970b07e2d7df40baadaf9a8006d750e4d086a250b084607db62",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.1",
+          "passed": true,
+          "output": "ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=1.263 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=1.436 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=1.275 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.1.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.1.1",
+          "passed": true,
+          "output": "ping 10.242.1.1 -c 3\r\n\r\n84 bytes from 10.242.1.1 icmp_seq=1 ttl=255 time=1.125 ms\r\n84 bytes from 10.242.1.1 icmp_seq=2 ttl=255 time=1.473 ms\r\n84 bytes from 10.242.1.1 icmp_seq=3 ttl=255 time=1.579 ms\r\n\r\n"
+        },
+        {
+          "node": "h03",
+          "command": "ping 10.242.2.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.2.1",
+          "passed": true,
+          "output": "ping 10.242.2.1 -c 3\r\n\r\n84 bytes from 10.242.2.1 icmp_seq=1 ttl=255 time=0.983 ms\r\n84 bytes from 10.242.2.1 icmp_seq=2 ttl=255 time=1.372 ms\r\n84 bytes from 10.242.2.1 icmp_seq=3 ttl=255 time=1.525 ms\r\n\r\n"
+        },
+        {
+          "node": "fw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+fw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname fw01\r\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "pending"
+    },
+    "status": "ready"
+  }
+}

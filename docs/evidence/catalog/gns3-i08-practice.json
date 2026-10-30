@@ -1,0 +1,104 @@
+{
+  "scenario": "I08",
+  "backend": "gns3",
+  "mode": "practice",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "vios-adventerprisek9-m.spa.159-3"
+  ],
+  "source_result_sha256": "2107a3b82bfe4e78298f8ee23d79d1d45072dec678d5c03f3b046b2658d341b4",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "ping 10.240.0.2 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.2",
+          "passed": true,
+          "output": "ping 10.240.0.2 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.2, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 5/5/6 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping 10.240.0.1 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.1",
+          "passed": true,
+          "output": "ping 10.240.0.1 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.1, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 3/4/6 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping 10.240.0.6 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.6",
+          "passed": true,
+          "output": "ping 10.240.0.6 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.6, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 5/5/6 ms\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "ping 10.240.0.5 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.5",
+          "passed": true,
+          "output": "ping 10.240.0.5 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.5, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 5/6/8 ms\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.1",
+          "passed": true,
+          "output": "ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=3.867 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=6.059 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=3.596 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.1.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.1.1",
+          "passed": true,
+          "output": "ping 10.242.1.1 -c 3\r\n\r\n84 bytes from 10.242.1.1 icmp_seq=1 ttl=255 time=5.470 ms\r\n84 bytes from 10.242.1.1 icmp_seq=2 ttl=255 time=3.607 ms\r\n84 bytes from 10.242.1.1 icmp_seq=3 ttl=255 time=3.197 ms\r\n\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r01\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r02\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r03",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r03\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "pending"
+    },
+    "status": "ready"
+  }
+}

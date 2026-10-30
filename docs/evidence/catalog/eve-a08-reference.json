@@ -1,0 +1,179 @@
+{
+  "scenario": "A08",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "nxosv9k-9300v-10.5.3.F",
+    "nxosv9k-9300v-9.3.9"
+  ],
+  "source_result_sha256": "9040d9bd2f0e8891fc8eedb6d01a54265020788e2eef93e1be4b1ef5252d89dd",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "a-r01",
+          "command": "ping 10.240.0.2 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.2",
+          "passed": true,
+          "output": "ping 10.240.0.2 count 3\r\r\nPING 10.240.0.2 (10.240.0.2): 56 data bytes\r\n64 bytes from 10.240.0.2: icmp_seq=0 ttl=254 time=18.373 ms\r\n64 bytes from 10.240.0.2: icmp_seq=1 ttl=254 time=3.162 ms\r\n64 bytes from 10.240.0.2: icmp_seq=2 ttl=254 time=3.179 ms\r\n\r\n--- 10.240.0.2 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 3.162/8.237/18.373 ms\r\n"
+        },
+        {
+          "node": "a-r02",
+          "command": "ping 10.240.0.1 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.1",
+          "passed": true,
+          "output": "ping 10.240.0.1 count 3\r\r\nPING 10.240.0.1 (10.240.0.1): 56 data bytes\r\n64 bytes from 10.240.0.1: icmp_seq=0 ttl=254 time=9.898 ms\r\n64 bytes from 10.240.0.1: icmp_seq=1 ttl=254 time=8.318 ms\r\n64 bytes from 10.240.0.1: icmp_seq=2 ttl=254 time=8.231 ms\r\n\r\n--- 10.240.0.1 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 8.231/8.815/9.898 ms\r\n"
+        },
+        {
+          "node": "b-r01",
+          "command": "ping 10.240.0.6 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.6",
+          "passed": true,
+          "output": "ping 10.240.0.6 count 3\r\r\nPING 10.240.0.6 (10.240.0.6): 56 data bytes\r\n64 bytes from 10.240.0.6: icmp_seq=0 ttl=254 time=58.739 ms\r\n64 bytes from 10.240.0.6: icmp_seq=1 ttl=254 time=6.824 ms\r\n64 bytes from 10.240.0.6: icmp_seq=2 ttl=254 time=8.657 ms\r\n\r\n--- 10.240.0.6 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 6.824/24.74/58.739 ms\r\n"
+        },
+        {
+          "node": "b-r02",
+          "command": "ping 10.240.0.5 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.5",
+          "passed": true,
+          "output": "ping 10.240.0.5 count 3\r\r\nPING 10.240.0.5 (10.240.0.5): 56 data bytes\r\n64 bytes from 10.240.0.5: icmp_seq=0 ttl=254 time=11.182 ms\r\n64 bytes from 10.240.0.5: icmp_seq=1 ttl=254 time=8.742 ms\r\n64 bytes from 10.240.0.5: icmp_seq=2 ttl=254 time=8.055 ms\r\n\r\n--- 10.240.0.5 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 8.055/9.326/11.182 ms\r\n"
+        },
+        {
+          "node": "a-r01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+a\\-r01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname a-r01\r\n"
+        },
+        {
+          "node": "a-r02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+a\\-r02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname a-r02\r\n"
+        },
+        {
+          "node": "b-r01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+b\\-r01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname b-r01\r\n"
+        },
+        {
+          "node": "b-r02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+b\\-r02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname b-r02\r\n"
+        }
+      ],
+      "versions": {
+        "A": true,
+        "B": true
+      }
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "a-r01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.2\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 1\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.2        1 FULL/DR          00:07:32 10.240.0.2      Eth1/1 \r\n"
+        },
+        {
+          "node": "a-r02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.1\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 1\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.1        1 FULL/BDR         00:07:32 10.240.0.1      Eth1/1 \r\n"
+        },
+        {
+          "node": "a-r01",
+          "command": "ping 10.241.0.2 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.2",
+          "passed": true,
+          "output": "ping 10.241.0.2 count 3\r\r\nPING 10.241.0.2 (10.241.0.2): 56 data bytes\r\n64 bytes from 10.241.0.2: icmp_seq=0 ttl=254 time=16.826 ms\r\n64 bytes from 10.241.0.2: icmp_seq=1 ttl=254 time=5.177 ms\r\n64 bytes from 10.241.0.2: icmp_seq=2 ttl=254 time=4.009 ms\r\n\r\n--- 10.241.0.2 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 4.009/8.67/16.826 ms\r\n"
+        },
+        {
+          "node": "a-r02",
+          "command": "ping 10.241.0.1 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.1",
+          "passed": true,
+          "output": "ping 10.241.0.1 count 3\r\r\nPING 10.241.0.1 (10.241.0.1): 56 data bytes\r\n64 bytes from 10.241.0.1: icmp_seq=0 ttl=254 time=9.351 ms\r\n64 bytes from 10.241.0.1: icmp_seq=1 ttl=254 time=6.235 ms\r\n64 bytes from 10.241.0.1: icmp_seq=2 ttl=254 time=6.303 ms\r\n\r\n--- 10.241.0.1 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 6.235/7.296/9.351 ms\r\n"
+        },
+        {
+          "node": "b-r01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.4\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 1\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.4        1 FULL/DR          00:02:18 10.240.0.6      Eth1/1 \r\n"
+        },
+        {
+          "node": "b-r02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.3\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\r\n OSPF Process ID 1 VRF default\r\n Total number of neighbors: 1\r\n Neighbor ID     Pri State            Up Time  Address         Interface\r\n 10.241.0.3        1 FULL/BDR         00:02:19 10.240.0.5      Eth1/1 \r\n"
+        },
+        {
+          "node": "b-r01",
+          "command": "ping 10.241.0.4 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.4",
+          "passed": true,
+          "output": "ping 10.241.0.4 count 3\r\r\nPING 10.241.0.4 (10.241.0.4): 56 data bytes\r\n64 bytes from 10.241.0.4: icmp_seq=0 ttl=254 time=6.907 ms\r\n64 bytes from 10.241.0.4: icmp_seq=1 ttl=254 time=8.853 ms\r\n64 bytes from 10.241.0.4: icmp_seq=2 ttl=254 time=7.456 ms\r\n\r\n--- 10.241.0.4 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 6.907/7.738/8.853 ms\r\n"
+        },
+        {
+          "node": "b-r02",
+          "command": "ping 10.241.0.3 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.3",
+          "passed": true,
+          "output": "ping 10.241.0.3 count 3\r\r\nPING 10.241.0.3 (10.241.0.3): 56 data bytes\r\n64 bytes from 10.241.0.3: icmp_seq=0 ttl=254 time=4.548 ms\r\n64 bytes from 10.241.0.3: icmp_seq=1 ttl=254 time=6.342 ms\r\n64 bytes from 10.241.0.3: icmp_seq=2 ttl=254 time=7.518 ms\r\n\r\n--- 10.241.0.3 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 4.548/6.136/7.518 ms\r\n"
+        }
+      ],
+      "versions": {
+        "A": true,
+        "B": true
+      }
+    },
+    "status": "ready"
+  }
+}

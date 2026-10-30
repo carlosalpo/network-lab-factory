@@ -1,0 +1,170 @@
+{
+  "scenario": "A04",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "vios-adventerprisek9-m.spa.159-3"
+  ],
+  "source_result_sha256": "d73a5e753bc2bde7d5b730fd2bb80ec7c007c5e88158f74eb652f5f0b07bad14",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "ping 10.240.0.2 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.2",
+          "passed": true,
+          "output": "ping 10.240.0.2 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.2, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 3/70/204 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping 10.240.0.1 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.1",
+          "passed": true,
+          "output": "ping 10.240.0.1 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.1, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 4/4/5 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping 10.240.0.6 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.6",
+          "passed": true,
+          "output": "ping 10.240.0.6 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.6, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 7/16/22 ms\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "ping 10.240.0.5 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.5",
+          "passed": true,
+          "output": "ping 10.240.0.5 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.5, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 3/4/6 ms\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "ping 10.240.0.10 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.10",
+          "passed": true,
+          "output": "ping 10.240.0.10 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.10, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 4/6/10 ms\r\n"
+        },
+        {
+          "node": "r04",
+          "command": "ping 10.240.0.9 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.9",
+          "passed": true,
+          "output": "ping 10.240.0.9 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.240.0.9, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 3/4/6 ms\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.2\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n10.241.0.2        1   FULL/DR         00:00:39    10.240.0.2      GigabitEthernet0/1\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show ip ospf neighbor",
+          "pattern": "10\\.241\\.0\\.1\\s+\\d+\\s+FULL",
+          "kind": "regex",
+          "label": "show ip ospf neighbor",
+          "passed": true,
+          "output": "show ip ospf neighbor\r\n\r\nNeighbor ID     Pri   State           Dead Time   Address         Interface\r\n10.241.0.1        1   FULL/BDR        00:00:39    10.240.0.1      GigabitEthernet0/1\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r01\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r02\r\n"
+        },
+        {
+          "node": "r03",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r03",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r03\r\n"
+        },
+        {
+          "node": "r04",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r04",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r04\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "show ip route",
+          "pattern": "O E2\\s+10\\.241\\.0\\.4",
+          "kind": "regex",
+          "label": "show ip route",
+          "passed": true,
+          "output": "show ip route\r\nCodes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP\r\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \r\n       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2\r\n       E1 - OSPF external type 1, E2 - OSPF external type 2\r\n       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2\r\n       ia - IS-IS inter area, * - candidate default, U - per-user static route\r\n       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP\r\n       a - application route\r\n       + - replicated route, % - next hop override, p - overrides from PfR\r\n\r\nGateway of last resort is not set\r\n\r\n      10.0.0.0/8 is variably subnetted, 8 subnets, 2 masks\r\nC        10.240.0.0/30 is directly connected, GigabitEthernet0/1\r\nL        10.240.0.1/32 is directly connected, GigabitEthernet0/1\r\nO E2     10.240.0.4/30 [110/20] via 10.240.0.2, 00:00:12, GigabitEthernet0/1\r\nO E2     10.240.0.8/30 [110/20] via 10.240.0.2, 00:00:12, GigabitEthernet0/1\r\nC        10.241.0.1/32 is directly connected, Loopback0\r\nO        10.241.0.2/32 [110/2] via 10.240.0.2, 00:00:12, GigabitEthernet0/1\r\nO E2     10.241.0.3/32 [110/20] via 10.240.0.2, 00:00:12, GigabitEthernet0/1\r\nO E2     10.241.0.4/32 [110/20] via 10.240.0.2, 00:00:12, GigabitEthernet0/1\r\n"
+        },
+        {
+          "node": "r04",
+          "command": "show ip route",
+          "pattern": "D EX\\s+10\\.241\\.0\\.1",
+          "kind": "regex",
+          "label": "show ip route",
+          "passed": true,
+          "output": "show ip route\r\nCodes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP\r\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \r\n       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2\r\n       E1 - OSPF external type 1, E2 - OSPF external type 2\r\n       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2\r\n       ia - IS-IS inter area, * - candidate default, U - per-user static route\r\n       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP\r\n       a - application route\r\n       + - replicated route, % - next hop override, p - overrides from PfR\r\n\r\nGateway of last resort is not set\r\n\r\n      10.0.0.0/8 is variably subnetted, 8 subnets, 2 masks\r\nD EX     10.240.0.0/30 \r\n           [170/282112] via 10.240.0.9, 00:00:44, GigabitEthernet0/1\r\nD        10.240.0.4/30 [90/3072] via 10.240.0.9, 00:00:45, GigabitEthernet0/1\r\nC        10.240.0.8/30 is directly connected, GigabitEthernet0/1\r\nL        10.240.0.10/32 is directly connected, GigabitEthernet0/1\r\nD EX     10.241.0.1/32 \r\n           [170/282112] via 10.240.0.9, 00:00:12, GigabitEthernet0/1\r\nD EX     10.241.0.2/32 \r\n           [170/282112] via 10.240.0.9, 00:00:44, GigabitEthernet0/1\r\nD        10.241.0.3/32 \r\n           [90/130816] via 10.240.0.9, 00:00:45, GigabitEthernet0/1\r\nC        10.241.0.4/32 is directly connected, Loopback0\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "ping 10.241.0.4 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.4",
+          "passed": true,
+          "output": "ping 10.241.0.4 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.4, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 8/13/18 ms\r\n"
+        },
+        {
+          "node": "r04",
+          "command": "ping 10.241.0.1 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.241.0.1",
+          "passed": true,
+          "output": "ping 10.241.0.1 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.1, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 7/9/11 ms\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

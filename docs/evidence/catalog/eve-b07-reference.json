@@ -1,0 +1,152 @@
+{
+  "scenario": "B07",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "viosl2-adventerprisek9-m.SSA.high_iron_20200929"
+  ],
+  "source_result_sha256": "81df92eeda2c9db1e48e4823f52aac664d9551c09a3708ba9439425217926083",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "sw01",
+          "command": "show spanning-tree vlan 100",
+          "pattern": "Spanning tree enabled",
+          "kind": "regex",
+          "label": "show spanning-tree vlan 100",
+          "passed": true,
+          "output": "show spanning-tree vlan 100\r\n\r\nVLAN0100\r\n  Spanning tree enabled protocol rstp\r\n  Root ID    Priority    4196\r\n             Address     5000.0001.0000\r\n             This bridge is the root\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n\r\n  Bridge ID  Priority    4196   (priority 4096 sys-id-ext 100)\r\n             Address     5000.0001.0000\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n             Aging Time  300 sec\r\n\r\nInterface           Role Sts Cost      Prio.Nbr Type\r\n------------------- ---- --- --------- -------- --------------------------------\r\nGi0/0               Desg FWD 4         128.1    P2p \r\nGi0/1               Desg FWD 4         128.2    P2p \r\nGi0/2               Desg FWD 4         128.3    P2p Edge \r\n\r\n\r\n"
+        },
+        {
+          "node": "sw02",
+          "command": "show spanning-tree vlan 100",
+          "pattern": "Spanning tree enabled",
+          "kind": "regex",
+          "label": "show spanning-tree vlan 100",
+          "passed": true,
+          "output": "show spanning-tree vlan 100\r\n\r\nVLAN0100\r\n  Spanning tree enabled protocol rstp\r\n  Root ID    Priority    4196\r\n             Address     5000.0001.0000\r\n             Cost        4\r\n             Port        1 (GigabitEthernet0/0)\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n\r\n  Bridge ID  Priority    32868  (priority 32768 sys-id-ext 100)\r\n             Address     5000.0002.0000\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n             Aging Time  300 sec\r\n\r\nInterface           Role Sts Cost      Prio.Nbr Type\r\n------------------- ---- --- --------- -------- --------------------------------\r\nGi0/0               Root FWD 4         128.1    P2p \r\nGi0/1               Desg FWD 4         128.2    P2p \r\n\r\n\r\n"
+        },
+        {
+          "node": "sw03",
+          "command": "show spanning-tree vlan 100",
+          "pattern": "Spanning tree enabled",
+          "kind": "regex",
+          "label": "show spanning-tree vlan 100",
+          "passed": true,
+          "output": "show spanning-tree vlan 100\r\n\r\nVLAN0100\r\n  Spanning tree enabled protocol rstp\r\n  Root ID    Priority    4196\r\n             Address     5000.0001.0000\r\n             Cost        8\r\n             Port        1 (GigabitEthernet0/0)\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n\r\n  Bridge ID  Priority    32868  (priority 32768 sys-id-ext 100)\r\n             Address     5000.0003.0000\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n             Aging Time  300 sec\r\n\r\nInterface           Role Sts Cost      Prio.Nbr Type\r\n------------------- ---- --- --------- -------- --------------------------------\r\nGi0/0               Root FWD 4         128.1    P2p \r\nGi0/1               Altn BLK 4         128.2    P2p \r\n\r\n\r\n"
+        },
+        {
+          "node": "sw04",
+          "command": "show spanning-tree vlan 100",
+          "pattern": "Spanning tree enabled",
+          "kind": "regex",
+          "label": "show spanning-tree vlan 100",
+          "passed": true,
+          "output": "show spanning-tree vlan 100\r\n\r\nVLAN0100\r\n  Spanning tree enabled protocol rstp\r\n  Root ID    Priority    4196\r\n             Address     5000.0001.0000\r\n             Cost        4\r\n             Port        2 (GigabitEthernet0/1)\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n\r\n  Bridge ID  Priority    32868  (priority 32768 sys-id-ext 100)\r\n             Address     5000.0004.0000\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n             Aging Time  300 sec\r\n\r\nInterface           Role Sts Cost      Prio.Nbr Type\r\n------------------- ---- --- --------- -------- --------------------------------\r\nGi0/0               Desg FWD 4         128.1    P2p \r\nGi0/1               Root FWD 4         128.2    P2p \r\nGi0/2               Desg FWD 4         128.3    P2p Edge \r\n\r\n\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.10",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : VPCS[1]\r\nIP/MASK     : 10.242.0.10/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:05\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.11",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : VPCS[1]\r\nIP/MASK     : 10.242.0.11/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:06\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "sw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw01\r\n"
+        },
+        {
+          "node": "sw02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw02\r\n"
+        },
+        {
+          "node": "sw03",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw03",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw03\r\n"
+        },
+        {
+          "node": "sw04",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw04",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw04\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "sw01",
+          "command": "show spanning-tree vlan 100",
+          "pattern": "This bridge is the root",
+          "kind": "regex",
+          "label": "show spanning-tree vlan 100",
+          "passed": true,
+          "output": "show spanning-tree vlan 100\r\n\r\nVLAN0100\r\n  Spanning tree enabled protocol rstp\r\n  Root ID    Priority    4196\r\n             Address     5000.0001.0000\r\n             This bridge is the root\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n\r\n  Bridge ID  Priority    4196   (priority 4096 sys-id-ext 100)\r\n             Address     5000.0001.0000\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n             Aging Time  300 sec\r\n\r\nInterface           Role Sts Cost      Prio.Nbr Type\r\n------------------- ---- --- --------- -------- --------------------------------\r\nGi0/0               Desg FWD 4         128.1    P2p \r\nGi0/1               Desg FWD 4         128.2    P2p \r\nGi0/2               Desg FWD 4         128.3    P2p Edge \r\n\r\n\r\n"
+        },
+        {
+          "node": "sw04",
+          "command": "show spanning-tree vlan 100",
+          "pattern": "(?:Altn\\s+BLK|Root\\s+FWD)",
+          "kind": "regex",
+          "label": "show spanning-tree vlan 100",
+          "passed": true,
+          "output": "show spanning-tree vlan 100\r\n\r\nVLAN0100\r\n  Spanning tree enabled protocol rstp\r\n  Root ID    Priority    4196\r\n             Address     5000.0001.0000\r\n             Cost        4\r\n             Port        2 (GigabitEthernet0/1)\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n\r\n  Bridge ID  Priority    32868  (priority 32768 sys-id-ext 100)\r\n             Address     5000.0004.0000\r\n             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec\r\n             Aging Time  300 sec\r\n\r\nInterface           Role Sts Cost      Prio.Nbr Type\r\n------------------- ---- --- --------- -------- --------------------------------\r\nGi0/0               Desg FWD 4         128.1    P2p \r\nGi0/1               Root FWD 4         128.2    P2p \r\nGi0/2               Desg FWD 4         128.3    P2p Edge \r\n\r\n\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.11 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.11",
+          "passed": true,
+          "output": "ping 10.242.0.11 -c 3\r\n\r\n84 bytes from 10.242.0.11 icmp_seq=1 ttl=64 time=7.448 ms\r\n84 bytes from 10.242.0.11 icmp_seq=2 ttl=64 time=18.893 ms\r\n84 bytes from 10.242.0.11 icmp_seq=3 ttl=64 time=27.989 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.0.10 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.10",
+          "passed": true,
+          "output": "ping 10.242.0.10 -c 3\r\n\r\n84 bytes from 10.242.0.10 icmp_seq=1 ttl=64 time=6.583 ms\r\n84 bytes from 10.242.0.10 icmp_seq=2 ttl=64 time=25.171 ms\r\n84 bytes from 10.242.0.10 icmp_seq=3 ttl=64 time=33.030 ms\r\n\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

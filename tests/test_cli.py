@@ -19,6 +19,19 @@ def test_invalid_input_has_clean_exit(tmp_path, capsys):
     assert "Error:" in capsys.readouterr().err
 
 
+def test_wizard_selects_tui_only_for_interactive_terminal(monkeypatch):
+    monkeypatch.setattr("netlab.cli.sys.stdin.isatty", lambda: True)
+    monkeypatch.setattr("netlab.cli.sys.stdout.isatty", lambda: True)
+    with patch("netlab.tui.run_tui", return_value=0) as tui:
+        assert main(["wizard", "--theme", "light"]) == 0
+        tui.assert_called_once_with(theme="light")
+    with patch("netlab.wizard.run_wizard", return_value=0) as plain:
+        assert main(["wizard", "--plain"]) == 0
+        monkeypatch.setattr("netlab.cli.sys.stdout.isatty", lambda: False)
+        assert main(["wizard"]) == 0
+        assert plain.call_count == 2
+
+
 def test_missing_ansible_produces_incomplete_report(tmp_path, monkeypatch):
     out = tmp_path / "lab"
     main(["build", str(EXAMPLE), "--output", str(out)])

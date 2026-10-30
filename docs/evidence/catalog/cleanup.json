@@ -1,0 +1,10 @@
+{
+  "recorded_date": "2026-10-29",
+  "status": "passed",
+  "eve_labs_removed": 41,
+  "gns3_projects_removed": 49,
+  "qa_emulators_remaining": 0,
+  "qa_lab_files_remaining": 0,
+  "preexisting_gns3_projects_preserved": 18,
+  "scope": "Only owned QA labs were removed. Base OS images remain installed."
+}

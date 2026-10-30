@@ -1,0 +1,1950 @@
+{
+  "revision": "2026-10-29",
+  "scenarios": [
+    {
+      "id": "B01",
+      "level": "Básico",
+      "title": "OSPF punto a punto",
+      "devices": "2 routers IOSv",
+      "layout": "Línea horizontal; un enlace y dos loopbacks.",
+      "prepare": "Nombres, puertos activos, IPv4 del enlace y loopbacks.",
+      "exercise": "Configurar OSPF y anunciar las loopbacks.",
+      "pools": "1 /30 o /31 y 2 /32; área 0 y router IDs propuestos.",
+      "checks": "Preparación: interfaces e IP correctas y ping al vecino directo. Ejercicio: vecindad FULL y ping entre loopbacks.",
+      "limits": "Validado solo en el perfil documentado. OSPF permanece pendiente en práctica.",
+      "purpose": "Entender cómo dos routers aprenden las redes del otro sin agregar rutas manuales.",
+      "variant": "Fijo: 2 routers y 1 enlace. Práctica deja OSPF pendiente; referencia lo configura y comprueba.",
+      "allocation": "Tránsito 10.240.0.0/30: R01 .1 y R02 .2. Lo0: 10.241.0.1/32 y .2/32. Área propuesta 0.",
+      "dependency": "IOSv L3 y acceso a consola. Validado con EVE-NG PRO 7.2.0-4 e IOSv 15.9(3)M6; no extrapolar a otras imágenes.",
+      "acceptance": "Aceptación: base operativa en ambos modos; FULL y 5/5 pings entre loopbacks en referencia. En práctica, el ejercicio debe seguir pendiente hasta configurarlo.",
+      "status": "Implementado y validado",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 280,
+            "y": 115
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 720,
+            "y": 115
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Gi0/1",
+            "x": 390,
+            "y": 88
+          },
+          {
+            "text": "Gi0/1",
+            "x": 610,
+            "y": 88
+          },
+          {
+            "text": "10.240.0.1/30",
+            "x": 390,
+            "y": 158
+          },
+          {
+            "text": "10.240.0.2/30",
+            "x": 610,
+            "y": 158
+          },
+          {
+            "text": "Lo0 10.241.0.1/32",
+            "x": 280,
+            "y": 220
+          },
+          {
+            "text": "Lo0 10.241.0.2/32",
+            "x": 720,
+            "y": 220
+          }
+        ]
+      },
+      "document_page": 9
+    },
+    {
+      "id": "B02",
+      "level": "Básico",
+      "title": "Rutas estáticas",
+      "devices": "2 routers y 2 extremos",
+      "layout": "Línea con las LAN en los extremos.",
+      "prepare": "Direcciones de enlaces, LAN y gateways de los extremos.",
+      "exercise": "Crear rutas de ida y vuelta.",
+      "pools": "1 subred de tránsito, 2 LAN y 2 loopbacks opcionales.",
+      "checks": "Preparación: conectividad local. Ejercicio: rutas y tráfico bidireccional entre LAN.",
+      "limits": "Evitar que una ruta por defecto preconfigurada resuelva el ejercicio.",
+      "purpose": "Comprender que la comunicación necesita rutas de ida y de retorno.",
+      "variant": "Mínimo: 2 routers, 2 hosts y 3 enlaces. Una LAN en cada extremo; loopbacks opcionales.",
+      "allocation": "Tránsito /30; LAN A 10.242.1.0/24 y LAN B 10.242.2.0/24. Gateway .1 y host .10 en cada LAN.",
+      "dependency": "Adaptador de hosts y verificador de rutas estáticas. Deriva del cableado e IP de B01; no requiere OSPF.",
+      "acceptance": "Aceptación: cada host alcanza su gateway antes del ejercicio; después, ambos hosts se comunican. Una ruta faltante debe detectarse, no quedar oculta por una ruta por defecto.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "h1",
+            "label": "H01",
+            "x": 100,
+            "y": 130
+          },
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 350,
+            "y": 130
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 650,
+            "y": 130
+          },
+          {
+            "id": "h2",
+            "label": "H02",
+            "x": 900,
+            "y": 130
+          }
+        ],
+        "edges": [
+          {
+            "a": "h1",
+            "b": "r1",
+            "label": "LAN A",
+            "offset": 0
+          },
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "/30",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "h2",
+            "label": "LAN B",
+            "offset": 0
+          }
+        ],
+        "notes": []
+      },
+      "document_page": 10
+    },
+    {
+      "id": "B03",
+      "level": "Básico",
+      "title": "VLAN y trunk",
+      "devices": "2 switches y 2 a 4 hosts",
+      "layout": "Switches alineados y hosts agrupados por VLAN.",
+      "prepare": "VLAN 100 y 101, puertos de acceso y cuatro hosts con IP. Enlace entre switches pendiente de trunk.",
+      "exercise": "Configurar el trunk para transportar VLAN 100 y 101; verificar alcance e aislamiento.",
+      "pools": "VLAN 100 y 101; una subred por VLAN, sin IP en puertos L2.",
+      "checks": "Misma VLAN comunica; VLAN distintas permanecen separadas sin routing.",
+      "limits": "Requiere adaptador L2 y hosts. VLAN nativa y lista permitida explícitas.",
+      "purpose": "Separar grupos de usuarios y extender una misma VLAN entre dos switches.",
+      "variant": "Variante de trunk: 2 switches y 4 hosts. VLAN 100/101 ya asignadas; trunk pendiente en práctica.",
+      "allocation": "VLAN 100: hosts .10 y .11; VLAN 101: .20 y .21 dentro del primer /24 del pool LAN. El mismo prefijo en dominios L2 aislados permite probar una mezcla accidental de VLAN. No se conecta gateway.",
+      "dependency": "Adaptador L2 y hosts. El asistente debe declarar qué VLAN se crean en la base y cuál será la VLAN nativa.",
+      "acceptance": "Aceptación: los dos hosts de VLAN 100 se alcanzan, igual que los de 101; entre VLAN no hay comunicación. Verificar VLAN y trunk además del ping.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "s1",
+            "label": "SW01",
+            "x": 320,
+            "y": 90
+          },
+          {
+            "id": "s2",
+            "label": "SW02",
+            "x": 680,
+            "y": 90
+          },
+          {
+            "id": "h1",
+            "label": "H01 · V100",
+            "x": 140,
+            "y": 225
+          },
+          {
+            "id": "h2",
+            "label": "H02 · V101",
+            "x": 370,
+            "y": 225
+          },
+          {
+            "id": "h3",
+            "label": "H03 · V100",
+            "x": 630,
+            "y": 225
+          },
+          {
+            "id": "h4",
+            "label": "H04 · V101",
+            "x": 860,
+            "y": 225
+          }
+        ],
+        "edges": [
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "Trunk",
+            "offset": 0
+          },
+          {
+            "a": "s1",
+            "b": "h1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s1",
+            "b": "h2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s2",
+            "b": "h3",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s2",
+            "b": "h4",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": []
+      },
+      "document_page": 11
+    },
+    {
+      "id": "B04",
+      "level": "Básico",
+      "title": "Port Channel con LACP",
+      "devices": "2 switches y 2 hosts opcionales",
+      "layout": "Dos enlaces paralelos, con etiquetas de miembro y canal.",
+      "prepare": "VLAN 100, puertos de hosts y direcciones. Dos enlaces entre switches quedan apagados.",
+      "exercise": "Crear Port Channel 1 con LACP y activar ambos enlaces.",
+      "pools": "Canal 1; VLAN opcionales según modo L2 o L3.",
+      "checks": "Miembros agregados, estado del canal y conectividad; retirada de un miembro solo por acción explícita.",
+      "limits": "Requiere soporte LACP. No conectar un lazo activo sin protección ni inferir velocidad real.",
+      "purpose": "Agrupar enlaces físicos y observar qué pasa cuando se retira un miembro del canal.",
+      "variant": "Mínimo: 2 switches y 2 cables. Agregar 2 hosts para probar tráfico. Primera variante L2; L3 será una variante aparte.",
+      "allocation": "Po1 con miembros p1 y p2; VLAN 100 para la variante L2. Los nombres reales de puerto los resuelve el perfil de imagen.",
+      "dependency": "Perfil con LACP validado. Miembros inicialmente apagados; la guía explica cuándo habilitarlos como parte del canal.",
+      "acceptance": "Aceptación: ambos miembros agregados y canal operativo. Con hosts, tráfico antes y después de retirar un miembro por orden explícita. No inferir rendimiento físico del emulador.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "s1",
+            "label": "SW01",
+            "x": 240,
+            "y": 140
+          },
+          {
+            "id": "s2",
+            "label": "SW02",
+            "x": 760,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "p1 ↔ p1",
+            "offset": -24
+          },
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "p2 ↔ p2",
+            "offset": 24
+          }
+        ],
+        "notes": [
+          {
+            "text": "Po1 · dos miembros LACP",
+            "x": 500,
+            "y": 245
+          }
+        ]
+      },
+      "document_page": 12
+    },
+    {
+      "id": "B05",
+      "level": "Básico",
+      "title": "Spanning Tree con dos switches",
+      "devices": "2 switches y 2 enlaces",
+      "layout": "Dos enlaces paralelos rotulados.",
+      "prepare": "Dos switches, dos enlaces trunk, VLAN 100 y dos hosts. Rapid-PVST activo con prioridad predeterminada.",
+      "exercise": "Elegir SW01 como raíz STP y observar el bloqueo del enlace redundante.",
+      "pools": "1 o 2 VLAN; prioridades y costos como objetivos, no valores ya aplicados.",
+      "checks": "Identificar raíz, roles y estados; conectividad sin bucle persistente.",
+      "limits": "No desactivar STP como parte de la preparación.",
+      "purpose": "Ver cómo STP evita un bucle cuando hay dos caminos entre los mismos switches.",
+      "variant": "2 switches y 2 enlaces independientes, sin agregación. Hosts opcionales para observar tráfico.",
+      "allocation": "VLAN 100 inicial; segunda VLAN opcional. La prioridad y el costo deseados aparecen como objetivos, sin aplicarlos en práctica.",
+      "dependency": "Adaptador L2 y variante STP declarada. Reutiliza B03; la preparación nunca desactiva STP.",
+      "acceptance": "Aceptación: raíz esperada, roles y estados coherentes y ausencia de bucle persistente. El dibujo conserva ambos cables aunque uno no reenvíe tráfico.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "s1",
+            "label": "SW01",
+            "x": 240,
+            "y": 140
+          },
+          {
+            "id": "s2",
+            "label": "SW02",
+            "x": 760,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "p1 ↔ p1",
+            "offset": -24
+          },
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "p2 ↔ p2",
+            "offset": 24
+          }
+        ],
+        "notes": [
+          {
+            "text": "Dos enlaces independientes · STP activo",
+            "x": 500,
+            "y": 245
+          }
+        ]
+      },
+      "document_page": 13
+    },
+    {
+      "id": "B06",
+      "level": "Básico",
+      "title": "Anillo de tres switches",
+      "devices": "3 switches",
+      "layout": "Triángulo con enlaces y puertos en ambos extremos.",
+      "prepare": "Tres switches en triángulo, trunks, VLAN 100, Rapid-PVST y dos hosts.",
+      "exercise": "Establecer SW01 como raíz y reconocer los puertos alternos.",
+      "pools": "3 enlaces; VLAN 100; subred de hosts opcional.",
+      "checks": "Roles coherentes con la raíz elegida y comunicación después de estabilizar.",
+      "limits": "La falla de enlace es un paso separado; no prometer convergencia medida.",
+      "purpose": "Reconocer el camino activo y el alternativo en una red triangular.",
+      "variant": "3 switches, 3 enlaces formando un anillo. Agregar hosts si se quiere medir continuidad del tráfico.",
+      "allocation": "VLAN 100; una LAN de hosts opcional. Cada switch necesita al menos dos interfaces de enlace.",
+      "dependency": "B05 y perfil STP verificado. La topología física no debe dibujarse como si el enlace bloqueado estuviera desconectado.",
+      "acceptance": "Aceptación: raíz y puerto alternativo identificados; conectividad estable si hay hosts. Corte y restauración constituyen pruebas separadas y explícitas.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "s1",
+            "label": "SW01",
+            "x": 500,
+            "y": 55
+          },
+          {
+            "id": "s2",
+            "label": "SW02",
+            "x": 230,
+            "y": 215
+          },
+          {
+            "id": "s3",
+            "label": "SW03",
+            "x": 770,
+            "y": 215
+          }
+        ],
+        "edges": [
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s2",
+            "b": "s3",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s3",
+            "b": "s1",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "VLAN 100 · anillo físico",
+            "x": 500,
+            "y": 130
+          }
+        ]
+      },
+      "document_page": 14
+    },
+    {
+      "id": "B07",
+      "level": "Básico",
+      "title": "Anillo de cuatro switches",
+      "devices": "4 switches",
+      "layout": "Cuadrado con nombres estables y sin diagonales.",
+      "prepare": "Cuatro switches en anillo, trunks, VLAN 100, Rapid-PVST y dos hosts.",
+      "exercise": "Establecer SW01 como raíz y reconocer los puertos alternos.",
+      "pools": "4 enlaces; 1 o 2 VLAN; puertos únicos por enlace.",
+      "checks": "Raíz, puertos alternativos y conectividad en cada variante.",
+      "limits": "Requiere validar variante STP y comandos de la imagen seleccionada.",
+      "purpose": "Practicar elección de raíz y costos de ruta en un anillo de mayor tamaño.",
+      "variant": "4 switches y 4 enlaces, sin diagonales. Una VLAN inicial; dos VLAN como ampliación.",
+      "allocation": "VLAN 100 y, opcionalmente, 101; prioridades/costos objetivo por switch. Direcciones solo en hosts o gestión si se incluyen.",
+      "dependency": "B06; verificar puertos disponibles y variante STP soportada. No asumir un puerto bloqueado fijo antes de consultar el estado.",
+      "acceptance": "Aceptación: la topología resultante coincide con la prioridad y los costos configurados; tras una falla autorizada, vuelve a un estado estable sin bucles.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "s1",
+            "label": "SW01",
+            "x": 260,
+            "y": 70
+          },
+          {
+            "id": "s2",
+            "label": "SW02",
+            "x": 740,
+            "y": 70
+          },
+          {
+            "id": "s3",
+            "label": "SW03",
+            "x": 740,
+            "y": 220
+          },
+          {
+            "id": "s4",
+            "label": "SW04",
+            "x": 260,
+            "y": 220
+          }
+        ],
+        "edges": [
+          {
+            "a": "s1",
+            "b": "s2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s2",
+            "b": "s3",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s3",
+            "b": "s4",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s4",
+            "b": "s1",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "VLAN 100 · cuatro enlaces",
+            "x": 500,
+            "y": 145
+          }
+        ]
+      },
+      "document_page": 15
+    },
+    {
+      "id": "B08",
+      "level": "Básico",
+      "title": "Enrutamiento entre VLAN",
+      "devices": "1 router, 1 switch y 2 hosts",
+      "layout": "Router arriba, switch al centro y hosts por VLAN.",
+      "prepare": "Hosts, VLAN y trunk; direccionamiento de gateways propuesto.",
+      "exercise": "Crear subinterfaces y gateways.",
+      "pools": "2 VLAN, 2 subredes LAN; IP de gateway reservada.",
+      "checks": "Acceso al gateway y conectividad entre VLAN tras completar el ejercicio.",
+      "limits": "No aplicar subinterfaces si son el objetivo de aprendizaje.",
+      "purpose": "Permitir que usuarios de VLAN distintas se comuniquen mediante un router.",
+      "variant": "1 router, 1 switch y 2 hosts. Un trunk router–switch y un host por VLAN.",
+      "allocation": "VLAN 100/101; LAN 10.242.1.0/24 y 10.242.2.0/24. Reservar .1 para cada subinterfaz; hosts .10.",
+      "dependency": "B03 y soporte de subinterfaces 802.1Q. Los hosts pueden tener gateway definido aunque este todavía no exista en el router.",
+      "acceptance": "Aceptación: antes del ejercicio VLAN y trunk están preparados; después, subinterfaces correctas, gateways accesibles y tráfico entre VLAN.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 240,
+            "y": 135
+          },
+          {
+            "id": "s1",
+            "label": "SW01",
+            "x": 520,
+            "y": 135
+          },
+          {
+            "id": "h1",
+            "label": "H01 · V100",
+            "x": 810,
+            "y": 60
+          },
+          {
+            "id": "h2",
+            "label": "H02 · V101",
+            "x": 810,
+            "y": 220
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "s1",
+            "label": "Trunk",
+            "offset": 0
+          },
+          {
+            "a": "s1",
+            "b": "h1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s1",
+            "b": "h2",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Subinterfaces por configurar",
+            "x": 300,
+            "y": 240
+          }
+        ]
+      },
+      "document_page": 16
+    },
+    {
+      "id": "I01",
+      "level": "Intermedio",
+      "title": "Campus de tres capas",
+      "devices": "2 acceso, 2 distribución, 1 o 2 núcleo",
+      "layout": "Tres filas por función con enlaces redundantes.",
+      "prepare": "Acceso, distribución y núcleo conectados; VLAN y direccionamiento base preparados.",
+      "exercise": "Configurar OSPF en los enlaces de capa 3 y comprobar comunicación entre hosts.",
+      "pools": "VLAN por segmento; /30 por enlace L3; loopbacks por equipo L3.",
+      "checks": "Pruebas separadas de L2, gateways, routing y caminos alternativos.",
+      "limits": "Planificar puertos antes de ofrecer imágenes; IOSv de 4 interfaces puede no alcanzar.",
+      "purpose": "Construir una maqueta de campus y comprender acceso, distribución y núcleo.",
+      "variant": "Base: 2 switches de acceso, 2 de distribución y 1 núcleo. Variante de 2 núcleos; hosts adicionales según pruebas.",
+      "allocation": "VLAN por segmento, /30 por enlace L3, /32 por loopback L3 y gateway por LAN. El manifiesto separa enlaces L2 de L3.",
+      "dependency": "B03, B08 e I04 según variante. Presupuesto de puertos previo a elegir imagen; los equipos centrales pueden necesitar más interfaces.",
+      "acceptance": "Aceptación por capas: acceso a VLAN, gateway, rutas y caminos alternos. El wizard debe ofrecer un objetivo concreto; la receta inicial practica routing con la base L2 lista.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "c1",
+            "label": "CORE01",
+            "x": 500,
+            "y": 40
+          },
+          {
+            "id": "d1",
+            "label": "DIST01",
+            "x": 280,
+            "y": 130
+          },
+          {
+            "id": "d2",
+            "label": "DIST02",
+            "x": 720,
+            "y": 130
+          },
+          {
+            "id": "a1",
+            "label": "ACC01",
+            "x": 280,
+            "y": 235
+          },
+          {
+            "id": "a2",
+            "label": "ACC02",
+            "x": 720,
+            "y": 235
+          }
+        ],
+        "edges": [
+          {
+            "a": "c1",
+            "b": "d1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "c1",
+            "b": "d2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "d1",
+            "b": "d2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "d1",
+            "b": "a1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "d2",
+            "b": "a2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "d1",
+            "b": "a2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "d2",
+            "b": "a1",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "L3",
+            "x": 90,
+            "y": 90
+          },
+          {
+            "text": "L2",
+            "x": 90,
+            "y": 220
+          }
+        ]
+      },
+      "document_page": 17
+    },
+    {
+      "id": "I02",
+      "level": "Intermedio",
+      "title": "OSPF con varias áreas",
+      "devices": "4 a 6 routers",
+      "layout": "Áreas separadas visualmente; backbone al centro.",
+      "prepare": "Cuatro routers en línea, interfaces y loopbacks con dirección.",
+      "exercise": "Configurar OSPF con áreas 10, 0 y 20 y comprobar rutas entre áreas.",
+      "pools": "Área 0 más 10 y 20; pools de tránsito y loopbacks separados.",
+      "checks": "Adyacencias por área y rutas interárea; ausencia de anuncios indebidos.",
+      "limits": "No tratar un ping como validación completa de todas las LSAs.",
+      "purpose": "Entender cómo se conectan áreas OSPF y cómo aparecen rutas entre ellas.",
+      "variant": "4 routers mínimos, ampliables a 6 dentro de una receta validada. Áreas 10 y 20 conectadas mediante área 0.",
+      "allocation": "Un /30 por enlace y una /32 por router. Router IDs únicos; puertos etiquetados con el área prevista.",
+      "dependency": "B01 y verificador multiárea. R02 y R03 actúan como ABR en el ejemplo; las áreas deben mantener el backbone previsto.",
+      "acceptance": "Aceptación: vecinos correctos por área y rutas intra/interárea esperadas; alcance entre extremos. Un ping aislado no demuestra que las áreas estén bien configuradas.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 100,
+            "y": 130
+          },
+          {
+            "id": "r2",
+            "label": "R02 · ABR",
+            "x": 360,
+            "y": 130
+          },
+          {
+            "id": "r3",
+            "label": "R03 · ABR",
+            "x": 640,
+            "y": 130
+          },
+          {
+            "id": "r4",
+            "label": "R04",
+            "x": 900,
+            "y": 130
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "Área 10",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "r3",
+            "label": "Área 0",
+            "offset": 0
+          },
+          {
+            "a": "r3",
+            "b": "r4",
+            "label": "Área 20",
+            "offset": 0
+          }
+        ],
+        "notes": []
+      },
+      "document_page": 18
+    },
+    {
+      "id": "I03",
+      "level": "Intermedio",
+      "title": "Sucursal con doble WAN",
+      "devices": "4 routers",
+      "layout": "Rombo con camino primario y respaldo.",
+      "prepare": "Cuatro routers con dos caminos, interfaces y loopbacks preparadas.",
+      "exercise": "Configurar OSPF, preferir el camino principal por costo y comprobar el respaldo.",
+      "pools": "4 tránsitos y 4 loopbacks; costos 10 y 100 como propuesta.",
+      "checks": "Ruta preferida, conectividad, falla y recuperación por fases.",
+      "limits": "Reutiliza el caso existente; separar fallas esperadas de preparación fallida.",
+      "purpose": "Probar que una sucursal utiliza su enlace principal y conserva conectividad por el respaldo.",
+      "variant": "4 routers en rombo: sucursal, dos caminos WAN y central. 4 enlaces; falla y recuperación como fases separadas.",
+      "allocation": "4 /30 y 4 /32. Costos propuestos 10/100 para distinguir preferencia; aplicar solo en referencia o durante el ejercicio.",
+      "dependency": "Existe validación previa de doble WAN. Falta convertirla en receta del wizard y revisar su contrato de práctica/referencia.",
+      "acceptance": "Aceptación: ruta principal observada, tráfico por respaldo durante un corte autorizado y retorno tras restaurar. Registrar estados y evidencia, sin prometer tiempos de convergencia.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "Sucursal",
+            "x": 130,
+            "y": 140
+          },
+          {
+            "id": "r2",
+            "label": "WAN01",
+            "x": 500,
+            "y": 50
+          },
+          {
+            "id": "r3",
+            "label": "WAN02",
+            "x": 500,
+            "y": 230
+          },
+          {
+            "id": "r4",
+            "label": "Central",
+            "x": 870,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "r4",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r1",
+            "b": "r3",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r3",
+            "b": "r4",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Principal",
+            "x": 740,
+            "y": 35
+          },
+          {
+            "text": "Respaldo",
+            "x": 740,
+            "y": 245
+          }
+        ]
+      },
+      "document_page": 19
+    },
+    {
+      "id": "I04",
+      "level": "Intermedio",
+      "title": "Gateway redundante",
+      "devices": "2 equipos L3, 1 switch de acceso y 2 hosts",
+      "layout": "Par de gateways con LAN compartida.",
+      "prepare": "Dos gateways de capa 3, switch de acceso, VLAN 100 y dos hosts.",
+      "exercise": "Configurar HSRP grupo 100 con gateway virtual .1 y prioridades diferentes.",
+      "pools": "2 IP físicas y 1 virtual por LAN; grupo por VLAN.",
+      "checks": "Rol activo/respaldo, gateway virtual y continuidad tras falla controlada.",
+      "limits": "Compatibilidad por protocolo e imagen; no asumir HSRP en todas las plataformas.",
+      "purpose": "Mantener una puerta de enlace virtual cuando falla uno de los equipos de distribución.",
+      "variant": "2 equipos L3, 1 switch de acceso y 2 hosts en la LAN compartida. HSRP o VRRP según perfil; no mezclar ambos.",
+      "allocation": "Por VLAN: .2 y .3 físicas, .1 virtual y .10/.11 para hosts. Un grupo de redundancia por VLAN.",
+      "dependency": "B08 y perfil L3 con HSRP o VRRP verificado. El switch de acceso materializa la LAN común y sus conexiones.",
+      "acceptance": "Aceptación: roles coherentes, una VIP activa y acceso desde hosts; retirar el activo solo por acción explícita y comprobar recuperación del servicio.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "d1",
+            "label": "GW01",
+            "x": 270,
+            "y": 50
+          },
+          {
+            "id": "d2",
+            "label": "GW02",
+            "x": 730,
+            "y": 50
+          },
+          {
+            "id": "s",
+            "label": "SW01",
+            "x": 500,
+            "y": 145
+          },
+          {
+            "id": "h1",
+            "label": "H01",
+            "x": 270,
+            "y": 240
+          },
+          {
+            "id": "h2",
+            "label": "H02",
+            "x": 730,
+            "y": 240
+          }
+        ],
+        "edges": [
+          {
+            "a": "d1",
+            "b": "s",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "d2",
+            "b": "s",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s",
+            "b": "h1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s",
+            "b": "h2",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "VIP compartida .1",
+            "x": 500,
+            "y": 40
+          }
+        ]
+      },
+      "document_page": 20
+    },
+    {
+      "id": "I05",
+      "level": "Intermedio",
+      "title": "BGP entre sistemas autónomos",
+      "devices": "3 routers",
+      "layout": "Cadena de tres dominios con AS rotulados.",
+      "prepare": "Tránsitos y redes de prueba.",
+      "exercise": "Crear sesiones y políticas simples de anuncios.",
+      "pools": "AS privados propuestos 65001 a 65003; prefijos de laboratorio.",
+      "checks": "Sesiones establecidas, prefijos esperados y retorno de tráfico.",
+      "limits": "Evitar redes externas; anuncio y aceptación son comprobaciones distintas.",
+      "purpose": "Aprender cómo routers de organizaciones distintas intercambian prefijos con BGP.",
+      "variant": "3 routers en línea; un sistema autónomo por router. Prefijos de prueba en loopbacks o LAN añadidas.",
+      "allocation": "AS 65001, 65002 y 65003; 2 /30 y al menos un prefijo por AS. Sin conexiones a proveedores reales.",
+      "dependency": "B01 como base L3 y un perfil BGP. La configuración de vecinos y anuncios queda pendiente en práctica.",
+      "acceptance": "Aceptación: sesiones Established, prefijos esperados recibidos e instalados y tráfico de ida/retorno. Distinguir anunciar, recibir y seleccionar una ruta.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 200,
+            "y": 145
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 500,
+            "y": 145
+          },
+          {
+            "id": "r3",
+            "label": "R03",
+            "x": 800,
+            "y": 145
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "eBGP",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "r3",
+            "label": "eBGP",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "AS 65001",
+            "x": 200,
+            "y": 70
+          },
+          {
+            "text": "AS 65002",
+            "x": 500,
+            "y": 70
+          },
+          {
+            "text": "AS 65003",
+            "x": 800,
+            "y": 70
+          }
+        ]
+      },
+      "document_page": 21
+    },
+    {
+      "id": "I06",
+      "level": "Intermedio",
+      "title": "VRF y aislamiento",
+      "devices": "2 o 3 routers y 4 hosts",
+      "layout": "Dos dominios de clientes visualmente separados.",
+      "prepare": "Dos routers unidos por un enlace físico y cuatro hosts. Puertos activos; VRF e IP de sus interfaces pendientes.",
+      "exercise": "Crear VRF A y B con prefijos reutilizados, subinterfaces 100/101 y rutas separadas.",
+      "pools": "Tablas por VRF; solapamiento solo dentro de namespaces distintos.",
+      "checks": "Conectividad interna y pruebas negativas entre clientes.",
+      "limits": "El modelo actual no soporta VRF; necesita esquema y evaluador nuevos.",
+      "purpose": "Aislar dos clientes dentro de la misma infraestructura, incluso usando direcciones repetidas.",
+      "variant": "2 routers y 4 hosts; dos contextos lógicos A/B. La variante de 3 routers exige un diseño de transporte explícito.",
+      "allocation": "Pools separados por VRF; prefijos repetibles entre A y B. El enlace entre routers usa subinterfaces 802.1Q, una VLAN de tránsito por VRF. Sin colisiones dentro de cada VRF.",
+      "dependency": "Modelo de datos con VRF y perfiles compatibles. La ilustración muestra separación lógica, no dos cables físicos por obligación.",
+      "acceptance": "Aceptación: comunicación dentro de A y dentro de B; aislamiento entre clientes. Verificar tablas y pertenencia de interfaces, además de pruebas positivas y negativas.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "h1",
+            "label": "H01 · A",
+            "x": 130,
+            "y": 55
+          },
+          {
+            "id": "h2",
+            "label": "H02 · B",
+            "x": 130,
+            "y": 225
+          },
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 360,
+            "y": 140
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 640,
+            "y": 140
+          },
+          {
+            "id": "h3",
+            "label": "H03 · A",
+            "x": 870,
+            "y": 55
+          },
+          {
+            "id": "h4",
+            "label": "H04 · B",
+            "x": 870,
+            "y": 225
+          }
+        ],
+        "edges": [
+          {
+            "a": "h1",
+            "b": "r1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "h2",
+            "b": "r1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "A / B aisladas",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "h3",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "h4",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "VRF A y VRF B en ambos routers",
+            "x": 500,
+            "y": 245
+          }
+        ]
+      },
+      "document_page": 22
+    },
+    {
+      "id": "I07",
+      "level": "Intermedio",
+      "title": "ACL y NAT de laboratorio",
+      "devices": "2 routers, 1 switch de acceso y 3 hosts",
+      "layout": "Zonas interna, tránsito y externa sintética.",
+      "prepare": "LAN con dos hosts, servidor remoto, direccionamiento y rutas de ida y vuelta.",
+      "exercise": "Permitir ICMP de H01 a SRV01, bloquear H02 y aplicar PAT en la WAN.",
+      "pools": "Subred por zona y pool NAT reservado, sin salida a Internet.",
+      "checks": "Tráfico permitido y denegado, traducciones y retorno.",
+      "limits": "Pruebas negativas requieren distinguir bloqueo esperado de destino caído.",
+      "purpose": "Controlar qué tráfico pasa y observar cómo se traducen sus direcciones.",
+      "variant": "2 routers, 1 switch de acceso y 3 hosts: dos usuarios en la LAN interna y un servidor externo simulado. Variantes ACL, NAT o ejercicio combinado.",
+      "allocation": "LAN interna, tránsito y LAN externa distintos; reservar 10.245.0.0/24 como ejemplo de pool NAT, con ruta de retorno definida.",
+      "dependency": "B02 y perfil ACL/NAT. Primero comprobar una base enrutable, después aplicar políticas. El exterior es un segmento de laboratorio.",
+      "acceptance": "Aceptación: servicios permitidos funcionan, bloqueados no, y traducciones coinciden. Una prueba negativa exige demostrar primero que el servidor está disponible.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "h1",
+            "label": "H01",
+            "x": 85,
+            "y": 55
+          },
+          {
+            "id": "h2",
+            "label": "H02",
+            "x": 85,
+            "y": 225
+          },
+          {
+            "id": "sw",
+            "label": "SW01",
+            "x": 285,
+            "y": 140
+          },
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 490,
+            "y": 140
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 700,
+            "y": 140
+          },
+          {
+            "id": "h3",
+            "label": "SRV01",
+            "x": 920,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "h1",
+            "b": "sw",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "h2",
+            "b": "sw",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "sw",
+            "b": "r1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "Tránsito",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "h3",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "LAN interna",
+            "x": 285,
+            "y": 55
+          },
+          {
+            "text": "ACL / NAT",
+            "x": 490,
+            "y": 240
+          },
+          {
+            "text": "Exterior simulado",
+            "x": 800,
+            "y": 55
+          }
+        ]
+      },
+      "document_page": 23
+    },
+    {
+      "id": "I08",
+      "level": "Intermedio",
+      "title": "IPv6 y doble pila",
+      "devices": "3 routers y 2 hosts",
+      "layout": "Cadena con prefijos IPv4 e IPv6 diferenciados.",
+      "prepare": "Enlaces y direcciones de ambas familias.",
+      "exercise": "Configurar routing IPv6 o doble pila.",
+      "pools": "IPv6 de documentación por escenario y IPv4 separados.",
+      "checks": "Vecindad, rutas y sondas de cada familia por separado.",
+      "limits": "El validador actual es IPv4; soporte futuro explícito.",
+      "purpose": "Comparar el funcionamiento de IPv4 e IPv6 en la misma maqueta.",
+      "variant": "3 routers y 2 hosts. Objetivo seleccionable: routing IPv6 o doble pila; no mezclar criterios de éxito.",
+      "allocation": "IPv4 privada y prefijos IPv6 de ejemplo 2001:db8:1::/64 a 2001:db8:4::/64. Para ejecución aislada, reservar ULA propia y reemplazarlos.",
+      "dependency": "Adaptadores, asignador y comprobaciones IPv6 nuevos; el validador actual no basta. Definir SLAAC o direcciones estáticas por receta.",
+      "acceptance": "Aceptación: vecinos, rutas y tráfico verificados por familia. El éxito de IPv4 nunca debe marcar automáticamente IPv6 como aprobado.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "h1",
+            "label": "H01",
+            "x": 85,
+            "y": 140
+          },
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 290,
+            "y": 140
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 500,
+            "y": 140
+          },
+          {
+            "id": "r3",
+            "label": "R03",
+            "x": 710,
+            "y": 140
+          },
+          {
+            "id": "h2",
+            "label": "H02",
+            "x": 915,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "h1",
+            "b": "r1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r2",
+            "b": "r3",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "r3",
+            "b": "h2",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "IPv4 e IPv6 · pruebas independientes",
+            "x": 500,
+            "y": 60
+          }
+        ]
+      },
+      "document_page": 24
+    },
+    {
+      "id": "A01",
+      "level": "Avanzado",
+      "title": "Nexus vPC",
+      "devices": "2 Nexus y 1 switch o host multihomed",
+      "layout": "Par simétrico; peer link y keepalive claramente separados.",
+      "prepare": "Dos Nexus, switch de acceso y host. VLAN, LACP y keepalive IP preparados.",
+      "exercise": "Crear dominio vPC, peer-link y port channel de acceso multichasis.",
+      "pools": "Dominio vPC, canales, VLAN y subred keepalive propios.",
+      "checks": "Consistencia, estado de peers y miembros; fallas por etapas.",
+      "limits": "Requiere perfil validado de NX OS virtual; instalar una imagen no prueba soporte de vPC.",
+      "purpose": "Practicar conexión dual a dos Nexus y la coordinación de un dominio vPC.",
+      "variant": "2 Nexus y 1 switch aguas abajo; peer-link, keepalive separado y dos enlaces downstream. Hosts opcionales.",
+      "allocation": "Dominio vPC 10, Po10 para peer-link y Po1 downstream como propuesta; VLAN 100 y subred exclusiva para keepalive.",
+      "dependency": "Adaptador NX-OS y versión virtual con funciones requeridas comprobadas. Instalación de la imagen no equivale a compatibilidad del escenario.",
+      "acceptance": "Aceptación: relación de peers, estado vPC y miembros coherentes; comprobar tráfico y fallas por etapas. Usar verificaciones disponibles en la imagen, sin asumir herramientas dependientes de hardware.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "n1",
+            "label": "NX01",
+            "x": 240,
+            "y": 80
+          },
+          {
+            "id": "n2",
+            "label": "NX02",
+            "x": 760,
+            "y": 80
+          },
+          {
+            "id": "s",
+            "label": "SW01",
+            "x": 500,
+            "y": 235
+          }
+        ],
+        "edges": [
+          {
+            "a": "n1",
+            "b": "n2",
+            "label": "Keepalive",
+            "offset": -20
+          },
+          {
+            "a": "n1",
+            "b": "n2",
+            "label": "Peer-link",
+            "offset": 20
+          },
+          {
+            "a": "n1",
+            "b": "s",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "n2",
+            "b": "s",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "vPC downstream",
+            "x": 500,
+            "y": 175
+          }
+        ]
+      },
+      "document_page": 25
+    },
+    {
+      "id": "A02",
+      "level": "Avanzado",
+      "title": "Leaf spine con VXLAN EVPN",
+      "devices": "2 spines, 2 leafs y 2 hosts",
+      "layout": "Spines arriba, leafs abajo y hosts por tenant.",
+      "prepare": "Dos spines y dos leafs con underlay OSPF y dos hosts.",
+      "exercise": "Configurar BGP EVPN y VXLAN con VNI 10100 y replicación de ingreso.",
+      "pools": "AS privados, VNI, RD, RT, loopbacks y subredes por tenant.",
+      "checks": "Underlay separado de sesiones EVPN, MAC IP y forwarding entre hosts.",
+      "limits": "Mayor RAM y CPU por imagen; validar capacidades virtuales y escala antes de habilitar.",
+      "purpose": "Extender segmentos de usuarios sobre una red leaf spine con un plano de control EVPN.",
+      "variant": "2 spines, 2 leaf y 2 hosts. Cada leaf conecta a ambos spines; el dibujo representa el mínimo, sin enlaces spine–spine.",
+      "allocation": "4 subredes underlay, loopbacks/VTEP, AS privados, VLAN 100, VNI 10100 y RD/RT por tenant. Registrar cada relación VLAN–VNI.",
+      "dependency": "A01 como trabajo de plataforma; perfil VXLAN/EVPN validado. Para practicar overlay, el underlay debe entregarse operativo y comprobado.",
+      "acceptance": "Aceptación: underlay alcanzable, sesiones EVPN, anuncios MAC/IP previstos y tráfico entre hosts. No marcar listo solo porque BGP esté Established.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "s1",
+            "label": "SPINE01",
+            "x": 280,
+            "y": 40
+          },
+          {
+            "id": "s2",
+            "label": "SPINE02",
+            "x": 720,
+            "y": 40
+          },
+          {
+            "id": "l1",
+            "label": "LEAF01",
+            "x": 280,
+            "y": 145
+          },
+          {
+            "id": "l2",
+            "label": "LEAF02",
+            "x": 720,
+            "y": 145
+          },
+          {
+            "id": "h1",
+            "label": "H01",
+            "x": 280,
+            "y": 245
+          },
+          {
+            "id": "h2",
+            "label": "H02",
+            "x": 720,
+            "y": 245
+          }
+        ],
+        "edges": [
+          {
+            "a": "s1",
+            "b": "l1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s1",
+            "b": "l2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s2",
+            "b": "l1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s2",
+            "b": "l2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "l1",
+            "b": "h1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "l2",
+            "b": "h2",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Underlay",
+            "x": 90,
+            "y": 90
+          },
+          {
+            "text": "VNI 10100",
+            "x": 500,
+            "y": 240
+          }
+        ]
+      },
+      "document_page": 26
+    },
+    {
+      "id": "A03",
+      "level": "Avanzado",
+      "title": "MPLS L3VPN",
+      "devices": "2 PE, 1 P y 2 CE",
+      "layout": "Proveedor al centro y clientes en extremos.",
+      "prepare": "Dos CE, dos PE y un router P; direccionamiento e IGP del proveedor.",
+      "exercise": "Habilitar MPLS/LDP, MP-BGP y una L3VPN entre sedes.",
+      "pools": "Loopbacks, AS, RD RT y subredes por cliente.",
+      "checks": "Transporte, etiquetas, rutas VPN y aislamiento.",
+      "limits": "Requiere perfil de plataforma con funciones verificadas; no soportado por el generador actual.",
+      "purpose": "Transportar redes privadas de clientes a través de un núcleo MPLS.",
+      "variant": "5 routers: CE01–PE01–P01–PE02–CE02. La primera receta usa un cliente; el segundo cliente amplía aislamiento.",
+      "allocation": "Loops del proveedor, enlaces de acceso/transporte, AS del proveedor y RD/RT por VPN; prefijos del cliente en su VRF.",
+      "dependency": "Perfiles con MPLS, MP-BGP y VRF comprobados. Entregar IGP del proveedor operativo si el ejercicio se centra en L3VPN.",
+      "acceptance": "Aceptación: transporte y etiquetas, rutas VPN y alcance CE a CE. Para validar aislamiento entre VPN hacen falta dos clientes; el mínimo de un cliente no lo demuestra.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "c1",
+            "label": "CE01",
+            "x": 90,
+            "y": 140
+          },
+          {
+            "id": "p1",
+            "label": "PE01",
+            "x": 295,
+            "y": 140
+          },
+          {
+            "id": "p",
+            "label": "P01",
+            "x": 500,
+            "y": 140
+          },
+          {
+            "id": "p2",
+            "label": "PE02",
+            "x": 705,
+            "y": 140
+          },
+          {
+            "id": "c2",
+            "label": "CE02",
+            "x": 910,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "c1",
+            "b": "p1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "p1",
+            "b": "p",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "p",
+            "b": "p2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "p2",
+            "b": "c2",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Cliente",
+            "x": 90,
+            "y": 60
+          },
+          {
+            "text": "Núcleo MPLS",
+            "x": 500,
+            "y": 60
+          },
+          {
+            "text": "Cliente",
+            "x": 910,
+            "y": 60
+          },
+          {
+            "text": "VRF y MP-BGP en los PE",
+            "x": 500,
+            "y": 235
+          }
+        ]
+      },
+      "document_page": 27
+    },
+    {
+      "id": "A04",
+      "level": "Avanzado",
+      "title": "Redistribución controlada",
+      "devices": "4 a 6 routers",
+      "layout": "Dominios de routing separados con fronteras marcadas.",
+      "prepare": "Dominios OSPF y EIGRP conectados a través de un punto de redistribución.",
+      "exercise": "Redistribuir rutas con etiquetas y comprobar alcance entre extremos.",
+      "pools": "AS o procesos, tags y prefijos por dominio.",
+      "checks": "Rutas permitidas, ausencia de realimentación y retorno.",
+      "limits": "La política forma parte del objetivo; no aplicar redistribución automática por defecto.",
+      "purpose": "Intercambiar rutas entre dominios sin reintroducirlas ni generar bucles.",
+      "variant": "4 routers mínimos y hasta 6 en variante validada. Dos dominios y uno o dos puntos de redistribución.",
+      "allocation": "Procesos/AS, métricas, tags y lista de prefijos permitidos. Cada política identifica origen, destino y retorno esperado.",
+      "dependency": "I02 e I05 según protocolos elegidos. Cada dominio funciona por separado antes de la práctica; no activar redistribución universal.",
+      "acceptance": "Aceptación: solo aparecen prefijos autorizados, retorno correcto y ausencia de realimentación en la variante redundante. Probar retiros controlados además del estado estable.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 140,
+            "y": 140
+          },
+          {
+            "id": "b1",
+            "label": "BORDE01",
+            "x": 380,
+            "y": 140
+          },
+          {
+            "id": "b2",
+            "label": "BORDE02",
+            "x": 620,
+            "y": 140
+          },
+          {
+            "id": "r2",
+            "label": "R04",
+            "x": 860,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "b1",
+            "label": "Dominio A",
+            "offset": 0
+          },
+          {
+            "a": "b1",
+            "b": "b2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "b2",
+            "b": "r2",
+            "label": "Dominio B",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Políticas de redistribución en la frontera",
+            "x": 500,
+            "y": 60
+          },
+          {
+            "text": "Ejemplo mínimo · ampliar para redundancia",
+            "x": 500,
+            "y": 235
+          }
+        ]
+      },
+      "document_page": 28
+    },
+    {
+      "id": "A05",
+      "level": "Avanzado",
+      "title": "Multihoming BGP",
+      "devices": "2 bordes, 2 proveedores y LAN",
+      "layout": "Dos salidas y caminos de retorno identificados.",
+      "prepare": "Dos proveedores, dos bordes, iBGP/eBGP y LAN con HSRP preparados.",
+      "exercise": "Preferir ISP01 con local-preference y observar el cambio al retirar su enlace.",
+      "pools": "AS privados, redes sintéticas y atributos de política.",
+      "checks": "Ruta elegida por prefijo y comportamiento tras falla.",
+      "limits": "No equivale a un servicio real de proveedor ni mide un SLA.",
+      "purpose": "Decidir por cuál salida BGP circula cada prefijo y estudiar fallas de proveedor.",
+      "variant": "2 routers de borde, 2 proveedores simulados y una LAN de prueba; switch y host materializan la LAN en el ejemplo.",
+      "allocation": "AS privado de empresa y AS distintos por proveedor; tránsitos y prefijos anunciados. Política explícita por dirección y prefijo.",
+      "dependency": "I05 e I04 si hay gateway redundante. Las sesiones base pueden preconfigurarse cuando el objetivo sea exclusivamente política.",
+      "acceptance": "Aceptación: ruta seleccionada por prefijo y atributos, tráfico de ida/retorno y cambio tras falla autorizada. No inferir comportamiento de un ISP real ni SLA.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "p1",
+            "label": "ISP01",
+            "x": 230,
+            "y": 40
+          },
+          {
+            "id": "p2",
+            "label": "ISP02",
+            "x": 770,
+            "y": 40
+          },
+          {
+            "id": "b1",
+            "label": "BORDE01",
+            "x": 230,
+            "y": 135
+          },
+          {
+            "id": "b2",
+            "label": "BORDE02",
+            "x": 770,
+            "y": 135
+          },
+          {
+            "id": "s",
+            "label": "SW01",
+            "x": 500,
+            "y": 230
+          },
+          {
+            "id": "h",
+            "label": "H01",
+            "x": 800,
+            "y": 230
+          }
+        ],
+        "edges": [
+          {
+            "a": "p1",
+            "b": "b1",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "p2",
+            "b": "b2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "b1",
+            "b": "b2",
+            "label": "iBGP",
+            "offset": 0
+          },
+          {
+            "a": "b1",
+            "b": "s",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "b2",
+            "b": "s",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "s",
+            "b": "h",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Empresa · un AS",
+            "x": 500,
+            "y": 55
+          }
+        ]
+      },
+      "document_page": 29
+    },
+    {
+      "id": "A06",
+      "level": "Avanzado",
+      "title": "Segmentación con firewall",
+      "devices": "1 o 2 firewalls, switches y 3 hosts",
+      "layout": "Zonas y fronteras visibles.",
+      "prepare": "Firewall ASA con zonas inside, dmz y outside, interfaces IP y tres hosts.",
+      "exercise": "Permitir ICMP de LAN a DMZ y su respuesta; bloquear LAN hacia el exterior.",
+      "pools": "Red por zona, interfaces, VLAN y objetos de servicio.",
+      "checks": "Matriz de accesos permitidos y denegados con logs asociados.",
+      "limits": "Adaptadores y licencias específicos; disponibilidad de imagen no autoriza compatibilidad.",
+      "purpose": "Expresar y verificar una matriz de acceso entre usuarios, servicios y zona externa simulada.",
+      "variant": "1 firewall, 3 hosts y switches por zona si hacen falta. Variante de 2 firewalls con HA será una receta independiente.",
+      "allocation": "Una subred por zona, interfaces/VLAN, objetos de dirección y servicios. NAT se agrega únicamente si el objetivo lo necesita.",
+      "dependency": "Adaptador específico de firewall, licencias y versión validada. La base fija conectividad y acceso de gestión sin resolver las reglas del ejercicio.",
+      "acceptance": "Aceptación: matriz origen–destino–servicio contrastada con tráfico y registros. HA requiere además pruebas propias de roles, sincronización y recuperación.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "h1",
+            "label": "H01 · LAN",
+            "x": 140,
+            "y": 135
+          },
+          {
+            "id": "f",
+            "label": "FW01",
+            "x": 500,
+            "y": 135
+          },
+          {
+            "id": "h2",
+            "label": "H02 · DMZ",
+            "x": 830,
+            "y": 55
+          },
+          {
+            "id": "h3",
+            "label": "H03 · EXT",
+            "x": 830,
+            "y": 225
+          }
+        ],
+        "edges": [
+          {
+            "a": "h1",
+            "b": "f",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "f",
+            "b": "h2",
+            "label": "",
+            "offset": 0
+          },
+          {
+            "a": "f",
+            "b": "h3",
+            "label": "",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Política por zona y servicio",
+            "x": 420,
+            "y": 240
+          }
+        ]
+      },
+      "document_page": 30
+    },
+    {
+      "id": "A07",
+      "level": "Avanzado",
+      "title": "Troubleshooting guiado",
+      "devices": "Variante de un escenario ya validado",
+      "layout": "Conservar topología y añadir leyenda del ejercicio.",
+      "prepare": "Referencia OSPF comprobada; la falla se introduce después mediante una acción explícita.",
+      "exercise": "Interrumpir un enlace, diagnosticar la pérdida de vecindad y restaurarlo.",
+      "pools": "Reutilizar reservas; registrar mutación reversible y alcance.",
+      "checks": "Comparar baseline, fallo y recuperación; conservar evidencia.",
+      "limits": "No introducir fallas en laboratorios existentes ni ocultar estado parcial del despliegue.",
+      "purpose": "Entrenar diagnóstico sobre una maqueta conocida sin revelar de entrada la solución.",
+      "variant": "Clonar una receta ya validada. El ejemplo usa B01; escoger un defecto reproducible por sesión.",
+      "allocation": "Reutilizar el plan del escenario bajo una nueva instancia. Guardar estado inicial, cambio aplicado y operación inversa.",
+      "dependency": "Depende del escenario elegido, un inyector de fallas y evidencia de baseline. Falla solo después de aceptación explícita y sobre la copia.",
+      "acceptance": "Aceptación: base aprobada antes de inyectar; falla observable después; comprobaciones aprobadas tras la reparación. Separar la pista del alumno de la solución del instructor.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01",
+            "x": 260,
+            "y": 140
+          },
+          {
+            "id": "r2",
+            "label": "R02",
+            "x": 740,
+            "y": 140
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "Falla elegida",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Copia aislada de B01",
+            "x": 500,
+            "y": 55
+          },
+          {
+            "text": "Estado inicial → falla → reparación",
+            "x": 500,
+            "y": 235
+          }
+        ]
+      },
+      "document_page": 31
+    },
+    {
+      "id": "A08",
+      "level": "Avanzado",
+      "title": "Comparación entre versiones",
+      "devices": "Dos instancias de un mismo escenario",
+      "layout": "Vista equivalente por versión, con identificadores distintos.",
+      "prepare": "Dos pares Nexus aislados, uno por versión, con interfaces y loopbacks preparadas.",
+      "exercise": "Ejecutar la misma prueba OSPF en ambos pares y comparar los resultados.",
+      "pools": "Reservas distintas por instancia; misma estructura lógica.",
+      "checks": "Resultados por imagen y prueba; diferencias explicadas con evidencia.",
+      "limits": "No tratar equivalencia funcional como igualdad de rendimiento; nunca sobrescribir la primera instancia.",
+      "purpose": "Detectar diferencias funcionales entre versiones manteniendo el mismo ejercicio y criterios.",
+      "variant": "Dos instancias aisladas de una receta. El ejemplo duplica B01: cuatro routers en total, sin enlaces entre instancias.",
+      "allocation": "Mismos valores lógicos reutilizables solo con aislamiento; IDs y carpetas distintos. Registrar versión, hash y perfil de cada imagen.",
+      "dependency": "A07 para comparación de evidencia y dos imágenes validadas. Verificar recursos para ambas instancias antes de desplegar.",
+      "acceptance": "Aceptación: ejecutar la misma batería y reportar aprobado, fallido o no compatible por versión. Conservar ambas maquetas; no atribuir diferencias de rendimiento al software sin un estudio aparte.",
+      "status": "Receta implementada · validación en curso",
+      "graph": {
+        "nodes": [
+          {
+            "id": "r1",
+            "label": "R01 · A",
+            "x": 250,
+            "y": 90
+          },
+          {
+            "id": "r2",
+            "label": "R02 · A",
+            "x": 750,
+            "y": 90
+          },
+          {
+            "id": "r3",
+            "label": "R01 · B",
+            "x": 250,
+            "y": 220
+          },
+          {
+            "id": "r4",
+            "label": "R02 · B",
+            "x": 750,
+            "y": 220
+          }
+        ],
+        "edges": [
+          {
+            "a": "r1",
+            "b": "r2",
+            "label": "Versión A",
+            "offset": 0
+          },
+          {
+            "a": "r3",
+            "b": "r4",
+            "label": "Versión B",
+            "offset": 0
+          }
+        ],
+        "notes": [
+          {
+            "text": "Dos instancias sin conexión entre ellas",
+            "x": 500,
+            "y": 30
+          }
+        ]
+      },
+      "document_page": 32
+    }
+  ]
+}

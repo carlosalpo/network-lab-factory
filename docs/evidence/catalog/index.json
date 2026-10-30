@@ -1,0 +1,479 @@
+[
+  {
+    "scenario": "A01",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 6,
+    "file": "eve-a01-reference.json"
+  },
+  {
+    "scenario": "A02",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 22,
+    "exercise_checks": 8,
+    "file": "eve-a02-reference.json"
+  },
+  {
+    "scenario": "A03",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 15,
+    "exercise_checks": 7,
+    "file": "eve-a03-reference.json"
+  },
+  {
+    "scenario": "A04",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 12,
+    "exercise_checks": 4,
+    "file": "eve-a04-reference.json"
+  },
+  {
+    "scenario": "A05",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 18,
+    "exercise_checks": 5,
+    "file": "eve-a05-reference.json"
+  },
+  {
+    "scenario": "A06",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 3,
+    "file": "eve-a06-reference.json"
+  },
+  {
+    "scenario": "A07",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "eve-a07-reference.json"
+  },
+  {
+    "scenario": "A08",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 8,
+    "exercise_checks": 8,
+    "file": "eve-a08-reference.json"
+  },
+  {
+    "scenario": "B01",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "eve-b01-reference.json"
+  },
+  {
+    "scenario": "B02",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 4,
+    "file": "eve-b02-reference.json"
+  },
+  {
+    "scenario": "B03",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 6,
+    "file": "eve-b03-reference.json"
+  },
+  {
+    "scenario": "B04",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "eve-b04-reference.json"
+  },
+  {
+    "scenario": "B05",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 4,
+    "file": "eve-b05-reference.json"
+  },
+  {
+    "scenario": "B06",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 8,
+    "exercise_checks": 4,
+    "file": "eve-b06-reference.json"
+  },
+  {
+    "scenario": "B07",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 10,
+    "exercise_checks": 4,
+    "file": "eve-b07-reference.json"
+  },
+  {
+    "scenario": "B08",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "eve-b08-reference.json"
+  },
+  {
+    "scenario": "I01",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 13,
+    "exercise_checks": 8,
+    "file": "eve-i01-reference.json"
+  },
+  {
+    "scenario": "I02",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 10,
+    "exercise_checks": 9,
+    "file": "eve-i02-reference.json"
+  },
+  {
+    "scenario": "I03",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 12,
+    "exercise_checks": 10,
+    "file": "eve-i03-reference.json"
+  },
+  {
+    "scenario": "I04",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 5,
+    "exercise_checks": 4,
+    "file": "eve-i04-reference.json"
+  },
+  {
+    "scenario": "I05",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 7,
+    "exercise_checks": 6,
+    "file": "eve-i05-reference.json"
+  },
+  {
+    "scenario": "I06",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 2,
+    "exercise_checks": 14,
+    "file": "eve-i06-reference.json"
+  },
+  {
+    "scenario": "I07",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 10,
+    "exercise_checks": 3,
+    "file": "eve-i07-reference.json"
+  },
+  {
+    "scenario": "I08",
+    "backend": "eve",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 9,
+    "exercise_checks": 11,
+    "file": "eve-i08-reference.json"
+  },
+  {
+    "scenario": "A01",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 6,
+    "file": "gns3-a01-reference.json"
+  },
+  {
+    "scenario": "A02",
+    "backend": "gns3",
+    "mode": "practice",
+    "status": "ready",
+    "preparation_checks": 22,
+    "exercise_checks": 0,
+    "file": "gns3-a02-practice.json"
+  },
+  {
+    "scenario": "A02",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 22,
+    "exercise_checks": 8,
+    "file": "gns3-a02-reference.json"
+  },
+  {
+    "scenario": "A03",
+    "backend": "gns3",
+    "mode": "practice",
+    "status": "ready",
+    "preparation_checks": 15,
+    "exercise_checks": 0,
+    "file": "gns3-a03-practice.json"
+  },
+  {
+    "scenario": "A03",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 15,
+    "exercise_checks": 7,
+    "file": "gns3-a03-reference.json"
+  },
+  {
+    "scenario": "A04",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 12,
+    "exercise_checks": 4,
+    "file": "gns3-a04-reference.json"
+  },
+  {
+    "scenario": "A05",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 18,
+    "exercise_checks": 5,
+    "file": "gns3-a05-reference.json"
+  },
+  {
+    "scenario": "A06",
+    "backend": "gns3",
+    "mode": "practice",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 0,
+    "file": "gns3-a06-practice.json"
+  },
+  {
+    "scenario": "A06",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 3,
+    "file": "gns3-a06-reference.json"
+  },
+  {
+    "scenario": "A07",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "gns3-a07-reference.json"
+  },
+  {
+    "scenario": "A08",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 8,
+    "exercise_checks": 8,
+    "file": "gns3-a08-reference.json"
+  },
+  {
+    "scenario": "B01",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "gns3-b01-reference.json"
+  },
+  {
+    "scenario": "B02",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 4,
+    "file": "gns3-b02-reference.json"
+  },
+  {
+    "scenario": "B03",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 6,
+    "file": "gns3-b03-reference.json"
+  },
+  {
+    "scenario": "B04",
+    "backend": "gns3",
+    "mode": "practice",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 0,
+    "file": "gns3-b04-practice.json"
+  },
+  {
+    "scenario": "B04",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "gns3-b04-reference.json"
+  },
+  {
+    "scenario": "B05",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 6,
+    "exercise_checks": 4,
+    "file": "gns3-b05-reference.json"
+  },
+  {
+    "scenario": "B06",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 8,
+    "exercise_checks": 4,
+    "file": "gns3-b06-reference.json"
+  },
+  {
+    "scenario": "B07",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 10,
+    "exercise_checks": 4,
+    "file": "gns3-b07-reference.json"
+  },
+  {
+    "scenario": "B08",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 4,
+    "exercise_checks": 4,
+    "file": "gns3-b08-reference.json"
+  },
+  {
+    "scenario": "I01",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 13,
+    "exercise_checks": 8,
+    "file": "gns3-i01-reference.json"
+  },
+  {
+    "scenario": "I02",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 10,
+    "exercise_checks": 9,
+    "file": "gns3-i02-reference.json"
+  },
+  {
+    "scenario": "I03",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 12,
+    "exercise_checks": 10,
+    "file": "gns3-i03-reference.json"
+  },
+  {
+    "scenario": "I04",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 5,
+    "exercise_checks": 4,
+    "file": "gns3-i04-reference.json"
+  },
+  {
+    "scenario": "I05",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 7,
+    "exercise_checks": 6,
+    "file": "gns3-i05-reference.json"
+  },
+  {
+    "scenario": "I06",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 2,
+    "exercise_checks": 14,
+    "file": "gns3-i06-reference.json"
+  },
+  {
+    "scenario": "I07",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 10,
+    "exercise_checks": 3,
+    "file": "gns3-i07-reference.json"
+  },
+  {
+    "scenario": "I08",
+    "backend": "gns3",
+    "mode": "practice",
+    "status": "ready",
+    "preparation_checks": 9,
+    "exercise_checks": 0,
+    "file": "gns3-i08-practice.json"
+  },
+  {
+    "scenario": "I08",
+    "backend": "gns3",
+    "mode": "reference",
+    "status": "ready",
+    "preparation_checks": 9,
+    "exercise_checks": 11,
+    "file": "gns3-i08-reference.json"
+  }
+]

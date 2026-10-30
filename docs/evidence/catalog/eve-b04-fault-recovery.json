@@ -1,0 +1,131 @@
+{
+  "fault-check": {
+    "event": "verification",
+    "status": "failed",
+    "scope": "exercise",
+    "checks": [
+      {
+        "node": "sw01",
+        "command": "show etherchannel summary",
+        "pattern": "Po1\\(SU\\).*LACP.*\\(P\\).*\\(P\\)",
+        "kind": "regex",
+        "label": "show etherchannel summary",
+        "passed": false,
+        "output": "show etherchannel summary\r\nFlags:  D - down        P - bundled in port-channel\r\n        I - stand-alone s - suspended\r\n        H - Hot-standby (LACP only)\r\n        R - Layer3      S - Layer2\r\n        U - in use      N - not in use, no aggregation\r\n        f - failed to allocate aggregator\r\n\r\n        M - not in use, minimum links not met\r\n        m - not in use, port not aggregated due to minimum links not met\r\n        u - unsuitable for bundling\r\n        w - waiting to be aggregated\r\n        d - default port\r\n\r\n        A - formed by Auto LAG\r\n\r\n\r\nNumber of channel-groups in use: 1\r\nNumber of aggregators:           1\r\n\r\nGroup  Port-channel  Protocol    Ports\r\n------+-------------+-----------+-----------------------------------------------\r\n1      Po1(SU)         LACP      Gi0/0(D)    Gi0/1(P)    \r\n\r\n"
+      },
+      {
+        "node": "sw02",
+        "command": "show etherchannel summary",
+        "pattern": "Po1\\(SU\\).*LACP.*\\(P\\).*\\(P\\)",
+        "kind": "regex",
+        "label": "show etherchannel summary",
+        "passed": false,
+        "output": "show etherchannel summary\r\nFlags:  D - down        P - bundled in port-channel\r\n        I - stand-alone s - suspended\r\n        H - Hot-standby (LACP only)\r\n        R - Layer3      S - Layer2\r\n        U - in use      N - not in use, no aggregation\r\n        f - failed to allocate aggregator\r\n\r\n        M - not in use, minimum links not met\r\n        m - not in use, port not aggregated due to minimum links not met\r\n        u - unsuitable for bundling\r\n        w - waiting to be aggregated\r\n        d - default port\r\n\r\n        A - formed by Auto LAG\r\n\r\n\r\nNumber of channel-groups in use: 1\r\nNumber of aggregators:           1\r\n\r\nGroup  Port-channel  Protocol    Ports\r\n------+-------------+-----------+-----------------------------------------------\r\n1      Po1(SU)         LACP      Gi0/0(D)    Gi0/1(P)    \r\n\r\n"
+      },
+      {
+        "node": "h01",
+        "command": "ping 10.242.0.11 -c 3",
+        "pattern": "",
+        "kind": "ping",
+        "label": "Alcance a 10.242.0.11",
+        "passed": true,
+        "output": "ping 10.242.0.11 -c 3\r\n\r\n84 bytes from 10.242.0.11 icmp_seq=1 ttl=64 time=8.416 ms\r\n84 bytes from 10.242.0.11 icmp_seq=2 ttl=64 time=12.426 ms\r\n84 bytes from 10.242.0.11 icmp_seq=3 ttl=64 time=12.470 ms\r\n\r\n"
+      },
+      {
+        "node": "h02",
+        "command": "ping 10.242.0.10 -c 3",
+        "pattern": "",
+        "kind": "ping",
+        "label": "Alcance a 10.242.0.10",
+        "passed": true,
+        "output": "ping 10.242.0.10 -c 3\r\n\r\n84 bytes from 10.242.0.10 icmp_seq=1 ttl=64 time=20.864 ms\r\n84 bytes from 10.242.0.10 icmp_seq=2 ttl=64 time=10.336 ms\r\n84 bytes from 10.242.0.10 icmp_seq=3 ttl=64 time=12.198 ms\r\n\r\n"
+      }
+    ]
+  },
+  "restored-base": {
+    "event": "verification",
+    "status": "passed",
+    "scope": "preparation",
+    "checks": [
+      {
+        "node": "h01",
+        "command": "show ip",
+        "pattern": "10\\.242\\.0\\.10",
+        "kind": "regex",
+        "label": "show ip",
+        "passed": true,
+        "output": "show ip\r\n\r\nNAME        : h01[1]\r\nIP/MASK     : 10.242.0.10/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:03\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+      },
+      {
+        "node": "h02",
+        "command": "show ip",
+        "pattern": "10\\.242\\.0\\.11",
+        "kind": "regex",
+        "label": "show ip",
+        "passed": true,
+        "output": "show ip\r\n\r\nNAME        : h02[1]\r\nIP/MASK     : 10.242.0.11/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:04\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+      },
+      {
+        "node": "sw01",
+        "command": "show running-config | include ^hostname",
+        "pattern": "hostname\\s+sw01",
+        "kind": "regex",
+        "label": "Identidad y acceso a consola",
+        "passed": true,
+        "output": "show running-config | include ^hostname\r\n\r\n*Oct 30 03:17:51.672: %LINK-3-UPDOWN: Interface GigabitEthernet0/0, changed state to up\r\n*Oct 30 03:17:52.671: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to uphostname sw01\r\n"
+      },
+      {
+        "node": "sw02",
+        "command": "show running-config | include ^hostname",
+        "pattern": "hostname\\s+sw02",
+        "kind": "regex",
+        "label": "Identidad y acceso a consola",
+        "passed": true,
+        "output": "show running-config | include ^hostname\r\nhostname sw02\r\n"
+      }
+    ]
+  },
+  "restored-exercise": {
+    "event": "verification",
+    "status": "passed",
+    "scope": "exercise",
+    "checks": [
+      {
+        "node": "sw01",
+        "command": "show etherchannel summary",
+        "pattern": "Po1\\(SU\\).*LACP.*\\(P\\).*\\(P\\)",
+        "kind": "regex",
+        "label": "show etherchannel summary",
+        "passed": true,
+        "output": "show etherchannel summary\r\nFlags:  D - down        P - bundled in port-channel\r\n        I - stand-alone s - suspended\r\n        H - Hot-standby (LACP only)\r\n        R - Layer3      S - Layer2\r\n        U - in use      N - not in use, no aggregation\r\n        f - failed to allocate aggregator\r\n\r\n        M - not in use, minimum links not met\r\n        m - not in use, port not aggregated due to minimum links not met\r\n        u - unsuitable for bundling\r\n        w - waiting to be aggregated\r\n        d - default port\r\n\r\n        A - formed by Auto LAG\r\n\r\n\r\nNumber of channel-groups in use: 1\r\nNumber of aggregators:           1\r\n\r\nGroup  Port-channel  Protocol    Ports\r\n------+-------------+-----------+-----------------------------------------------\r\n1      Po1(SU)         LACP      Gi0/0(P)    Gi0/1(P)    \r\n\r\n"
+      },
+      {
+        "node": "sw02",
+        "command": "show etherchannel summary",
+        "pattern": "Po1\\(SU\\).*LACP.*\\(P\\).*\\(P\\)",
+        "kind": "regex",
+        "label": "show etherchannel summary",
+        "passed": true,
+        "output": "show etherchannel summary\r\nFlags:  D - down        P - bundled in port-channel\r\n        I - stand-alone s - suspended\r\n        H - Hot-standby (LACP only)\r\n        R - Layer3      S - Layer2\r\n        U - in use      N - not in use, no aggregation\r\n        f - failed to allocate aggregator\r\n\r\n        M - not in use, minimum links not met\r\n        m - not in use, port not aggregated due to minimum links not met\r\n        u - unsuitable for bundling\r\n        w - waiting to be aggregated\r\n        d - default port\r\n\r\n        A - formed by Auto LAG\r\n\r\n\r\nNumber of channel-groups in use: 1\r\nNumber of aggregators:           1\r\n\r\nGroup  Port-channel  Protocol    Ports\r\n------+-------------+-----------+-----------------------------------------------\r\n1      Po1(SU)         LACP      Gi0/0(P)    Gi0/1(P)    \r\n\r\n"
+      },
+      {
+        "node": "h01",
+        "command": "ping 10.242.0.11 -c 3",
+        "pattern": "",
+        "kind": "ping",
+        "label": "Alcance a 10.242.0.11",
+        "passed": true,
+        "output": "ping 10.242.0.11 -c 3\r\n\r\n84 bytes from 10.242.0.11 icmp_seq=1 ttl=64 time=12.550 ms\r\n84 bytes from 10.242.0.11 icmp_seq=2 ttl=64 time=12.205 ms\r\n84 bytes from 10.242.0.11 icmp_seq=3 ttl=64 time=13.545 ms\r\n\r\n"
+      },
+      {
+        "node": "h02",
+        "command": "ping 10.242.0.10 -c 3",
+        "pattern": "",
+        "kind": "ping",
+        "label": "Alcance a 10.242.0.10",
+        "passed": true,
+        "output": "ping 10.242.0.10 -c 3\r\n\r\n84 bytes from 10.242.0.10 icmp_seq=1 ttl=64 time=9.055 ms\r\n84 bytes from 10.242.0.10 icmp_seq=2 ttl=64 time=7.086 ms\r\n84 bytes from 10.242.0.10 icmp_seq=3 ttl=64 time=8.265 ms\r\n\r\n"
+      }
+    ]
+  }
+}

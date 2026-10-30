@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "node": "spine01",
+  "automatic_boot": true,
+  "boot": "show boot\r\r\nCurrent Boot Variables:\r\nsup-1\r\nNXOS variable = bootflash:/nxos.9.3.9.bin\r\nBoot POAP Disabled\r\n\r\nBoot Variables on next reload:\r\nsup-1\r\nNXOS variable = bootflash:/nxos.9.3.9.bin\r\nBoot POAP Disabled\r\n"
+}

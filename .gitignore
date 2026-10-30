@@ -15,3 +15,11 @@ reports/
 *.retry
 .DS_Store
 .ansible/
+
+# Local administration, QA transport records and design review artifacts
+outputs/
+.impeccable/
+scripts/cleanup_qa.py
+scripts/verify_qa_cleanup.py
+scripts/update_validation_matrix.py
+docs/terminal-ui-review.md

@@ -1,0 +1,107 @@
+{
+  "scenario": "I04",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "viosl2-adventerprisek9-m.SSA.high_iron_20200929"
+  ],
+  "source_result_sha256": "416b4bbc2ac1fc416ec99d69b84102deffa8a46074272fd364808dcbbbd6d8b8",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "h01",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.10",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : VPCS[1]\r\nIP/MASK     : 10.242.0.10/24\r\nGATEWAY     : 10.242.0.1\r\nDNS         : \r\nMAC         : 00:50:79:66:68:04\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.11",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : VPCS[1]\r\nIP/MASK     : 10.242.0.11/24\r\nGATEWAY     : 10.242.0.1\r\nDNS         : \r\nMAC         : 00:50:79:66:68:05\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "gw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+gw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname gw01\r\n"
+        },
+        {
+          "node": "gw02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+gw02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname gw02\r\n"
+        },
+        {
+          "node": "sw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw01\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "gw01",
+          "command": "show standby brief",
+          "pattern": "\\bActive\\b.*10\\.242\\.0\\.1",
+          "kind": "regex",
+          "label": "show standby brief",
+          "passed": true,
+          "output": "show standby brief\r\n                     P indicates configured to preempt.\r\n                     |\r\nInterface   Grp  Pri P State   Active          Standby         Virtual IP\r\nVl100       100  120 P Active  local           10.242.0.3      10.242.0.1\r\n"
+        },
+        {
+          "node": "gw02",
+          "command": "show standby brief",
+          "pattern": "\\bStandby\\b.*10\\.242\\.0\\.1",
+          "kind": "regex",
+          "label": "show standby brief",
+          "passed": true,
+          "output": "show standby brief\r\n                     P indicates configured to preempt.\r\n                     |\r\nInterface   Grp  Pri P State   Active          Standby         Virtual IP\r\nVl100       100  100 P Standby 10.242.0.2      local           10.242.0.1\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.1",
+          "passed": true,
+          "output": "ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=65.119 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=59.083 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=224.246 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.0.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.1",
+          "passed": true,
+          "output": "ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=69.413 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=263.627 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=144.336 ms\r\nping 10.242.0.1 -c 3\r\n\r\n\rVPCS> ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=201.375 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=208.638 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=94.189 ms\r\n\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

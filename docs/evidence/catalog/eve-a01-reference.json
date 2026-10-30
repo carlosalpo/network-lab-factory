@@ -1,0 +1,135 @@
+{
+  "scenario": "A01",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "nxosv9k-9300v-9.3.9",
+    "viosl2-adventerprisek9-m.SSA.high_iron_20200929"
+  ],
+  "source_result_sha256": "2973ba8f1a08b52ad8ec7da212ee21cbc5530fab42b045b69bd6e612b09c4c86",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "nx01",
+          "command": "ping 10.240.0.2 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.2",
+          "passed": true,
+          "output": "ping 10.240.0.2 count 3\r\r\nPING 10.240.0.2 (10.240.0.2): 56 data bytes\r\n64 bytes from 10.240.0.2: icmp_seq=0 ttl=254 time=14.423 ms\r\n64 bytes from 10.240.0.2: icmp_seq=1 ttl=254 time=8.169 ms\r\n64 bytes from 10.240.0.2: icmp_seq=2 ttl=254 time=8.921 ms\r\n\r\n--- 10.240.0.2 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 8.169/10.504/14.423 ms\r\n"
+        },
+        {
+          "node": "nx02",
+          "command": "ping 10.240.0.1 count 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.240.0.1",
+          "passed": true,
+          "output": "ping 10.240.0.1 count 3\r\r\nPING 10.240.0.1 (10.240.0.1): 56 data bytes\r\n64 bytes from 10.240.0.1: icmp_seq=0 ttl=254 time=4.291 ms\r\n64 bytes from 10.240.0.1: icmp_seq=1 ttl=254 time=6.272 ms\r\n64 bytes from 10.240.0.1: icmp_seq=2 ttl=254 time=4.783 ms\r\n\r\n--- 10.240.0.1 ping statistics ---\r\n3 packets transmitted, 3 packets received, 0.00% packet loss\r\nround-trip min/avg/max = 4.291/5.115/6.272 ms\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.10",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : h01[1]\r\nIP/MASK     : 10.242.0.10/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:04\r\nLPORT       : 20000\r\nRHOST:PORT  : 127.0.0.1:30000\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "nx01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+nx01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname nx01\r\n"
+        },
+        {
+          "node": "nx02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+nx02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\r\nhostname nx02\r\n"
+        },
+        {
+          "node": "sw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw01\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "nx01",
+          "command": "show vpc brief",
+          "pattern": "peer adjacency formed ok",
+          "kind": "regex",
+          "label": "show vpc brief",
+          "passed": true,
+          "output": "show vpc brief\r\r\nLegend:\r\n                (*) - local vPC is down, forwarding via vPC peer-link\r\n\r\nvPC domain id                     : 10  \r\nPeer status                       : peer adjacency formed ok      \r\nvPC keep-alive status             : peer is alive                 \r\nConfiguration consistency status  : success \r\nPer-vlan consistency status       : success                       \r\nType-2 consistency status         : success \r\nvPC role                          : primary                       \r\nNumber of vPCs configured         : 1   \r\nPeer Gateway                      : Disabled\r\nDual-active excluded VLANs        : -\r\nGraceful Consistency Check        : Enabled\r\nAuto-recovery status              : Disabled\r\nDelay-restore status              : Timer is off.(timeout = 30s)\r\nDelay-restore SVI status          : Timer is off.(timeout = 10s)\r\nOperational Layer3 Peer-router    : Disabled\r\nVirtual-peerlink mode             : Disabled\r\n\r\nvPC Peer-link status\r\n---------------------------------------------------------------------\r\nid    Port   Status Active vlans    \r\n--    ----   ------ -------------------------------------------------\r\n1     Po10   up     100                                                                  \r\n\r\nvPC status\r\n----------------------------------------------------------------------------\r\nId    Port          Status Consistency Reason                Active vlans\r\n--    ------------  ------ ----------- ------                ---------------\r\n1     Po1           down*  success     success               -                           \r\n                                                                                         \r\n\r\nPlease check \"show vpc consistency-parameters vpc <vpc-num>\" for the \r\nconsistency reason of down vpc and for type-2 consistency reasons for \r\nany vpc.\r\n\r\n"
+        },
+        {
+          "node": "nx01",
+          "command": "show port-channel summary",
+          "pattern": "Po1\\(SU\\)",
+          "kind": "regex",
+          "label": "show port-channel summary",
+          "passed": true,
+          "output": "show port-channel summary\r\r\nFlags:  D - Down        P - Up in port-channel (members)\r\n        I - Individual  H - Hot-standby (LACP only)\r\n        s - Suspended   r - Module-removed\r\n        b - BFD Session Wait\r\n        S - Switched    R - Routed\r\n        U - Up (port-channel)\r\n        p - Up in delay-lacp mode (member)\r\n        M - Not in use. Min-links not met\r\n--------------------------------------------------------------------------------\r\nGroup Port-       Type     Protocol  Member Ports\r\n      Channel\r\n--------------------------------------------------------------------------------\r\n1     Po1(SU)     Eth      LACP      Eth1/3(P)    \r\n10    Po10(SU)    Eth      LACP      Eth1/2(P)    \r\n"
+        },
+        {
+          "node": "nx02",
+          "command": "show vpc brief",
+          "pattern": "peer adjacency formed ok",
+          "kind": "regex",
+          "label": "show vpc brief",
+          "passed": true,
+          "output": "show vpc brief\r\r\nLegend:\r\n                (*) - local vPC is down, forwarding via vPC peer-link\r\n\r\nvPC domain id                     : 10  \r\nPeer status                       : peer adjacency formed ok      \r\nvPC keep-alive status             : peer is alive                 \r\nConfiguration consistency status  : success \r\nPer-vlan consistency status       : success                       \r\nType-2 consistency status         : success \r\nvPC role                          : secondary                     \r\nNumber of vPCs configured         : 1   \r\nPeer Gateway                      : Disabled\r\nDual-active excluded VLANs        : -\r\nGraceful Consistency Check        : Enabled\r\nAuto-recovery status              : Disabled\r\nDelay-restore status              : Timer is off.(timeout = 30s)\r\nDelay-restore SVI status          : Timer is off.(timeout = 10s)\r\nOperational Layer3 Peer-router    : Disabled\r\nVirtual-peerlink mode             : Disabled\r\n\r\nvPC Peer-link status\r\n---------------------------------------------------------------------\r\nid    Port   Status Active vlans    \r\n--    ----   ------ -------------------------------------------------\r\n1     Po10   up     100                                                                  \r\n\r\nvPC status\r\n----------------------------------------------------------------------------\r\nId    Port          Status Consistency Reason                Active vlans\r\n--    ------------  ------ ----------- ------                ---------------\r\n1     Po1           down*  success     success               -                           \r\n                                                                                         \r\n\r\nPlease check \"show vpc consistency-parameters vpc <vpc-num>\" for the \r\nconsistency reason of down vpc and for type-2 consistency reasons for \r\nany vpc.\r\n\r\n"
+        },
+        {
+          "node": "nx02",
+          "command": "show port-channel summary",
+          "pattern": "Po1\\(SU\\)",
+          "kind": "regex",
+          "label": "show port-channel summary",
+          "passed": true,
+          "output": "show port-channel summary\r\r\nFlags:  D - Down        P - Up in port-channel (members)\r\n        I - Individual  H - Hot-standby (LACP only)\r\n        s - Suspended   r - Module-removed\r\n        b - BFD Session Wait\r\n        S - Switched    R - Routed\r\n        U - Up (port-channel)\r\n        p - Up in delay-lacp mode (member)\r\n        M - Not in use. Min-links not met\r\n--------------------------------------------------------------------------------\r\nGroup Port-       Type     Protocol  Member Ports\r\n      Channel\r\n--------------------------------------------------------------------------------\r\n1     Po1(SU)     Eth      LACP      Eth1/3(P)    \r\n10    Po10(SU)    Eth      LACP      Eth1/2(P)    \r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.1 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.1",
+          "passed": true,
+          "output": "ping 10.242.0.1 -c 3\r\n\r\n84 bytes from 10.242.0.1 icmp_seq=1 ttl=255 time=7.746 ms\r\n84 bytes from 10.242.0.1 icmp_seq=2 ttl=255 time=8.374 ms\r\n84 bytes from 10.242.0.1 icmp_seq=3 ttl=255 time=12.961 ms\r\n\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.2 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.2",
+          "passed": true,
+          "output": "ping 10.242.0.2 -c 3\r\n\r\n84 bytes from 10.242.0.2 icmp_seq=1 ttl=255 time=83.944 ms\r\n84 bytes from 10.242.0.2 icmp_seq=2 ttl=255 time=9.070 ms\r\n84 bytes from 10.242.0.2 icmp_seq=3 ttl=255 time=12.707 ms\r\n\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

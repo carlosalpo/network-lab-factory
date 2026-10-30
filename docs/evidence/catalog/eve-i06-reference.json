@@ -1,0 +1,170 @@
+{
+  "scenario": "I06",
+  "backend": "eve",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "vios-adventerprisek9-m.spa.159-3"
+  ],
+  "source_result_sha256": "5ca88f770a09d278e02321e85b9ddc2f3696feb6fecb1c90d42dd070920afa20",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r01\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+r02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname r02\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "r01",
+          "command": "show ip route vrf A",
+          "pattern": "10\\.242\\.1\\.0",
+          "kind": "regex",
+          "label": "show ip route vrf A",
+          "passed": true,
+          "output": "show ip route vrf A\r\n\r\nRouting Table: A\r\nCodes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP\r\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \r\n       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2\r\n       E1 - OSPF external type 1, E2 - OSPF external type 2\r\n       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2\r\n       ia - IS-IS inter area, * - candidate default, U - per-user static route\r\n       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP\r\n       a - application route\r\n       + - replicated route, % - next hop override, p - overrides from PfR\r\n\r\nGateway of last resort is not set\r\n\r\n      10.0.0.0/8 is variably subnetted, 6 subnets, 3 masks\r\nC        10.240.0.0/30 is directly connected, GigabitEthernet0/1.100\r\nL        10.240.0.1/32 is directly connected, GigabitEthernet0/1.100\r\nC        10.241.0.1/32 is directly connected, Loopback100\r\nC        10.242.0.0/24 is directly connected, GigabitEthernet0/2\r\nL        10.242.0.1/32 is directly connected, GigabitEthernet0/2\r\nS        10.242.1.0/24 [1/0] via 10.240.0.2\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "show ip route vrf B",
+          "pattern": "10\\.242\\.1\\.0",
+          "kind": "regex",
+          "label": "show ip route vrf B",
+          "passed": true,
+          "output": "show ip route vrf B\r\n\r\nRouting Table: B\r\nCodes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP\r\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \r\n       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2\r\n       E1 - OSPF external type 1, E2 - OSPF external type 2\r\n       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2\r\n       ia - IS-IS inter area, * - candidate default, U - per-user static route\r\n       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP\r\n       a - application route\r\n       + - replicated route, % - next hop override, p - overrides from PfR\r\n\r\nGateway of last resort is not set\r\n\r\n      10.0.0.0/8 is variably subnetted, 6 subnets, 3 masks\r\nC        10.240.0.0/30 is directly connected, GigabitEthernet0/1.101\r\nL        10.240.0.1/32 is directly connected, GigabitEthernet0/1.101\r\nC        10.241.0.2/32 is directly connected, Loopback101\r\nC        10.242.0.0/24 is directly connected, GigabitEthernet0/3\r\nL        10.242.0.1/32 is directly connected, GigabitEthernet0/3\r\nS        10.242.1.0/24 [1/0] via 10.240.0.2\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show ip route vrf A",
+          "pattern": "10\\.242\\.0\\.0",
+          "kind": "regex",
+          "label": "show ip route vrf A",
+          "passed": true,
+          "output": "show ip route vrf A\r\n\r\nRouting Table: A\r\nCodes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP\r\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \r\n       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2\r\n       E1 - OSPF external type 1, E2 - OSPF external type 2\r\n       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2\r\n       ia - IS-IS inter area, * - candidate default, U - per-user static route\r\n       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP\r\n       a - application route\r\n       + - replicated route, % - next hop override, p - overrides from PfR\r\n\r\nGateway of last resort is not set\r\n\r\n      10.0.0.0/8 is variably subnetted, 6 subnets, 3 masks\r\nC        10.240.0.0/30 is directly connected, GigabitEthernet0/1.100\r\nL        10.240.0.2/32 is directly connected, GigabitEthernet0/1.100\r\nC        10.241.0.3/32 is directly connected, Loopback100\r\nS        10.242.0.0/24 [1/0] via 10.240.0.1\r\nC        10.242.1.0/24 is directly connected, GigabitEthernet0/2\r\nL        10.242.1.1/32 is directly connected, GigabitEthernet0/2\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show ip route vrf B",
+          "pattern": "10\\.242\\.0\\.0",
+          "kind": "regex",
+          "label": "show ip route vrf B",
+          "passed": true,
+          "output": "show ip route vrf B\r\n\r\nRouting Table: B\r\nCodes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP\r\n       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area \r\n       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2\r\n       E1 - OSPF external type 1, E2 - OSPF external type 2\r\n       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2\r\n       ia - IS-IS inter area, * - candidate default, U - per-user static route\r\n       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP\r\n       a - application route\r\n       + - replicated route, % - next hop override, p - overrides from PfR\r\n\r\nGateway of last resort is not set\r\n\r\n      10.0.0.0/8 is variably subnetted, 6 subnets, 3 masks\r\nC        10.240.0.0/30 is directly connected, GigabitEthernet0/1.101\r\nL        10.240.0.2/32 is directly connected, GigabitEthernet0/1.101\r\nC        10.241.0.4/32 is directly connected, Loopback101\r\nS        10.242.0.0/24 [1/0] via 10.240.0.1\r\nC        10.242.1.0/24 is directly connected, GigabitEthernet0/3\r\nL        10.242.1.1/32 is directly connected, GigabitEthernet0/3\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.1.10 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.1.10",
+          "passed": true,
+          "output": "ping 10.242.1.10 -c 3\r\n\r\n84 bytes from 10.242.1.10 icmp_seq=1 ttl=62 time=329.417 ms\r\n84 bytes from 10.242.1.10 icmp_seq=2 ttl=62 time=32.656 ms\r\n84 bytes from 10.242.1.10 icmp_seq=3 ttl=62 time=11.882 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.1.10 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.1.10",
+          "passed": true,
+          "output": "ping 10.242.1.10 -c 3\r\n\r\n84 bytes from 10.242.1.10 icmp_seq=1 ttl=62 time=191.981 ms\r\n84 bytes from 10.242.1.10 icmp_seq=2 ttl=62 time=19.144 ms\r\n84 bytes from 10.242.1.10 icmp_seq=3 ttl=62 time=32.933 ms\r\n\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "show ip vrf interfaces",
+          "pattern": "\\bA\\b[\\s\\S]*\\bB\\b",
+          "kind": "regex",
+          "label": "show ip vrf interfaces",
+          "passed": true,
+          "output": "show ip vrf interfaces\r\nInterface              IP-Address      VRF                              Protocol\r\nGi0/1.100              10.240.0.1      A                                up      \r\nGi0/2                  10.242.0.1      A                                up      \r\nLo100                  10.241.0.1      A                                up      \r\nGi0/1.101              10.240.0.1      B                                up      \r\nGi0/3                  10.242.0.1      B                                up      \r\nLo101                  10.241.0.2      B                                up      \r\n"
+        },
+        {
+          "node": "r02",
+          "command": "show ip vrf interfaces",
+          "pattern": "\\bA\\b[\\s\\S]*\\bB\\b",
+          "kind": "regex",
+          "label": "show ip vrf interfaces",
+          "passed": true,
+          "output": "show ip vrf interfaces\r\nInterface              IP-Address      VRF                              Protocol\r\nGi0/1.100              10.240.0.2      A                                up      \r\nGi0/2                  10.242.1.1      A                                up      \r\nLo100                  10.241.0.3      A                                up      \r\nGi0/1.101              10.240.0.2      B                                up      \r\nGi0/3                  10.242.1.1      B                                up      \r\nLo101                  10.241.0.4      B                                up      \r\n"
+        },
+        {
+          "node": "r01",
+          "command": "ping vrf A 10.241.0.1 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Control local VRF A",
+          "passed": true,
+          "output": "ping vrf A 10.241.0.1 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.1, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 1/3/8 ms\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "ping vrf B 10.241.0.2 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Control local VRF B",
+          "passed": true,
+          "output": "ping vrf B 10.241.0.2 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.2, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 3/15/36 ms\r\n"
+        },
+        {
+          "node": "r01",
+          "command": "ping vrf A 10.241.0.2 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "unreachable",
+          "label": "Aislado de VRF B",
+          "passed": true,
+          "output": "ping vrf A 10.241.0.2 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.2, timeout is 1 seconds:\r\n...\r\nSuccess rate is 0 percent (0/3)\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping vrf A 10.241.0.3 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Control local VRF A",
+          "passed": true,
+          "output": "ping vrf A 10.241.0.3 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.3, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 6/16/35 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping vrf B 10.241.0.4 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Control local VRF B",
+          "passed": true,
+          "output": "ping vrf B 10.241.0.4 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.4, timeout is 1 seconds:\r\n!!!\r\nSuccess rate is 100 percent (3/3), round-trip min/avg/max = 1/26/76 ms\r\n"
+        },
+        {
+          "node": "r02",
+          "command": "ping vrf A 10.241.0.4 repeat 3 timeout 1",
+          "pattern": "",
+          "kind": "unreachable",
+          "label": "Aislado de VRF B",
+          "passed": true,
+          "output": "ping vrf A 10.241.0.4 repeat 3 timeout 1\r\nType escape sequence to abort.\r\nSending 3, 100-byte ICMP Echos to 10.241.0.4, timeout is 1 seconds:\r\n...\r\nSuccess rate is 0 percent (0/3)\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}

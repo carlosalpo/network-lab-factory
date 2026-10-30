@@ -2,28 +2,77 @@
 
 [![CI](https://github.com/carlosalpo/network-lab-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/carlosalpo/network-lab-factory/actions/workflows/ci.yml)
 
-![A miniature network lab with four routers and two WAN paths](docs/illustrations/network-lab-factory-cover-v1.png)
+**Turn a network exercise into a prepared, repeatable lab.**
 
-**Turn a network scenario into a repeatable EVE-NG lab and an Ansible workflow.**
+Network Lab Factory is a guided terminal assistant for EVE-NG and a documented GNS3 3.0.6 profile. Choose a scenario, select compatible installed images, adjust address pools, inspect the topology, and confirm creation. The assistant creates and connects devices, applies the base configuration, and checks the result.
 
-Network experiments are easier to trust when the topology, addressing, configuration
-and acceptance checks come from the same source. This project takes a small YAML
-scenario, validates the design, and generates the artifacts needed to build it.
+![Actual terminal application: review a lab before creating it](docs/screenshots/workshop/review.svg)
 
-The first scenario connects a branch to headquarters through two routed WAN paths.
-OSPF costs prefer the primary path; loopback probes test the data plane independently
-of the management network. The WAN routers are a teaching abstraction, not a model
-of a commercial carrier service or SD-WAN product.
+*Actual Textual interface rendered with fixture inventory. The interface is in Spanish. Live network observations are recorded separately below.*
 
-**v0.1.1 includes a recorded live validation** on EVE-NG Professional 7.2.0-4 and
-IOSv 15.9(3)M6: 20/20 baseline checks, zero changes on a second configuration run,
-forwarding over the backup path during a primary-link failure, and 20/20 checks
-after recovery. The fault report correctly identifies two lost adjacencies.
-See the [experiment and reviewed evidence](docs/live-validation.md) for exact
-versions, corrections and limits. Convergence time and loss during switchover were not measured.
+## What you can build
 
-Browse the [visual evidence gallery](docs/screenshots/README.md) for recorded
-baseline/fault/recovery reports, route observations, repeatability and fresh local tests.
+The [catalog](docs/catalog/README.md) contains **24 implemented variants**:
+
+| Level | Scenarios |
+|---|---|
+| Basic | OSPF point-to-point, static routing, VLAN/trunk, LACP, Spanning Tree, three- and four-switch rings, inter-VLAN routing |
+| Intermediate | Three-tier campus, multi-area OSPF, dual-WAN branch, redundant gateway, BGP, VRF, ACL/NAT, IPv6/dual stack |
+| Advanced | Nexus vPC, VXLAN EVPN, MPLS L3VPN, redistribution, BGP multihoming, ASA segmentation, troubleshooting, NX-OS version comparison |
+
+Every scenario documents its topology, prerequisites, device/image profiles, resources, pools, prepared configuration, learner exercise and acceptance checks. The catalog currently offers fixed variants, not arbitrary topology generation or universal support for vendor images.
+
+## Practice or reference
+
+- **Practice:** prepares and checks the prerequisites; leaves the exercise for you.
+- **Reference:** also applies the exercise solution and requires its checks to pass.
+
+A single recipe drives the configuration, ASCII preview and native lab labels. The terminal supports dark, light and monochrome themes, keyboard navigation, compact layouts, device consoles, and recorded checks. Available fault/restore actions are explicit and invalidate prior observations until rechecked.
+
+## Recorded validation
+
+**24/24 reference scenarios passed on EVE-NG and 24/24 on GNS3.** The [validation matrix](docs/catalog-validation.md) links all 48 observations. Additional evidence covers five GNS3 practice samples, selected fault/recovery cases and Nexus automatic boot after power-off. **217 local tests passed** during the campaign; CI also runs the local suite across its configured Python versions.
+
+These are dated results from documented images and installations, not performance, convergence, production-readiness or universal-compatibility claims. Some attempts failed and were repeated after corrections; the report explains those corrections. The [public evidence](docs/evidence/catalog/README.md) retains device observations and excludes private transport and administration records.
+
+[QA cleanup](docs/cleanup-validation.md) removed all 41 EVE-NG labs and 49 GNS3 projects created for the campaign. Existing projects and base images were preserved.
+
+## Quick start
+
+Python 3.11+:
+
+```sh
+git clone https://github.com/carlosalpo/network-lab-factory.git
+cd network-lab-factory
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e '.[dev]'
+nlf wizard
+```
+
+```sh
+nlf wizard --theme light
+nlf wizard --theme mono
+nlf wizard --plain
+nlf catalog
+nlf plan B03 --name vlan-trunk --mode reference --output build/vlan-trunk
+nlf plan A02 --backend gns3 --name evpn-practice --output build/evpn-practice
+```
+
+Planning and local tests need no server. Deployment needs an authorized lab server, the documented runtime and compatible OS images already installed. Proprietary images are not included or downloaded. The [guide](docs/workshop-wizard.md) explains SSH authentication, the optional GNS3 guest-agent transport, image profiles and limitations.
+
+Deployment creates a new lab and refuses an existing destination. Interrupted deployments retain partial records and may retain running nodes; inspect their state before recovery. The interactive product does not silently retry, overwrite or delete existing labs. QA cleanup is a separate, explicit operation.
+
+## Explore
+
+- [24 illustrated scenario guides](docs/catalog/README.md)
+- [Wizard setup, navigation and troubleshooting](docs/workshop-wizard.md)
+- [Recorded validation and limitations](docs/catalog-validation.md)
+- [Actual terminal interface captures](docs/screenshots/workshop/README.md)
+
+## Earlier dual-WAN compiler workflow
+
+The original YAML/Ansible workflow remains available alongside the catalog assistant. Its historical v0.1.1 evidence and manual bootstrap scope are described below; those instructions do not describe the newer wizard's automated preparation.
 
 ![Recorded baseline, deliberate fault and recovery](docs/screenshots/images/01-recorded-verification.jpg)
 
@@ -42,10 +91,11 @@ baseline/fault/recovery reports, route observations, repeatability and fresh loc
 | Configure | Ansible configures data interfaces, loopbacks, OSPF costs and passive interfaces |
 | Verify | Read-only collection of OSPF neighbors and loopback pings; JSON and Markdown reports |
 
-Provisioning deliberately refuses to overwrite an existing lab. Bootstrap is a
+The dual-WAN workflow deliberately refuses to overwrite an existing lab. Bootstrap is a
 one-time **manual console step** on each fresh router. Nodes are started from the
-EVE-NG interface. GNS3, automatic console onboarding, lifecycle API integration and
-automatic teardown are future work, not current features.
+EVE-NG interface. The separate catalog wizard automates startup, base configuration
+and checks for its declared EVE/GNS3 profiles. Its scope and observed compatibility
+are documented separately; it does not reconcile or delete arbitrary existing labs.
 
 ## Try it without EVE-NG
 
@@ -134,7 +184,7 @@ Read the [validation boundary](docs/validation.md) before interpreting a result.
 The [failover exercise](docs/failover.md) explains a controlled manual failure and
 recovery without claiming a measured convergence SLA.
 
-## Design choices
+## Design choices of the original dual-WAN workflow
 
 - **One scenario model:** addressing, wiring, router intent and expected checks are linked.
 - **A small supported surface:** IPv4, IOSv with four interfaces, one OSPF area and
@@ -158,12 +208,13 @@ recovery without claiming a measured convergence SLA.
 | `tests/` | Positive and negative offline tests |
 | `docs/` | Deployment, validation and failover guide |
 
-## Next milestones
+## Catalog boundaries
 
-1. Extend compatibility testing to additional EVE-NG and IOSv versions.
-2. Automate node startup and management onboarding for that tested combination.
-3. Add a GNS3 adapter against a pinned, tested API version.
-4. Add controlled fault injection, recovery checks and measured convergence experiments.
+The wizard implements one concrete variant per scenario, with explicit compatible
+images and resource profiles. Arbitrary equipment counts, general multiuser connectors,
+external address reservations and measured convergence experiments remain outside
+this implementation. See the [catalog](docs/catalog/README.md),
+[terminal guide](docs/workshop-wizard.md) and [validation matrix](docs/catalog-validation.md).
 
 ## Author and license
 

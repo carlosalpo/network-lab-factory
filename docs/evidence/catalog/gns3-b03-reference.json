@@ -1,0 +1,134 @@
+{
+  "scenario": "B03",
+  "backend": "gns3",
+  "mode": "reference",
+  "recorded_date": "2026-10-29",
+  "images": [
+    "viosl2-adventerprisek9-m.SSA.high_iron_20200929"
+  ],
+  "source_result_sha256": "951b205575c54d906d7bf5b9c785729570bb4d9a663fb0f3b6a72d676a682eda",
+  "result": {
+    "event": "result",
+    "preparation": {
+      "status": "passed",
+      "scope": "preparation",
+      "checks": [
+        {
+          "node": "h01",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.10",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : h01[1]\r\nIP/MASK     : 10.242.0.10/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:00\r\nLPORT       : 10422\r\nRHOST:PORT  : 127.0.0.1:10423\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.20",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : h02[1]\r\nIP/MASK     : 10.242.0.20/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:01\r\nLPORT       : 10488\r\nRHOST:PORT  : 127.0.0.1:10489\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "h03",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.11",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : h03[1]\r\nIP/MASK     : 10.242.0.11/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:02\r\nLPORT       : 10490\r\nRHOST:PORT  : 127.0.0.1:10491\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "h04",
+          "command": "show ip",
+          "pattern": "10\\.242\\.0\\.21",
+          "kind": "regex",
+          "label": "show ip",
+          "passed": true,
+          "output": "show ip\r\n\r\nNAME        : h04[1]\r\nIP/MASK     : 10.242.0.21/24\r\nGATEWAY     : 0.0.0.0\r\nDNS         : \r\nMAC         : 00:50:79:66:68:03\r\nLPORT       : 10492\r\nRHOST:PORT  : 127.0.0.1:10493\r\nMTU         : 1500\r\n\r\n"
+        },
+        {
+          "node": "sw01",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw01",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw01\r\n"
+        },
+        {
+          "node": "sw02",
+          "command": "show running-config | include ^hostname",
+          "pattern": "hostname\\s+sw02",
+          "kind": "regex",
+          "label": "Identidad y acceso a consola",
+          "passed": true,
+          "output": "show running-config | include ^hostname\r\nhostname sw02\r\n"
+        }
+      ]
+    },
+    "exercise": {
+      "status": "passed",
+      "scope": "exercise",
+      "checks": [
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.11 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.11",
+          "passed": true,
+          "output": "ping 10.242.0.11 -c 3\r\n\r\n84 bytes from 10.242.0.11 icmp_seq=1 ttl=64 time=15.116 ms\r\n84 bytes from 10.242.0.11 icmp_seq=2 ttl=64 time=17.142 ms\r\n84 bytes from 10.242.0.11 icmp_seq=3 ttl=64 time=10.827 ms\r\n\r\n"
+        },
+        {
+          "node": "h03",
+          "command": "ping 10.242.0.10 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.10",
+          "passed": true,
+          "output": "ping 10.242.0.10 -c 3\r\n\r\n84 bytes from 10.242.0.10 icmp_seq=1 ttl=64 time=11.726 ms\r\n84 bytes from 10.242.0.10 icmp_seq=2 ttl=64 time=13.863 ms\r\n84 bytes from 10.242.0.10 icmp_seq=3 ttl=64 time=8.274 ms\r\n\r\n"
+        },
+        {
+          "node": "h02",
+          "command": "ping 10.242.0.21 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.21",
+          "passed": true,
+          "output": "ping 10.242.0.21 -c 3\r\n\r\n84 bytes from 10.242.0.21 icmp_seq=1 ttl=64 time=5.248 ms\r\n84 bytes from 10.242.0.21 icmp_seq=2 ttl=64 time=6.952 ms\r\n84 bytes from 10.242.0.21 icmp_seq=3 ttl=64 time=13.476 ms\r\n\r\n"
+        },
+        {
+          "node": "h04",
+          "command": "ping 10.242.0.20 -c 3",
+          "pattern": "",
+          "kind": "ping",
+          "label": "Alcance a 10.242.0.20",
+          "passed": true,
+          "output": "ping 10.242.0.20 -c 3\r\n\r\n84 bytes from 10.242.0.20 icmp_seq=1 ttl=64 time=9.969 ms\r\n84 bytes from 10.242.0.20 icmp_seq=2 ttl=64 time=13.114 ms\r\n84 bytes from 10.242.0.20 icmp_seq=3 ttl=64 time=16.253 ms\r\n\r\n"
+        },
+        {
+          "node": "h01",
+          "command": "ping 10.242.0.20 -c 3",
+          "pattern": "",
+          "kind": "unreachable",
+          "label": "Aislamiento a 10.242.0.20",
+          "passed": true,
+          "output": "ping 10.242.0.20 -c 3\r\n\r\nhost (10.242.0.20) not reachable\r\n\r\n"
+        },
+        {
+          "node": "sw01",
+          "command": "show interfaces trunk",
+          "pattern": "100[,-]101",
+          "kind": "regex",
+          "label": "show interfaces trunk",
+          "passed": true,
+          "output": "show interfaces trunk\r\n\r\nPort        Mode             Encapsulation  Status        Native vlan\r\nGi0/0       on               802.1q         trunking      1\r\n\r\nPort        Vlans allowed on trunk\r\nGi0/0       100-101\r\n\r\nPort        Vlans allowed and active in management domain\r\nGi0/0       100-101\r\n\r\nPort        Vlans in spanning tree forwarding state and not pruned\r\nGi0/0       100-101\r\n"
+        }
+      ]
+    },
+    "status": "ready"
+  }
+}
