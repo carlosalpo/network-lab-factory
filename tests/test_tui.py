@@ -38,7 +38,7 @@ class FakeEve:
             callback({"event": "created", "path": path})
             if self.block:
                 assert self.cancel.wait(10), "Cancellation was not delivered to connector"
-                raise RuntimeError("Operación cancelada")
+                raise RuntimeError("Operation cancelled")
             if self.fail:
                 raise RuntimeError(self.fail)
             for node in ("r01", "r02"):
@@ -154,14 +154,14 @@ def test_failure_or_cancel_preserves_record_and_never_repeats_deployment(tmp_pat
         app = WorkshopApp(connector_factory=FakeEve, output_root=tmp_path)
         async with app.run_test(size=(100, 35)) as pilot:
             await reach_review(app, pilot)
-            app.connector.fail = "r02 no inició"
+            app.connector.fail = "r02 did not start"
             app.connector.block = cancel
             app.query_one("#confirmation", Input).value = "DEPLOY"
             await pilot.pause()
             await press(app, pilot, "start")
             if cancel:
                 assert app.focused.id == "deploy"
-                assert "Transcurrido" in str(app.query_one("#elapsed", Static).content)
+                assert "Elapsed" in str(app.query_one("#elapsed", Static).content)
                 await pilot.press("ctrl+c")
                 await pilot.pause()
                 assert isinstance(app.screen, Dialog)
@@ -194,7 +194,7 @@ def test_no_compatible_image_keeps_scenario_unavailable(tmp_path):
             await press(app, pilot, "connect")
             await settle(app, pilot)
             assert app.inventory is None and app.query_one("#choose", Button).disabled
-            assert "no instalada" in str(app.query_one("#inventory", Static).content)
+            assert "not installed" in str(app.query_one("#inventory", Static).content)
 
     asyncio.run(scenario())
 
@@ -266,7 +266,7 @@ def test_console_handoff_restores_ui_and_marks_observations_stale(tmp_path, monk
                 ["ssh", "-tt", "root@lab.example", "telnet -K -c 127.0.0.1 12345"],
                 "resume",
             ]
-            assert "nuevamente" in str(app.query_one("#check-result", Static).content)
+            assert "again" in str(app.query_one("#check-result", Static).content)
 
     asyncio.run(scenario())
 
@@ -356,7 +356,7 @@ def test_explicit_theme_switch_can_restore_color_after_no_color(monkeypatch):
             await pilot.press("ctrl+t")
             assert app.theme == "nlf-dark"
             assert not any(isinstance(f, (Monochrome, NoColor)) for f in app.get_line_filters())
-            assert "Oscuro" in str(app.query_one("#brand", Static).content)
+            assert "Dark" in str(app.query_one("#brand", Static).content)
             assert os.environ["NO_COLOR"] == "1"
 
     import os
@@ -381,7 +381,7 @@ def test_catalog_selection_versions_and_missing_capability(tmp_path):
             await press(app, pilot, "b01")
             await press(app, pilot, "preview")
             assert app.page == "prepare"
-            assert "imagen compatible" in str(app.query_one("#prepare-error", Static).content)
+            assert "compatible image" in str(app.query_one("#prepare-error", Static).content)
             assert app.connector.actions == ["inventory"]
             app.inventory["images"] = [p["image"] for p in PROFILES.values() if p["image"]]
             app.inventory["vpcs"] = True
@@ -393,7 +393,7 @@ def test_catalog_selection_versions_and_missing_capability(tmp_path):
             assert app.plan["scenario"] == "B03" and len(app.plan["nodes"]) == 6
             assert app.connector.actions.count("deploy") == 0
             await pilot.press("escape", "escape")
-            for level in ("Intermedio", "Avanzado"):
+            for level in ("Intermediate", "Advanced"):
                 app.query_one("#level", Select).value = level
                 await pilot.pause()
                 assert CATALOG[app.scenario_id]["level"] == level
@@ -409,7 +409,7 @@ def test_catalog_selection_versions_and_missing_capability(tmp_path):
             ).value
             await press(app, pilot, "preview")
             assert app.page == "prepare"
-            assert "diferentes" in str(app.query_one("#prepare-error", Static).content)
+            assert "different" in str(app.query_one("#prepare-error", Static).content)
 
     asyncio.run(scenario())
 

@@ -18,7 +18,7 @@ def resource_id(plan, key):
 def native_graph(plan):
     validate_catalog_plan(plan)
     if plan.get("backend") != "gns3":
-        raise ValueError("Se necesita una receta para GNS3.")
+        raise ValueError("A GNS3 recipe is required.")
     nodes = []
     for n in plan["nodes"]:
         p = GNS3_PROFILES[n["gns3_profile"]]

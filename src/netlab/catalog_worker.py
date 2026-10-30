@@ -25,9 +25,7 @@ def nxos_boot_image(output, node):
     candidates = set(re.findall(r"\bnxos[A-Za-z0-9_.-]*\.bin\b", output))
     candidates = {name for name in candidates if suffix and name.endswith(suffix)}
     if len(candidates) != 1:
-        raise RuntimeError(
-            "No se identificó una única imagen de arranque compatible en " + node["name"]
-        )
+        raise RuntimeError("Could not identify a single compatible boot image in " + node["name"])
     return candidates.pop()
 
 
@@ -55,17 +53,17 @@ def preflight(plan):
         p = n["device"]
         if p["console"] == "vpcs":
             if not inv["vpcs"]:
-                raise ValueError("VPCS no está instalado")
+                raise ValueError("VPCS is not installed")
         elif p["image"] not in inv["images"]:
-            raise ValueError("Falta la imagen " + p["image"])
+            raise ValueError("Missing image: " + p["image"])
         elif not (Path("/opt/unetlab/addons/qemu") / p["image"] / p["disk"]).is_file():
-            raise ValueError("Falta el disco esperado para " + p["image"])
+            raise ValueError("Missing expected disk for " + p["image"])
     if inv["memory_mib"] < plan["ram_mib"] + 1024 or inv["free_gib"] < max(2, len(plan["nodes"])):
         raise ValueError(
-            f"Recursos insuficientes: {plan['ram_mib'] + 1024} MiB y {max(2, len(plan['nodes']))} GiB libres requeridos"
+            f"Insufficient resources: {plan['ram_mib'] + 1024} MiB and {max(2, len(plan['nodes']))} GiB free required"
         )
     if destination(plan).exists():
-        raise ValueError("El laboratorio ya existe; elegí otro nombre.")
+        raise ValueError("The lab already exists; choose another name.")
     return inv
 
 
@@ -106,7 +104,7 @@ def node_console(node, port, boot=False):
         if match == 11:
             if not boot or node["device"]["console"] != "nxos" or boot_attempted:
                 child.close()
-                raise RuntimeError("El equipo quedó en el cargador de arranque: " + node["name"])
+                raise RuntimeError("The device is still in the boot loader: " + node["name"])
             child.send("dir\r")
             child.expect(patterns[11], timeout=30)
             image = nxos_boot_image(child.before, node)
@@ -115,7 +113,7 @@ def node_console(node, port, boot=False):
             continue
         if match in (1, 2, 3, 4, 7, 10) and not boot:
             child.close()
-            raise RuntimeError("El equipo requiere configuración inicial; no se cambió nada.")
+            raise RuntimeError("The device requires initial setup; nothing was changed.")
         if match in (1, 4, 7):
             child.send("no\r")
         elif match in (2, 3):
@@ -130,11 +128,11 @@ def node_console(node, port, boot=False):
             child.send("yes\r")
         elif match == 9:
             child.close()
-            raise RuntimeError("Consola desconectada: " + node["name"])
+            raise RuntimeError("Console disconnected: " + node["name"])
         else:
             child.send("\r")
     child.close()
-    raise RuntimeError("Tiempo de arranque agotado: " + node["name"])
+    raise RuntimeError("Boot deadline exceeded: " + node["name"])
 
 
 def node_command(child, text, dialect, timeout=90):
@@ -162,7 +160,7 @@ def node_command(child, text, dialect, timeout=90):
     while True:
         remaining = deadline - time.monotonic()
         if remaining <= 0:
-            raise RuntimeError("Tiempo agotado esperando el comando: " + text)
+            raise RuntimeError("Timed out waiting for command: " + text)
         match = child.expect(
             [
                 PROMPT,
@@ -192,13 +190,13 @@ def node_command(child, text, dialect, timeout=90):
         ):
             child.send(LAB_PASSWORD + "\r")
         else:
-            raise RuntimeError("La consola se desconectó")
+            raise RuntimeError("Console disconnected")
     if re.search(
         r"%\s*(?:Invalid|Incomplete|Ambiguous|Error)|ERROR:|Invalid command|Bad command|Invalid address",
         output,
         re.I,
     ):
-        raise RuntimeError("Comando rechazado: " + text + "\n" + output[-400:])
+        raise RuntimeError("Command rejected: " + text + "\n" + output[-400:])
     return output
 
 
@@ -296,7 +294,7 @@ def verify(plan, ports, exercise=False):
 def identity(plan):
     path = destination(plan)
     if ET.parse(path).getroot().get("id") != plan["uuid"]:
-        raise ValueError("La identidad del laboratorio cambió; no se modificó nada.")
+        raise ValueError("The lab identity changed; nothing was modified.")
     return path
 
 
@@ -346,7 +344,7 @@ def catalog_deploy(payload):
             r"will start node\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)", run.stdout + run.stderr
         )
         if run.returncode or not match:
-            raise RuntimeError("No inició " + n["name"] + "; laboratorio conservado")
+            raise RuntimeError("Could not start " + n["name"] + "; lab preserved")
         ports[n["name"]] = int(match[1])
         emit("started", node=n["name"], port=ports[n["name"]])
 
@@ -426,7 +424,7 @@ def catalog_main(payload):
             (s for s in plan["actions"] if s["id"] == payload.get("action_id", "fault")), None
         )
         if not step:
-            raise ValueError("Esta receta no define una falla reversible")
+            raise ValueError("This recipe does not define a reversible fault")
         affected = []
         for part in [step] + ([step["peer"]] if "peer" in step else []):
             n = next(n for n in plan["nodes"] if n["name"] == part["node"])
@@ -466,11 +464,11 @@ def catalog_main(payload):
         deadline = time.monotonic() + 15
         while running_lab_processes(plan):
             if time.monotonic() >= deadline:
-                raise RuntimeError("EVE-NG no confirmó el apagado completo del laboratorio")
+                raise RuntimeError("EVE-NG did not confirm that the entire lab stopped")
             time.sleep(1)
         emit("stopped", path=str(path), status="stopped")
     else:
-        raise ValueError("Operación desconocida")
+        raise ValueError("Unknown operation")
 
 
 def running_lab_processes(plan):

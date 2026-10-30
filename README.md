@@ -18,7 +18,7 @@ Choose the platform, scenario, installed images and address pools. The review sc
 
 ![Network Lab Factory terminal application showing the lab review before deployment](docs/screenshots/workshop/review.svg)
 
-*Actual application widgets rendered with fixture inventory. The terminal interface is in Spanish; this image illustrates the workflow, not a live deployment. [Capture method and more screens](docs/screenshots/workshop/README.md).*
+*Actual application widgets rendered with fixture inventory. The English interface is shown with demo data, not a live deployment. [Capture method and more screens](docs/screenshots/workshop/README.md).*
 
 ### 2. Open the native topology in EVE-NG
 
@@ -65,6 +65,8 @@ source .venv/bin/activate
 python -m pip install -e .
 nlf wizard
 ```
+
+The terminal interface and plain prompts are in **English**, including all 24 scenario summaries, validation messages and recovery guidance.
 
 In the assistant: **Server → Scenario → Preparation → Review → Deployment → Lab**. Check the destination and type `DEPLOY` to confirm creation. The result view lets you open device consoles and recheck the preparation or exercise.
 

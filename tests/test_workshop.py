@@ -142,7 +142,7 @@ def test_ssh_streams_events_and_cancels_a_silent_child(monkeypatch):
         events.append(event)
         cancel.set()
 
-    with pytest.raises(RuntimeError, match="cancelada"):
+    with pytest.raises(RuntimeError, match="cancelled"):
         connector.run("inventory", callback=observed)
     assert events == [{"event": "waiting", "node": "r01"}]
     assert children[0].poll() is not None

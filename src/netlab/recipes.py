@@ -78,7 +78,7 @@ def basic_routing(r, sid):
                     "inverse": ["configure terminal", "interface " + iface, "no shutdown", "end"],
                 }
             ]
-            r.plan["exercise"] = "Diagnosticar y reparar una falla después de comprobar la base."
+            r.plan["exercise"] = "Diagnose and repair a fault after verifying the baseline."
     elif sid == "B02":
         for i in (1, 2):
             r.node(f"r0{i}", x=330 + (i - 1) * 340, y=220)
@@ -256,7 +256,7 @@ def ospf_network(r, sid):
         r.ping("h01", r.nodes["h02"]["ip"])
         r.ping("h02", r.nodes["h01"]["ip"])
         r.plan["exercise"] = (
-            "Configurar OSPF entre distribución y núcleo; las VLAN y gateways ya están preparados."
+            "Configure OSPF between distribution and core; VLANs and gateways are already prepared."
         )
     else:
         positions = (
@@ -463,7 +463,7 @@ def acl_nat(r):
     r.ping("h02", h["ip"], negative=True)
     r.check("r01", "show ip nat translations", r"icmp\s+")
     r.plan["exercise"] = (
-        "Permitir ICMP de H01, bloquear ICMP de H02 hacia SRV01 y aplicar PAT sobre la interfaz WAN."
+        "Allow ICMP from H01, block ICMP from H02 to SRV01 and apply PAT on the WAN interface."
     )
 
 
@@ -497,7 +497,7 @@ def ipv6(r):
     for a, b in [("h01", "h02"), ("h02", "h01")]:
         r.ping(a, r.nodes[b]["ip"])
         r.ping(a, r.nodes[b]["ipv6"][0])
-    r.plan["exercise"] = "Configurar OSPFv2 y OSPFv3; verificar IPv4 e IPv6 de forma independiente."
+    r.plan["exercise"] = "Configure OSPFv2 and OSPFv3; verify IPv4 and IPv6 independently."
 
 
 def nexus_vpc(r):
@@ -854,7 +854,7 @@ def multihoming(r):
         }
     ]
     r.plan["exercise"] = (
-        "Preferir ISP01 con local-preference y comprobar cambio de salida en los routers de borde."
+        "Prefer ISP01 using local preference and verify exit-path changes on the edge routers."
     )
 
 
@@ -894,7 +894,7 @@ def firewall(r):
     r.ping("h01", c, negative=True)
     r.check("fw01", "show access-list INSIDE", r"hitcnt=[1-9]")
     r.plan["exercise"] = (
-        "Permitir ICMP desde LAN a DMZ y su respuesta; bloquear LAN hacia la zona exterior."
+        "Allow ICMP from LAN to DMZ and its replies; block LAN access to the outside zone."
     )
 
 
@@ -902,7 +902,7 @@ def comparison(r):
     if r.images.get("nxos", "nxosv9k-9300v-9.3.9") == r.images.get(
         "nxos105", "nxosv9k-9300v-10.5.3.F"
     ):
-        raise ValueError("La comparación necesita dos versiones diferentes.")
+        raise ValueError("Comparison requires two different versions.")
     for group, profile, y in [("a", "nxos", 180), ("b", "nxos105", 470)]:
         for j in (1, 2):
             r.node(f"{group}-r0{j}", profile, 200 + (j - 1) * 500, y)
@@ -911,7 +911,7 @@ def comparison(r):
         for j in (1, 2):
             r.ping(f"{group}-r0{j}", r.nodes[f"{group}-r0{3 - j}"]["loopback"])
     r.plan["exercise"] = (
-        "Comparar la misma prueba OSPF en Nexus 9.3.9 y 10.5.3.F, en dos componentes aislados."
+        "Compare the same OSPF test on Nexus 9.3.9 and 10.5.3.F in two isolated components."
     )
     r.plan["comparison_groups"] = {"A": ["a-r01", "a-r02"], "B": ["b-r01", "b-r02"]}
 
@@ -944,9 +944,7 @@ def make_catalog_plan(scenario, name, **kwargs):
             }[scenario](r)
         return r.finish()
     except StopIteration as exc:
-        raise ValueError(
-            "El pool no alcanza para todos los enlaces o equipos de esta receta."
-        ) from exc
+        raise ValueError("The pool is too small for all links or devices in this recipe.") from exc
 
 
 def validate_catalog_plan(plan):
@@ -963,8 +961,8 @@ def validate_catalog_plan(plan):
     # Commands, allocations, checks and graph must still match exactly.
     for key in ("title", "prepare", "exercise"):
         if not isinstance(plan.get(key), str) or len(plan[key]) > 2000:
-            raise ValueError("Descripción de receta inválida")
+            raise ValueError("Invalid recipe description")
         expected[key] = plan[key]
     if expected != plan:
-        raise ValueError("La receta fue modificada o pertenece a otra versión; regenerala.")
+        raise ValueError("The recipe was modified or belongs to another version; regenerate it.")
     return plan

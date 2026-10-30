@@ -23,14 +23,14 @@ class GNS3API:
 
     def request(self, method, path, data=None, missing=False, authenticate=True):
         if not path.startswith("/") or ".." in path or "?" in path:
-            raise ValueError("Ruta API inválida")
+            raise ValueError("Invalid API path")
         if authenticate and self.token is None:
             try:
                 credentials = json.loads(self.auth_file.read_text())
                 login = {"username": credentials["username"], "password": credentials["password"]}
             except (OSError, ValueError, KeyError):
                 raise RuntimeError(
-                    "No se puede leer la configuración privada GNS3 del servidor; revisá su ruta y permisos."
+                    "Cannot read the private GNS3 server configuration; check its path and permissions."
                 ) from None
             self.token = self.request(
                 "POST", "/access/users/authenticate", login, authenticate=False
@@ -52,18 +52,18 @@ class GNS3API:
             if missing and exc.code == 404:
                 return None
             raise RuntimeError(
-                f"GNS3 rechazó {method} {path}: HTTP {exc.code}. No se reintenta automáticamente."
+                f"GNS3 rejected {method} {path}: HTTP {exc.code}. No automatic retry."
             ) from None
         except (urllib.error.URLError, TimeoutError, ValueError):
             raise RuntimeError(
-                f"GNS3 no confirmó {method} {path}. Revisá el proyecto antes de repetir la operación."
+                f"GNS3 did not confirm {method} {path}. Check the project before repeating the operation."
             ) from None
 
 
 def inventory():
     version = api.request("GET", "/version")["version"]
     if version != "3.0.6":
-        raise ValueError("Este perfil requiere GNS3 3.0.6; el servidor informa " + version)
+        raise ValueError("This profile requires GNS3 3.0.6; the server reports " + version)
     available = []
     for family, p in GNS3_PROFILES.items():
         if (
@@ -80,40 +80,42 @@ def inventory():
         "free_gib": shutil.disk_usage(GNS3_ROOT).free // 1024**3,
         "runtime": GNS3_RUNTIME.is_file(),
         "version": version,
-        "profile": "GNS3 3.0.6 · Nexo host · API local por SSH",
+        "profile": "GNS3 3.0.6 · Nexo host · local API over SSH",
         "backend": "gns3",
     }
 
 
 def destination(plan):
     if not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", plan["folder"]):
-        raise ValueError("Carpeta GNS3 inválida")
+        raise ValueError("Invalid GNS3 folder")
     if not re.fullmatch(r"[a-z][a-z0-9-]{0,47}", plan["name"]):
-        raise ValueError("Nombre GNS3 inválido")
+        raise ValueError("Invalid GNS3 name")
     path = GNS3_ROOT / plan["folder"] / plan["name"]
     if not path.resolve().is_relative_to(GNS3_ROOT.resolve()):
-        raise ValueError("Destino fuera del directorio de proyectos")
+        raise ValueError("Destination is outside the projects directory")
     return path
 
 
 def preflight(plan):
     if plan.get("schema") != 2 or plan.get("backend") != "gns3":
-        raise ValueError("La receta debe prepararse para GNS3")
+        raise ValueError("The recipe must be prepared for GNS3")
     inv = inventory()
     if not inv["runtime"]:
-        raise ValueError("Falta el ejecutor QEMU del perfil GNS3")
+        raise ValueError("The GNS3 profile QEMU executable is missing")
     for n in plan["nodes"]:
         if n["profile"] == "vpcs":
             if not inv["vpcs"]:
-                raise ValueError("VPCS no está instalado")
+                raise ValueError("VPCS is not installed")
         elif n["device"]["image"] not in inv["images"]:
-            raise ValueError("Falta imagen o BIOS compatible: " + n["device"]["image"])
+            raise ValueError("Missing compatible image or BIOS: " + n["device"]["image"])
     if inv["memory_mib"] < plan["ram_mib"] + 1024 or inv["free_gib"] < max(2, len(plan["nodes"])):
-        raise ValueError("Recursos insuficientes para esta maqueta")
+        raise ValueError("Insufficient resources for this lab")
     if destination(plan).exists() or api.request("GET", "/projects/" + plan["uuid"], missing=True):
-        raise ValueError("El proyecto ya existe; elegí otro nombre. No se sobrescribió nada.")
+        raise ValueError(
+            "The project already exists; choose another name. Nothing was overwritten."
+        )
     if any(p["name"] == plan["name"] for p in api.request("GET", "/projects")):
-        raise ValueError("Ya existe un proyecto con este nombre")
+        raise ValueError("A project with this name already exists")
     return inv
 
 
@@ -123,7 +125,7 @@ def identity(plan):
         project["name"] != plan["name"]
         or Path(project["path"]).resolve() != destination(plan).resolve()
     ):
-        raise ValueError("La identidad del proyecto cambió; no se modificó nada")
+        raise ValueError("The project identity changed; nothing was modified")
     return project["path"]
 
 
@@ -133,7 +135,7 @@ def current_ports(plan):
     }
     actual = api.request("GET", "/projects/" + plan["uuid"] + "/nodes")
     if {n["node_id"] for n in actual} != set(expected):
-        raise ValueError("Cambió la composición del proyecto; revisá sus nodos antes de continuar")
+        raise ValueError("The project composition changed; review its nodes before continuing")
     return {expected[n["node_id"]]: n["console"] for n in actual}
 
 
@@ -189,7 +191,7 @@ def gns3_main(payload):
             if all(node["status"] == "stopped" for node in nodes):
                 break
             if time.monotonic() >= deadline:
-                raise RuntimeError("GNS3 no confirmó el apagado completo del proyecto")
+                raise RuntimeError("GNS3 did not confirm that the entire project stopped")
             time.sleep(1)
         emit("stopped", path=path, status="stopped")
     elif action in ("verify", "fault", "restore"):
@@ -197,7 +199,7 @@ def gns3_main(payload):
         payload["ports"] = current_ports(plan)
         shared_catalog_main(payload)
     else:
-        raise ValueError("Operación GNS3 desconocida")
+        raise ValueError("Unknown GNS3 operation")
 
 
 if __name__ == "__main__":

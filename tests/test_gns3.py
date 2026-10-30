@@ -136,7 +136,7 @@ def test_stop_refuses_changed_project_composition_before_mutating():
             return {"name": plan["name"], "path": str(ns["destination"](plan))}
 
     ns["GNS3API"] = API
-    with pytest.raises(ValueError, match="composición"):
+    with pytest.raises(ValueError, match="composition"):
         ns["gns3_main"]({"action": "stop", "plan": plan})
     assert all(method == "GET" for method, _ in calls)
 
@@ -150,5 +150,5 @@ def test_identity_rejects_project_moved_outside_expected_folder():
             return {"name": plan["name"], "path": "/srv/gns3/projects/someone-else"}
 
     ns["api"] = API()
-    with pytest.raises(ValueError, match="identidad"):
+    with pytest.raises(ValueError, match="identity"):
         ns["identity"](plan)

@@ -21,7 +21,7 @@ class GNS3QGA(GNS3SSH):
     def __init__(self, host, user="root", control=None, *, guest_id=110, **kwargs):
         super().__init__(host, user, control, **kwargs)
         if type(guest_id) is not int or not 100 <= guest_id <= 999999999:
-            raise ValueError("Identificador de VM GNS3 inválido")
+            raise ValueError("Invalid GNS3 VM identifier")
         self.guest_id = guest_id
 
     def connection(self):
@@ -43,17 +43,17 @@ class GNS3QGA(GNS3SSH):
             )
         except subprocess.TimeoutExpired:
             raise RuntimeError(
-                "La sesión Proxmox no respondió; la operación puede seguir en curso."
+                "The Proxmox session did not respond; the operation may still be running."
             ) from None
         if run.returncode:
             raise RuntimeError(
-                "La sesión administrativa temporal no está disponible o el agente de GNS3 no respondió."
+                "The temporary administrative session is unavailable or the GNS3 guest agent did not respond."
             )
         try:
             return json.loads(run.stdout)
         except ValueError:
             raise RuntimeError(
-                "Respuesta del agente no reconocida; no se repitió la operación."
+                "Unrecognized guest agent response; the operation was not repeated."
             ) from None
 
     def guest_start(self, code, payload=None, tag=None):
@@ -79,15 +79,17 @@ class GNS3QGA(GNS3SSH):
         r = self.guest_start(code, payload)
         pid = r.get("pid")
         if pid is None and "exitcode" not in r:
-            raise RuntimeError("El agente no confirmó la consulta; no se repetirá.")
+            raise RuntimeError(
+                "The guest agent did not confirm the query; it will not be repeated."
+            )
         deadline = time.monotonic() + 40
         while "exitcode" not in r:
             if time.monotonic() > deadline:
-                raise RuntimeError("La consulta GNS3 sigue pendiente; no se repetirá.")
+                raise RuntimeError("The GNS3 query is still pending; it will not be repeated.")
             time.sleep(0.15)
             r = self.guest_status(pid)
         if r["exitcode"]:
-            raise RuntimeError("No se pudo leer el estado privado de esta operación GNS3.")
+            raise RuntimeError("Could not read the private state of this GNS3 operation.")
         return json.loads(r.get("out-data", "{}"))
 
     def read_journal(self, job, offset):
@@ -120,9 +122,9 @@ print(json.dumps({'cancel_requested':True}))
         if "plan" in values:
             validate_plan(values["plan"])
             if values["plan"].get("backend") != "gns3":
-                raise ValueError("La receta pertenece a otra plataforma")
+                raise ValueError("The recipe belongs to another platform")
         if self.cancel and self.cancel.is_set():
-            raise RuntimeError("Operación cancelada")
+            raise RuntimeError("Operation cancelled")
         if action == "deploy":
             values["graph"] = native_graph(values["plan"])
         tag = "nlf-qa-" + str(uuid.uuid4())
@@ -149,7 +151,9 @@ except Exception as exc:
         )
         pid = started.get("pid")
         if pid is None:
-            raise RuntimeError("El agente no confirmó el proceso; revisá GNS3 antes de repetir.")
+            raise RuntimeError(
+                "The guest agent did not confirm the process; check GNS3 before retrying."
+            )
         if callback:
             callback({"event": "operation", "guest_id": self.guest_id, "pid": pid, "journal": job})
         deadline = time.monotonic() + (
@@ -170,18 +174,18 @@ except Exception as exc:
             if self.cancel and self.cancel.is_set():
                 self.cancel_job(job, pid, tag)
                 raise RuntimeError(
-                    "Operación interrumpida; el proyecto y registro parcial se conservan."
+                    "Operation interrupted; the project and partial record are preserved."
                 )
             if time.monotonic() > deadline:
                 raise RuntimeError(
-                    f"La operación GNS3 sigue pendiente (VM {self.guest_id}, PID {pid}). No la repitas; revisá su registro {job}."
+                    f"The GNS3 operation is still pending (VM {self.guest_id}, PID {pid}). Do not repeat it; check its record at {job}."
                 )
             time.sleep(2)
         if status["exitcode"] or not events or events[-1].get("event") == "error":
             raise RuntimeError(
                 next(
                     (e["message"] for e in reversed(events) if e.get("event") == "error"),
-                    "El agente terminó sin confirmar el resultado.",
+                    "The guest agent exited without confirming the result.",
                 )
             )
         return events[-1]
@@ -196,9 +200,9 @@ except Exception as exc:
 
         validate_plan(plan)
         if plan.get("backend") != "gns3" or node_name not in {n["name"] for n in plan["nodes"]}:
-            raise ValueError("Consola ajena a la receta")
+            raise ValueError("Console does not belong to the recipe")
         if not sys.stdin.isatty():
-            raise RuntimeError("La consola interactiva necesita una terminal.")
+            raise RuntimeError("The interactive console requires a terminal.")
         tag = "nlf-console-" + str(uuid.uuid4())
         job = "/tmp/" + tag
         code = """import fcntl,json,os,pathlib,sys,time
@@ -222,7 +226,7 @@ try:
    except pexpect.TIMEOUT:pass
    except pexpect.EOF:break
 except Exception as exc:
- with (job/'output.bin').open('ab') as output:output.write(('\\r\\nConsola cerrada: '+str(exc)+'\\r\\n').encode())
+ with (job/'output.bin').open('ab') as output:output.write(('\\r\\nConsole closed: '+str(exc)+'\\r\\n').encode())
 finally:
  if child:child.close()
  (job/'closed').touch()
@@ -252,9 +256,7 @@ if f.exists():
 print(json.dumps({'data':base64.b64encode(text).decode(),'offset':r['offset']+len(text),'closed':(job/'closed').exists()}))
 """
         print(
-            "Consola "
-            + node_name
-            + " · Ctrl+] para volver. La sesión se cierra después de 20 minutos.",
+            "Console " + node_name + " · Ctrl+] to return. The session closes after 20 minutes.",
             flush=True,
         )
         fd = sys.stdin.fileno()
@@ -289,4 +291,4 @@ print(json.dumps({'data':base64.b64encode(text).decode(),'offset':r['offset']+le
                 cleanup = "import json,pathlib,shutil,sys;r=json.load(sys.stdin);p=pathlib.Path(r['job']);shutil.rmtree(p,ignore_errors=True);print('{}')"
                 self.guest_read(cleanup, {"job": job})
             finally:
-                print("\nConsola cerrada.", flush=True)
+                print("\nConsole closed.", flush=True)

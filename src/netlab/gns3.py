@@ -25,7 +25,7 @@ class GNS3SSH(EveSSH):
         path = PurePosixPath(auth_file)
         if not path.is_absolute() or ".." in path.parts:
             raise ValueError(
-                "La configuración privada GNS3 debe ser una ruta absoluta del servidor."
+                "The private GNS3 configuration must use an absolute path on the server."
             )
         self.auth_file = str(path)
 

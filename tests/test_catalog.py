@@ -73,7 +73,7 @@ def test_reference_comparison_has_no_cross_version_links():
     for net in p["networks"]:
         assert len({e["node"][0] for e in net["endpoints"]}) == 1
     assert len({n["device"]["image"] for n in p["nodes"]}) == 2
-    with pytest.raises(ValueError, match="diferentes"):
+    with pytest.raises(ValueError, match="different"):
         make_catalog_plan("A08", "versions", images={"nxos105": "nxosv9k-9300v-9.3.9"})
 
 
@@ -222,11 +222,11 @@ def test_labels_cover_subinterfaces_and_distinguish_exercise_addresses():
     notes = interface_annotations(router, "practice")
     subinterfaces = {k: v for k, v in notes.items() if "." in k}
     assert len(subinterfaces) == 2
-    assert all("[ejercicio]" in value for values in subinterfaces.values() for value in values)
+    assert all("[exercise]" in value for values in subinterfaces.values() for value in values)
     preview = ascii_topology(p)
     assert all(name in preview for name in subinterfaces)
     reference = interface_annotations(router, "reference")
-    assert all("[ejercicio]" not in value for values in reference.values() for value in values)
+    assert all("[exercise]" not in value for values in reference.values() for value in values)
 
 
 def test_firewall_hosts_and_ipv6_addresses_have_labels():

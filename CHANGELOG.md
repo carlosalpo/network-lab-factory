@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — 2026-10-30
+
+- English terminal interface, plain wizard prompts, help, progress, validation and recovery messages.
+- English summaries and exercise instructions for all 24 scenarios, with Basic, Intermediate and Advanced selectors.
+- English display of known editorial text in saved Spanish recipes without rewriting their records. Commands, graph integrity checks, identities and explicit deployment/fault confirmations are preserved.
+- Refreshed README screenshots and a reproducible fixture-only capture harness.
+
+Validation: the existing 217 offline tests plus one saved-recipe compatibility regression passed. Compared 96 plans (24 scenarios × 2 backends × 2 modes) with the preceding commit: commands, allocations, graphs, checks, actions and identities are unchanged, and all preceding plans still validate. No new live platform campaign was run for this interface-only update.
+
 ## 0.1.0 — 2026-10-29
 
 Initial public implementation for review.

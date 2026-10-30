@@ -80,7 +80,7 @@ def main(argv=None):
             from .catalog import CATALOG
 
             for sid, s in CATALOG.items():
-                print(f"{sid}  {s['level']:<10}  {s['title']}")
+                print(f"{sid}  {s['level']:<12}  {s['title']}")
             print(
                 "Recipes are implemented; consult docs/catalog-validation.md for live validation."
             )

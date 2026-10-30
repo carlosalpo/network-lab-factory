@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from .catalog import commands
+from .language import english
 from .recipes import validate_catalog_plan
 
 
@@ -37,7 +38,7 @@ def interface_annotations(node, mode):
                 current = node["interfaces"][0]["name"]
                 value = line.split()[1]
             if value:
-                note = value + (" [ejercicio]" if pending else "")
+                note = value + (" [exercise]" if pending else "")
                 bucket = result.setdefault(current, [])
                 if note not in bucket and value not in bucket:
                     bucket.append(note)
@@ -88,13 +89,13 @@ def ascii_topology(plan, width=80, details=True):
         lines.pop()
     if not details:
         return "\n".join(lines)
-    lines += ["", "CONEXIONES"]
+    lines += ["", "CONNECTIONS"]
     for net in plan["networks"]:
         ep = net["endpoints"]
         lines += [f"{ep[0]['node']} {ep[0]['interface']} -- {ep[1]['node']} {ep[1]['interface']}"]
         if "subnet" in net:
             lines += ["  " + net["subnet"]]
-    lines += ["", "DIRECCIONES"]
+    lines += ["", "ADDRESSES"]
     for n in nodes:
         notes = interface_annotations(n, plan["mode"])
         values = [
@@ -129,7 +130,7 @@ def eve_xml(plan):
         sat="-1",
     )
     ET.SubElement(root, "description").text = (
-        plan["scenario"] + " " + plan["title"] + " · " + plan["mode"]
+        plan["scenario"] + " " + english(plan["title"]) + " · " + plan["mode"]
     )
     ET.SubElement(root, "author").text = "Network Lab Factory"
     ET.SubElement(root, "body").text = ascii_topology(plan)
@@ -137,8 +138,8 @@ def eve_xml(plan):
     nodes = ET.SubElement(topology, "nodes")
     lookup = {n["name"]: n for n in plan["nodes"]}
     labels = [
-        (70, 25, plan["scenario"] + " | " + plan["title"] + " | " + plan["mode"], 16),
-        (70, 55, "Ejercicio: " + plan["exercise"], 12),
+        (70, 25, plan["scenario"] + " | " + english(plan["title"]) + " | " + plan["mode"], 16),
+        (70, 55, "Exercise: " + english(plan["exercise"]), 12),
     ]
     for n in plan["nodes"]:
         p = n["device"]

@@ -1,5 +1,7 @@
 # Asistente de laboratorios por terminal
 
+Desde la versión 0.2.1, la interfaz y las preguntas de `--plain` se muestran en inglés. Esta guía conserva sus explicaciones en español y usa los nombres actuales de los controles.
+
 El asistente prepara una maqueta para que puedas comenzar el ejercicio: crea los equipos,
 conecta interfaces, asigna nombres y direcciones, aplica la configuración base y comprueba
 el resultado. La topología ASCII y las etiquetas del laboratorio salen de la misma receta.
@@ -10,20 +12,20 @@ de lo comprobado en equipos reales. No todas las imágenes de un fabricante son 
 
 ## Recorrido
 
-1. **Servidor.** Elegí EVE-NG o GNS3 y comprobá la conexión. Se consultan las imágenes
+1. **Server.** Elegí EVE-NG o GNS3 y comprobá la conexión. Se consultan las imágenes
    compatibles instaladas y los recursos libres. Cambiar de plataforma invalida esa consulta.
-2. **Escenario.** Elegí nivel y objetivo. La pantalla distingue qué prepara la herramienta
+2. **Scenario.** Elegí nivel y objetivo. La pantalla distingue qué prepara la herramienta
    de lo que te corresponde practicar.
-3. **Preparación.** Definí nombre, carpeta, imágenes y modo. Podés ajustar los pools en
-   Direccionamiento. Solo aparecen versiones instaladas con un perfil explícito.
-4. **Revisión.** Revisá plataforma, servidor o VM, destino, topología, puertos, direcciones,
-   recursos y objetivo. Editar vuelve al formulario. Escribí `DEPLOY` y activá Crear laboratorio.
-5. **Despliegue.** Se comprueba nuevamente el destino y se crea una maqueta nueva. La pantalla
+3. **Preparation.** Definí nombre, carpeta, imágenes y modo. Podés ajustar los pools en
+   Addressing. Solo aparecen versiones instaladas con un perfil explícito.
+4. **Review.** Revisá plataforma, servidor o VM, destino, topología, puertos, direcciones,
+   recursos y objetivo. Edit vuelve al formulario. Escribí `DEPLOY` y activá Create lab.
+5. **Deployment.** Se comprueba nuevamente el destino y se crea una maqueta nueva. La pantalla
    informa los eventos de creación, arranque, configuración y comprobación, con tiempo transcurrido.
-6. **Laboratorio.** Obtenés la ruta y los resultados observados. Podés abrir consolas, consultar
+6. **Lab.** Obtenés la ruta y los resultados observados. Podés abrir consolas, consultar
    la topología y volver a comprobar la preparación o el ejercicio.
 
-La barra inferior mantiene Volver/Editar a la izquierda y la siguiente acción a la derecha.
+La barra inferior mantiene Back/Edit a la izquierda y la siguiente acción a la derecha.
 El registro técnico está separado del resumen. No se muestra un porcentaje de avance inventado.
 
 ## Inicio y navegación
@@ -97,7 +99,7 @@ Por ejemplo, B01 en práctica deja interfaces habilitadas, direccionamiento y lo
 vos configurás OSPF. B04 prepara puertos y hosts, pero reserva LACP para el ejercicio.
 A07 comienza con una referencia funcional y permite introducir después una falla confirmada.
 
-**Listo** en práctica significa que pasó la preparación. En referencia requiere preparación
+**Ready** en práctica significa que pasó la preparación. En referencia requiere preparación
 y ejercicio aprobados. Los resultados son una observación, no una vigilancia continua.
 
 ## Pools, versiones y aislamiento

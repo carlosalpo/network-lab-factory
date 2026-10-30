@@ -119,41 +119,41 @@ class Recipe:
         backend="eve",
     ):
         if backend not in ("eve", "gns3"):
-            raise ValueError("Plataforma desconocida")
+            raise ValueError("Unknown platform")
         self.backend = backend
         if scenario not in CATALOG:
-            raise ValueError("Escenario desconocido")
+            raise ValueError("Unknown scenario")
         if not re.fullmatch(r"[a-z][a-z0-9-]{0,47}", name):
-            raise ValueError("Nombre: minúsculas, números y guiones; máximo 48 caracteres.")
+            raise ValueError("Name: lowercase letters, digits and hyphens; maximum 48 characters.")
         if not re.fullmatch(r"[A-Za-z0-9_-]+(?:/[A-Za-z0-9_-]+)*", folder):
-            raise ValueError("Carpeta relativa inválida.")
+            raise ValueError("Invalid relative folder.")
         if mode not in ("practice", "reference"):
-            raise ValueError("Modo inválido")
+            raise ValueError("Invalid mode")
         nets = [ipaddress.IPv4Network(p, strict=True) for p in (transit, loopbacks, lans)]
         private = [
             ipaddress.IPv4Network(p) for p in ("10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16")
         ]
         if not all(any(n.subnet_of(p) for p in private) for n in nets):
-            raise ValueError("Los pools deben ser privados RFC1918.")
+            raise ValueError("Pools must use private RFC1918 addresses.")
         if any(a.overlaps(b) for i, a in enumerate(nets) for b in nets[i + 1 :]):
-            raise ValueError("Los pools de tránsito, loopbacks y LAN se superponen.")
+            raise ValueError("Transit, loopback and LAN pools overlap.")
         if nets[0].prefixlen > 30 or nets[1].prefixlen > 30 or nets[2].prefixlen > 24:
             raise ValueError(
-                "Pools insuficientes: tránsito /30, loopbacks /30 y LAN /24 o mayores."
+                "Pools too small: transit /30, loopbacks /30 and LAN /24 or larger required."
             )
         self.transits = iter(nets[0].subnets(new_prefix=30))
         self.loops = iter(nets[1].hosts())
         self.lans = iter(nets[2].subnets(new_prefix=24))
         self.images = images or {}
         if any(k not in PROFILES for k in self.images):
-            raise ValueError("Perfil de imagen desconocido")
+            raise ValueError("Unknown image profile")
         for family, image in self.images.items():
             if image not in [
                 v["image"]
                 for k, v in PROFILES.items()
                 if v["template"] == PROFILES[family]["template"]
             ]:
-                raise ValueError(f"Imagen sin perfil explícito: {image}")
+                raise ValueError(f"Image has no explicit profile: {image}")
         self.plan = {
             "schema": 2,
             "scenario": scenario,
@@ -258,7 +258,7 @@ class Recipe:
         )
         if source:
             if dialect not in ("ios", "nxos"):
-                raise ValueError("Este perfil no admite origen explícito del ping")
+                raise ValueError("This profile does not support an explicit ping source")
             cmd += " source " + source
         self.check(
             n,
@@ -286,7 +286,7 @@ class Recipe:
             p = n["device"]
             port = p["first"] + len(n["interfaces"])
             if port >= p["ports"]:
-                raise ValueError(f"{name}: faltan interfaces en el perfil {profile}")
+                raise ValueError(f"{name}: not enough interfaces in profile {profile}")
             iface = {"id": port, "name": interface_name(profile, port), "network": net["id"]}
             if routed:
                 iface["ip"] = str(next(addresses))
@@ -417,7 +417,7 @@ class Recipe:
                     label="Identidad y acceso a consola",
                 )
         if not self.plan["checks"]["exercise"]:
-            raise ValueError("La receta no tiene comprobaciones de ejercicio")
+            raise ValueError("The recipe has no exercise checks")
         return self.plan
 
 
