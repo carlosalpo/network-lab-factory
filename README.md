@@ -2,222 +2,156 @@
 
 [![CI](https://github.com/carlosalpo/network-lab-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/carlosalpo/network-lab-factory/actions/workflows/ci.yml)
 
-**Turn a network exercise into a prepared, repeatable lab.**
+**Build repeatable network labs in EVE-NG and GNS3, from setup to verification.**
 
-Network Lab Factory is a guided terminal assistant for EVE-NG and a documented GNS3 3.0.6 profile. Choose a scenario, select compatible installed images, adjust address pools, inspect the topology, and confirm creation. The assistant creates and connects devices, applies the base configuration, and checks the result.
+Network Lab Factory is a guided terminal application that prepares network labs in **EVE-NG and GNS3**. Instead of repeatedly adding devices, wiring interfaces and configuring the same prerequisites, select a scenario and let the assistant build a new lab from its recipe.
 
-![Actual terminal application: review a lab before creating it](docs/screenshots/workshop/review.svg)
+Use **Practice** mode to configure the exercise yourself, or **Reference** mode to deploy and check the supplied solution. The same recipe supplies the topology, addressing, configuration and acceptance checks.
 
-*Actual Textual interface rendered with fixture inventory. The interface is in Spanish. Live network observations are recorded separately below.*
+[Quick start](#quick-start) · [24 scenarios](docs/catalog/README.md) · [How it works](#how-it-works) · [Validation](#tested-on-real-lab-platforms) · [Setup guide](docs/workshop-wizard.md)
+
+## From the assistant to your lab
+
+### 1. Review before creating
+
+Choose the platform, scenario, installed images and address pools. The review screen brings the topology, resource request and learning objective together before you confirm deployment.
+
+![Network Lab Factory terminal application showing the lab review before deployment](docs/screenshots/workshop/review.svg)
+
+*Actual application widgets rendered with fixture inventory. The terminal interface is in Spanish; this image illustrates the workflow, not a live deployment. [Capture method and more screens](docs/screenshots/workshop/README.md).*
+
+### 2. Open the native topology in EVE-NG
+
+The generated lab appears in EVE-NG with device names, interface labels and addressing. This example is **I01: three-tier campus**, with a core switch, two distribution switches, two access switches and two hosts.
+
+![Native EVE-NG topology for the I01 three-tier campus: seven devices, labeled links and addresses](docs/screenshots/platforms/eve-ng-topology.png)
+
+*Native EVE-NG capture recovered from the recorded QA campaign. It shows the topology layout, not a new protocol test or a current running-state claim. Only the canvas and EVE controls are retained. [Image provenance](docs/screenshots/platforms/README.md) · [I01 scenario](docs/catalog/I01.md) · [Recorded EVE observations](docs/evidence/catalog/eve-i01-reference.json).*
+
+### 3. Use the GNS3 backend
+
+Choose GNS3 in the same assistant to create the scenario as a native GNS3 project, including nodes, links and labels. The [GNS3 setup guide](docs/workshop-wizard.md#gns3) documents the supported installation profile; the [validation matrix](docs/catalog-validation.md) links the recorded device checks for every scenario.
 
 ## What you can build
 
-The [catalog](docs/catalog/README.md) contains **24 implemented variants**:
+The catalog contains **24 implemented scenario variants**, each with its own topology, image profiles, resource requirements, prepared configuration, learner exercise and observable checks.
 
-| Level | Scenarios |
-|---|---|
-| Basic | OSPF point-to-point, static routing, VLAN/trunk, LACP, Spanning Tree, three- and four-switch rings, inter-VLAN routing |
-| Intermediate | Three-tier campus, multi-area OSPF, dual-WAN branch, redundant gateway, BGP, VRF, ACL/NAT, IPv6/dual stack |
-| Advanced | Nexus vPC, VXLAN EVPN, MPLS L3VPN, redistribution, BGP multihoming, ASA segmentation, troubleshooting, NX-OS version comparison |
+| Level | Explore the catalog |
+| --- | --- |
+| **Basic · 8 scenarios** | [OSPF](docs/catalog/B01.md), [static routes](docs/catalog/B02.md), [VLANs and trunks](docs/catalog/B03.md), [LACP](docs/catalog/B04.md), [STP](docs/catalog/B05.md), [three-switch ring](docs/catalog/B06.md), [four-switch ring](docs/catalog/B07.md), [inter-VLAN routing](docs/catalog/B08.md) |
+| **Intermediate · 8 scenarios** | [Three-tier campus](docs/catalog/I01.md), [multi-area OSPF](docs/catalog/I02.md), [dual WAN](docs/catalog/I03.md), [redundant gateway](docs/catalog/I04.md), [BGP](docs/catalog/I05.md), [VRFs](docs/catalog/I06.md), [ACL/NAT](docs/catalog/I07.md), [IPv6 and dual stack](docs/catalog/I08.md) |
+| **Advanced · 8 scenarios** | [Nexus vPC](docs/catalog/A01.md), [VXLAN EVPN](docs/catalog/A02.md), [MPLS L3VPN](docs/catalog/A03.md), [redistribution](docs/catalog/A04.md), [BGP multihoming](docs/catalog/A05.md), [ASA segmentation](docs/catalog/A06.md), [troubleshooting](docs/catalog/A07.md), [NX-OS version comparison](docs/catalog/A08.md) |
 
-Every scenario documents its topology, prerequisites, device/image profiles, resources, pools, prepared configuration, learner exercise and acceptance checks. The catalog currently offers fixed variants, not arbitrary topology generation or universal support for vendor images.
+Start with **B01: two-router OSPF**. For switching, try **B04: LACP**. Advanced scenarios require substantially more memory; check each scenario's resource table before deploying.
 
-## Practice or reference
+### Two ways to use the same scenario
 
-- **Practice:** prepares and checks the prerequisites; leaves the exercise for you.
-- **Reference:** also applies the exercise solution and requires its checks to pass.
+| Mode | The tool prepares | You do |
+| --- | --- | --- |
+| **Practice** | Devices, links, base configuration and prerequisite checks | Configure the exercise, then run its checks |
+| **Reference** | The same base plus the exercise solution and its checks | Inspect a working reference and study the resulting configuration |
 
-A single recipe drives the configuration, ASCII preview and native lab labels. The terminal supports dark, light and monochrome themes, keyboard navigation, compact layouts, device consoles, and recorded checks. Available fault/restore actions are explicit and invalidate prior observations until rechecked.
-
-## Recorded validation
-
-**24/24 reference scenarios passed on EVE-NG and 24/24 on GNS3.** The [validation matrix](docs/catalog-validation.md) links all 48 observations. Additional evidence covers five GNS3 practice samples, selected fault/recovery cases and Nexus automatic boot after power-off. **217 local tests passed** during the campaign; CI also runs the local suite across its configured Python versions.
-
-These are dated results from documented images and installations, not performance, convergence, production-readiness or universal-compatibility claims. Some attempts failed and were repeated after corrections; the report explains those corrections. The [public evidence](docs/evidence/catalog/README.md) retains device observations and excludes private transport and administration records.
-
-[QA cleanup](docs/cleanup-validation.md) removed all 41 EVE-NG labs and 49 GNS3 projects created for the campaign. Existing projects and base images were preserved.
+For example, B01 Practice prepares interface addresses and loopbacks but leaves OSPF for you. B01 Reference also configures OSPF and requires the exercise checks to pass. “Ready” in Practice means the prerequisites passed; it does not mean the unfinished exercise passed.
 
 ## Quick start
 
-Python 3.11+:
+Requires **Python 3.11+**. Install and open the assistant:
 
 ```sh
 git clone https://github.com/carlosalpo/network-lab-factory.git
 cd network-lab-factory
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[dev]'
+python -m pip install -e .
 nlf wizard
 ```
+
+In the assistant: **Server → Scenario → Preparation → Review → Deployment → Lab**. Check the destination and type `DEPLOY` to confirm creation. The result view lets you open device consoles and recheck the preparation or exercise.
+
+Prefer a light theme, monochrome display or linear prompts?
 
 ```sh
 nlf wizard --theme light
 nlf wizard --theme mono
 nlf wizard --plain
+```
+
+### Explore before connecting a server
+
+Catalog browsing and planning work locally. These commands prepare plans; they do not deploy devices:
+
+```sh
 nlf catalog
 nlf plan B03 --name vlan-trunk --mode reference --output build/vlan-trunk
 nlf plan A02 --backend gns3 --name evpn-practice --output build/evpn-practice
 ```
 
-Planning and local tests need no server. Deployment needs an authorized lab server, the documented runtime and compatible OS images already installed. Proprietary images are not included or downloaded. The [guide](docs/workshop-wizard.md) explains SSH authentication, the optional GNS3 guest-agent transport, image profiles and limitations.
+### Connect your lab platform
 
-Deployment creates a new lab and refuses an existing destination. Interrupted deployments retain partial records and may retain running nodes; inspect their state before recovery. The interactive product does not silently retry, overwrite or delete existing labs. QA cleanup is a separate, explicit operation.
+| Platform | Documented profile | Access |
+| --- | --- | --- |
+| **EVE-NG** | Professional 7.2.0-4, admin / tenant 0 | SSH to the EVE host; required templates, runtime and compatible images installed |
+| **GNS3** | Server 3.0.6 with the documented QEMU image/resource profiles | Direct SSH, or the explicitly authorized Proxmox guest-agent transport |
 
-## Explore
+Follow the **[setup and troubleshooting guide](docs/workshop-wizard.md#conectores-disponibles)** for host prerequisites, authentication and environment variables. Compatible operating-system images must already be installed; this repository does not distribute or download vendor images. The GNS3 connector targets a documented installation profile, so other server versions and image layouts require adaptation and validation.
 
-- [24 illustrated scenario guides](docs/catalog/README.md)
-- [Wizard setup, navigation and troubleshooting](docs/workshop-wizard.md)
-- [Recorded validation and limitations](docs/catalog-validation.md)
-- [Actual terminal interface captures](docs/screenshots/workshop/README.md)
+## How it works
 
-## Earlier dual-WAN compiler workflow
+| Step | What the assistant does | What you can inspect |
+| --- | --- | --- |
+| **Discover** | Checks the connection, installed compatible images and available resources | Platform, image choices and resource availability |
+| **Plan** | Resolves the chosen recipe, mode and address pools | Device names, links, ports, addresses and requested resources |
+| **Create** | Creates a new native lab/project and connects its devices | EVE-NG topology or GNS3 project with native labels |
+| **Prepare** | Starts devices and applies the recipe's base configuration; adds the solution in Reference mode | Progress events and device consoles |
+| **Check** | Collects device observations and evaluates the defined checks | Separate preparation/exercise results and recorded output |
 
-The original YAML/Ansible workflow remains available alongside the catalog assistant. Its historical v0.1.1 evidence and manual bootstrap scope are described below; those instructions do not describe the newer wizard's automated preparation.
+Each deployment retains a new local directory with the recipe, topology, commands, events and results. EVE-NG exports a `.unl` lab; GNS3 exports a `gns3-request.json` describing the project creation request. Keep the run directory to reopen the lab menu:
 
-![Recorded baseline, deliberate fault and recovery](docs/screenshots/images/01-recorded-verification.jpg)
+```sh
+nlf workshop build/workshops/<name>-<id>
+nlf lab-action build/workshops/<name>-<id> check-base
+nlf lab-action build/workshops/<name>-<id> check-exercise
+```
 
-## What is included
+The assistant refuses an existing destination. Interrupted operations retain their records and may leave created or running devices; inspect the lab before recovery. Fault and restore actions are available only where the recipe defines them, require confirmation, and invalidate previous observations until you recheck.
 
-![An engineering workbench connecting a scenario, network experiment and evidence archive](docs/illustrations/network-lab-factory-detail-v1.png)
+## Tested on real lab platforms
 
-*Conceptual illustrations of the lab and engineering workflow. See the [dual-WAN scenario](examples/dual-wan.yml) for the exact topology and [live validation](docs/live-validation.md) for measured results.*
+| Recorded campaign | Result | Evidence |
+| --- | --- | --- |
+| EVE-NG reference scenarios | **24 / 24 passed** | [Per-scenario observations](docs/catalog-validation.md) |
+| GNS3 reference scenarios | **24 / 24 passed** | [Per-scenario observations](docs/catalog-validation.md) |
+| Local automated suite during the campaign | **217 tests passed** | [Validation record](docs/catalog-validation.md#additional-observations) |
+| Additional checks | Five GNS3 Practice samples, selected fault/recovery cases and Nexus automatic restart | [Evidence index](docs/evidence/catalog/README.md) |
 
-| Stage | Deliverable |
-|---|---|
-| Validate | Reject duplicate IPs, subnet overlaps, reused ports, disconnected nodes and unknown fields |
-| Build | EVE-NG `.unl`, Ansible inventory, IOS routing previews and integrity manifest |
-| Provision | Ansible uploads a new lab after checking the image, bridge and destination |
-| Bootstrap | Private console snippets establish management SSH using credentials supplied locally |
-| Configure | Ansible configures data interfaces, loopbacks, OSPF costs and passive interfaces |
-| Verify | Read-only collection of OSPF neighbors and loopback pings; JSON and Markdown reports |
+The matrix records the tested versions, corrections made after failed attempts and links to the final observations. These results cover the documented variants and images; they are not universal compatibility or production-readiness claims. Performance and convergence time were not measured. [Campaign cleanup](docs/cleanup-validation.md) is documented separately.
 
-The dual-WAN workflow deliberately refuses to overwrite an existing lab. Bootstrap is a
-one-time **manual console step** on each fresh router. Nodes are started from the
-EVE-NG interface. The separate catalog wizard automates startup, base configuration
-and checks for its declared EVE/GNS3 profiles. Its scope and observed compatibility
-are documented separately; it does not reconcile or delete arbitrary existing labs.
+For contributors, run the local suite without a lab server:
 
-## Try it without EVE-NG
-
-Requires Python 3.11 or newer. Run these commands from the repository root:
-
-```bash
-git clone https://github.com/carlosalpo/network-lab-factory.git
-cd network-lab-factory
-python3 -m venv .venv
-source .venv/bin/activate
+```sh
 python -m pip install -e '.[dev]'
-
-nlf validate examples/dual-wan.yml
-nlf build examples/dual-wan.yml --output build/dual-wan
 pytest -q
+ruff check src tests
 ```
 
-No credentials, network devices or proprietary images are required for these steps.
-The example image name is a placeholder, so the example can be compiled but cannot
-be provisioned unchanged.
+## Scope and documentation
 
-Inspect the output:
+Recipes have fixed device counts and topology variants. Arbitrary topology generation, external address reservations and general multiuser platform connectors are outside the current implementation. Labs use their own internal links and do not automatically attach to a physical or production network.
 
-```text
-build/dual-wan/
-  dual-wan.unl       EVE-NG topology: 4 IOSv routers, 4 data links, management bridge
-  inventory.yml     Connection variables and per-router intent
-  scenario.yml      Validated source snapshot
-  manifest.json     Scenario fingerprint and generated-file hashes
-  configs/          IOS data-plane previews, without credentials
-```
+| Read next | Contents |
+| --- | --- |
+| [Scenario catalog](docs/catalog/README.md) | All 24 guides, topology, resources and learning objectives |
+| [Wizard guide](docs/workshop-wizard.md) | Authentication, image profiles, navigation, consoles and recovery |
+| [Validation matrix](docs/catalog-validation.md) | Recorded observations and exact validation boundaries |
+| [Native platform captures](docs/screenshots/platforms/README.md) | Lab topology images and their provenance |
+| [Terminal capture gallery](docs/screenshots/workshop/README.md) | Application screens and how they were captured |
+| [Original YAML/Ansible workflow](docs/dual-wan-workflow.md) | The earlier dual-WAN compiler, provisioning and manual bootstrap workflow |
+| [Changelog](CHANGELOG.md) | Project evolution |
 
-Builds are deterministic for an identical scenario. A build requires a new output
-directory, preventing old files from being mistaken for current evidence.
-The manifest detects accidental edits; it is not a signed security attestation.
-
-## The dual-WAN scenario
-
-| Link | Endpoints | OSPF cost at each end |
-|---|---|---|
-| Primary access | branch Gi0/1 ↔ wan-primary Gi0/1 | 10 |
-| Primary transit | wan-primary Gi0/2 ↔ headquarters Gi0/1 | 10 |
-| Backup access | branch Gi0/2 ↔ wan-backup Gi0/1 | 100 |
-| Backup transit | wan-backup Gi0/2 ↔ headquarters Gi0/2 | 100 |
-
-Every router reserves Gi0/0 for an isolated management bridge. Management addresses
-are not advertised into OSPF. Each router has a distinct /32 loopback, and verification
-sends five ICMP probes from Loopback0 to every other loopback.
-
-This separation matters: successful SSH access alone does not prove that routing works.
-
-## Run it on your lab
-
-Follow the [deployment guide](docs/deployment.md). You will need:
-
-- An EVE-NG installation with the `vios` template and a lawfully obtained IOSv image.
-- An isolated `pnet1`–`pnet9` bridge reachable from your Ansible controller.
-- SSH access to the EVE host and fresh routers dedicated to this experiment.
-- The Python Ansible extra and the collections in `ansible/requirements.yml`.
-
-The documented resource request is 4 × 512 MiB RAM and 4 virtual CPUs for the routers,
-plus EVE-NG and hypervisor overhead. Image-specific requirements may differ.
-
-```bash
-python -m pip install -e '.[ansible]'
-ansible-galaxy collection install -r ansible/requirements.yml
-```
-
-Use a local scenario copy with your exact installed image and management addresses.
-No vendor image is downloaded or included by this project.
-
-## Evidence, not green badges for missing data
-
-`nlf verify` creates a new run directory every time. A report can be:
-
-- **passed**: every expected neighbor is FULL, every five-packet probe succeeds,
-  and Ansible completes successfully;
-- **failed**: observed evidence fails a check;
-- **incomplete**: evidence is missing, stale, malformed or could not be collected.
-
-Exit codes are `0` for success, `1` for a failed/incomplete verification, and `2`
-for invalid input or local setup errors. Evidence from another run or scenario is
-not reused. A router that cannot be reached remains unknown.
-
-Read the [validation boundary](docs/validation.md) before interpreting a result.
-The [failover exercise](docs/failover.md) explains a controlled manual failure and
-recovery without claiming a measured convergence SLA.
-
-## Design choices of the original dual-WAN workflow
-
-- **One scenario model:** addressing, wiring, router intent and expected checks are linked.
-- **A small supported surface:** IPv4, IOSv with four interfaces, one OSPF area and
-  point-to-point links. Unsupported platforms are rejected rather than guessed.
-- **Explicit management:** no automatic use of EVE's primary `pnet0` bridge.
-- **No production inventory:** all committed example data is synthetic.
-- **No stored credentials:** Ansible reads runtime environment variables. Console
-  snippets are created separately with private filesystem permissions.
-- **Fresh dedicated labs:** configuration is additive. It does not reconcile arbitrary
-  pre-existing routing policies or remove obsolete objects after a design change.
-
-## Repository guide
-
-| Location | Purpose |
-|---|---|
-| `examples/dual-wan.yml` | Synthetic, editable scenario |
-| `src/netlab/model.py` | Validation and address rules |
-| `src/netlab/build.py` | EVE XML, inventory and routing artifact generation |
-| `src/netlab/report.py` | Evidence evaluation |
-| `ansible/` | Provision, configure and verify workflows |
-| `tests/` | Positive and negative offline tests |
-| `docs/` | Deployment, validation and failover guide |
-
-## Catalog boundaries
-
-The wizard implements one concrete variant per scenario, with explicit compatible
-images and resource profiles. Arbitrary equipment counts, general multiuser connectors,
-external address reservations and measured convergence experiments remain outside
-this implementation. See the [catalog](docs/catalog/README.md),
-[terminal guide](docs/workshop-wizard.md) and [validation matrix](docs/catalog-validation.md).
+The original YAML/Ansible workflow remains available. Its manual bootstrap instructions and historical v0.1.1 evidence are kept in the dedicated guide so they are not confused with the current catalog assistant.
 
 ## Author and license
 
-Created by [Carlos Alvarado](https://github.com/carlosalpo), Technology Solutions Architect.
-MIT licensed. EVE-NG, Ansible and Cisco IOSv remain separate projects/products with
-their own licenses and requirements. This is an independent learning and engineering tool.
+Created by [Carlos Alvarado](https://github.com/carlosalpo), Technology Solutions Architect. **MIT licensed** — see [LICENSE](LICENSE).
+
+Independent project. EVE-NG, GNS3, Ansible and vendor operating systems retain their own licenses and requirements.

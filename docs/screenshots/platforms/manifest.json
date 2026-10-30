@@ -1,0 +1,79 @@
+{
+  "project": "Network Lab Factory",
+  "prepared_at": "2026-10-30T08:41:05.482139-06:00",
+  "documentation_version": "v0.2.0",
+  "documentation_reference_commit": "0e9055867835522c0ca909f341f9a857645104e4",
+  "images": [
+    {
+      "file": "eve-ng-topology.png",
+      "sha256": "cdcb1ec1b46179f458b3e8c35f9c203e252c52f28f81d1a88f51c99881eddd3f",
+      "width": 1100,
+      "height": 850,
+      "media_type": "image/png",
+      "platform": "EVE-NG Professional 7.2.0-4",
+      "scenario": "I01",
+      "scenario_title": "Three-tier campus",
+      "mode_label": "reference",
+      "scope": "topology_only",
+      "proves": [
+        "Native EVE topology view",
+        "Seven synthetic devices and nine links",
+        "Generated scenario, interface and address labels"
+      ],
+      "does_not_prove": [
+        "Current deployment availability",
+        "Running devices or successful protocol state",
+        "Rerun of the 24-case validation campaign",
+        "Performance or convergence"
+      ],
+      "caption_en": "Native EVE-NG topology for I01, the three-tier campus reference scenario: seven devices, nine links, and generated interface and address labels. Historical capture from the 29 October 2026 campaign, cropped for privacy on 30 October. This image shows topology only; it does not demonstrate protocol state or a new validation run.",
+      "source_capture_date": "2026-10-29",
+      "source_capture_date_basis": "Original filesystem creation and modification date; no embedded capture timestamp or commit assertion.",
+      "source_mtime": "2026-10-29T21:07:33.815647-06:00",
+      "original_capture_commit": null,
+      "original_source": "outputs/catalog-qa/campus-eve-labels-after.png",
+      "original_source_sha256": "b6e1abf1af54a603348dc4ae4828cef3f846bd0c2789a30190dea29c2c0742cd",
+      "original_source_format": "JPEG despite .png extension",
+      "original_source_dimensions": [
+        2560,
+        1410
+      ],
+      "original_source_included": false,
+      "prepared_date": "2026-10-30",
+      "method": "Deterministic crop of existing native EVE-NG screenshot; decoded to PNG with macOS sips. No generated imagery, redraw, label edits or compositing.",
+      "crop_rectangle_pixels": {
+        "x": 0,
+        "y": 90,
+        "width": 1100,
+        "height": 850
+      },
+      "privacy_review": "Visually inspected crop; browser toolbar, host address, browser tabs and unrelated content excluded. Addresses visible in the topology are synthetic catalog pools, not management addresses.",
+      "context_sources": [
+        {
+          "path": "docs/catalog/I01.md",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/0e9055867835522c0ca909f341f9a857645104e4/docs/catalog/I01.md",
+          "sha256": "3646037d81b7828dd584db29b13a82a91316706d6c0b4fc55f74fb6df89955f0"
+        },
+        {
+          "path": "docs/evidence/catalog/eve-i01-reference.json",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/0e9055867835522c0ca909f341f9a857645104e4/docs/evidence/catalog/eve-i01-reference.json",
+          "sha256": "4eee152d0c1000db58a6d2061d4f179144ed9c1d9567bfa19746a2030da49c4b"
+        },
+        {
+          "path": "docs/catalog-validation.md",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/0e9055867835522c0ca909f341f9a857645104e4/docs/catalog-validation.md",
+          "sha256": "45082b6e1e95a78c504be19dc32aedaeb79bb57bd814629e28d20f51c74a5048"
+        },
+        {
+          "path": "docs/cleanup-validation.md",
+          "url": "https://github.com/carlosalpo/network-lab-factory/blob/0e9055867835522c0ca909f341f9a857645104e4/docs/cleanup-validation.md",
+          "sha256": "8a713e54120684799aab3e4d84be7d269398c8089545a5fa21f567a3635fa769"
+        }
+      ]
+    }
+  ],
+  "capture_status": {
+    "eve-ng": "Historical native topology capture included",
+    "gns3": "Native interface screenshot pending; recorded device validation is linked separately"
+  }
+}
