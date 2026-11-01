@@ -83,7 +83,7 @@ No depende de Nexo, de nombres fijos de discos ni de una ruta fija de QEMU.
 3. Completá **API username** y **API password** con la cuenta de GNS3, distinta de SSH.
 4. En **API and storage options**, dejá `http://127.0.0.1:3080` si la API escucha
    en ese puerto del servidor. La conexión hasta el servidor viaja cifrada por SSH.
-   Podés cambiar el puerto o usar HTTPS con certificado válido. HTTP fuera de
+   Podés cambiar el puerto o usar HTTPS en el mismo host SSH con certificado válido. HTTP fuera de
    loopback y redirecciones se rechazan; no existe una opción para omitir TLS.
 5. Dejá **API version** en Auto o elegí v2/v3 explícitamente. API v2 permite campos
    de cuenta vacíos si la instalación no requiere autenticación; v3 exige cuenta.

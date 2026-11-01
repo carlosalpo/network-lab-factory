@@ -1,3 +1,3 @@
 """Network Lab Factory: explicit intent, repeatable artifacts, honest evidence."""
 
-__version__ = "0.3.0"
+__version__ = "0.3.0rc1"

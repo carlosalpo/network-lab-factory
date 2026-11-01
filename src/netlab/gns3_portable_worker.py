@@ -3,6 +3,7 @@
 
 import base64
 import hashlib
+import shlex
 import ssl
 from urllib.parse import urlsplit
 
@@ -161,6 +162,22 @@ def checked_template(t):
             )
         if not isinstance(p.get("cpus", 1), int) or p.get("cpus", 1) < 1:
             raise ValueError("QEMU templates need a positive CPU allocation.")
+        options = shlex.split(p.get("options", ""))
+        forbidden = (
+            "-net",
+            "-netdev",
+            "-nic",
+            "-device",
+            "-chardev",
+            "-serial",
+            "-monitor",
+            "-qmp",
+            "-readconfig",
+        )
+        if any(option.split("=", 1)[0] in forbidden for option in options):
+            raise ValueError(
+                "Template options must not add network devices, external console endpoints or include files."
+            )
         p["linked_clone"] = True
     return result
 

@@ -1,5 +1,7 @@
 # Portable connections and session credentials
 
+**Preview release: 0.3.0rc1.** The owner approved automated validation with real-lab testing deferred.
+
 The assistant accepts SSH credentials for EVE-NG and GNS3, plus the separate GNS3 API account. The default new GNS3 connection discovers API v2/v3 and uses the target server's existing templates. It does not require Nexo paths or its administrator credential file.
 
 ## What “compatible” means
@@ -9,7 +11,7 @@ The assistant accepts SSH credentials for EVE-NG and GNS3, plus the separate GNS
 | GNS3 API | 2.2.x / v2 or 3.x / v3; version and endpoints checked, not just an exact release string |
 | Target | Linux server or GNS3 VM; controller and connected `local` compute on this SSH target |
 | Remote tools | Python 3, pexpect, telnet; readable RAM information and projects filesystem |
-| Appliances | Existing QEMU or VPCS templates, Telnet console, no custom adapter overrides |
+| Appliances | Existing QEMU or VPCS templates, Telnet console, no custom adapter overrides or QEMU options that add external networks/consoles |
 | OS family | Must match the recipe's IOSv, IOSvL2, CSR, NX-OS or ASA CLI and interface numbering |
 | Storage | Existing absolute projects directory; disk/BIOS images available through the compute API |
 | Resources | Selected templates' RAM plus 1 GiB headroom; disk and adapter count checked before creation |
@@ -21,7 +23,7 @@ Windows/macOS users may connect to a compatible Linux GNS3 VM; a native Windows 
 1. Run `nlf wizard`, select **GNS3 · installed templates**.
 2. Enter **SSH server**, **User**, and the masked **SSH password**. Blank password uses existing OpenSSH keys/configuration. Set a nonstandard port under **SSH options** if needed.
 3. Enter **API username** and masked **API password**. These are GNS3 account credentials, not Linux credentials. API v2 without authentication accepts empty fields; v3 requires credentials.
-4. Under **API and storage options**, use the server's API origin, normally `http://127.0.0.1:3080`. Loopback is interpreted on the SSH server. The computer-to-server link is SSH. HTTPS uses the SSH server's system CA trust; redirects and insecure certificate overrides are unavailable. The URL must not contain a password, query, fragment or `/v2`/`/v3` suffix.
+4. Under **API and storage options**, use the server's API origin, normally `http://127.0.0.1:3080`. Loopback is interpreted on the SSH server. The computer-to-server link is SSH. HTTPS must address the same SSH hostname and uses the SSH server's system CA trust; redirects and insecure certificate overrides are unavailable. The URL must not contain a password, query, fragment or `/v2`/`/v3` suffix.
 5. Choose **Check connection**. If the projects directory cannot be discovered (older API or limited `/settings` permission), enter the actual existing directory from your GNS3 server configuration. No default Nexo path is assumed.
 6. Select the scenario, then explicitly review the template assigned to every OS family. Template names are convenience suggestions, not compatibility checks. Review the actual memory requirement, destination and topology before typing `DEPLOY`.
 

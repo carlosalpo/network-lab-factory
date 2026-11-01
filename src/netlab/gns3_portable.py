@@ -26,7 +26,7 @@ def validate_api_url(value):
         )
     if p.scheme == "http" and p.hostname not in ("127.0.0.1", "localhost", "::1"):
         raise ValueError(
-            "HTTP is allowed only on server loopback inside SSH. Use HTTPS for a remote controller."
+            "HTTP is allowed only on server loopback inside SSH. Use verified HTTPS on the SSH server."
         )
     try:
         port = p.port
@@ -57,6 +57,10 @@ class GNS3PortableSSH(EveSSH):
     ):
         super().__init__(host, user, control, **options)
         self.api_url = validate_api_url(api_url)
+        if urlsplit(self.api_url).hostname not in (host.lower(), "127.0.0.1", "localhost", "::1"):
+            raise ValueError(
+                "The API must address this SSH server or its loopback, not a different controller."
+            )
         if api_version not in ("auto", "2", "3"):
             raise ValueError("Choose Auto, API v2 or API v3.")
         if projects_path and (
