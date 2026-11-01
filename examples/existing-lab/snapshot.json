@@ -1,0 +1,107 @@
+{
+  "lab": {
+    "id": "fixture",
+    "name": "Study lab",
+    "backend": "gns3"
+  },
+  "nodes": [
+    {
+      "id": "1",
+      "name": "R1",
+      "console": 5001,
+      "error": null,
+      "identity": {},
+      "interfaces": {
+        "GigabitEthernet0/0": {
+          "address": null,
+          "addresses": [],
+          "shutdown": true,
+          "blocked": null
+        }
+      },
+      "config_hash": "6548afebc5dfcecdc7ab47f83f3db2066b77c29b0286d05160ec92e598234e28"
+    },
+    {
+      "id": "2",
+      "name": "R2",
+      "console": 5002,
+      "error": null,
+      "identity": {},
+      "interfaces": {
+        "GigabitEthernet0/0": {
+          "address": null,
+          "addresses": [],
+          "shutdown": true,
+          "blocked": null
+        }
+      },
+      "config_hash": "6548afebc5dfcecdc7ab47f83f3db2066b77c29b0286d05160ec92e598234e28"
+    },
+    {
+      "id": "3",
+      "name": "R3",
+      "console": 5003,
+      "error": null,
+      "identity": {},
+      "interfaces": {
+        "GigabitEthernet0/0": {
+          "address": null,
+          "addresses": [],
+          "shutdown": true,
+          "blocked": null
+        }
+      },
+      "config_hash": "6548afebc5dfcecdc7ab47f83f3db2066b77c29b0286d05160ec92e598234e28"
+    },
+    {
+      "id": "4",
+      "name": "R4",
+      "console": 5004,
+      "error": null,
+      "identity": {},
+      "interfaces": {
+        "GigabitEthernet0/0": {
+          "address": null,
+          "addresses": [],
+          "shutdown": true,
+          "blocked": null
+        }
+      },
+      "config_hash": "6548afebc5dfcecdc7ab47f83f3db2066b77c29b0286d05160ec92e598234e28"
+    }
+  ],
+  "segments": [
+    {
+      "id": "a",
+      "name": "R1-R2",
+      "shared": false,
+      "blocked": null,
+      "endpoints": [
+        {
+          "node": "1",
+          "interface": "GigabitEthernet0/0"
+        },
+        {
+          "node": "2",
+          "interface": "GigabitEthernet0/0"
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "name": "R3-R4",
+      "shared": false,
+      "blocked": null,
+      "endpoints": [
+        {
+          "node": "3",
+          "interface": "GigabitEthernet0/0"
+        },
+        {
+          "node": "4",
+          "interface": "GigabitEthernet0/0"
+        }
+      ]
+    }
+  ]
+}

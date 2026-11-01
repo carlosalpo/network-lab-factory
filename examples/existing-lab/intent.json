@@ -1,0 +1,24 @@
+{
+  "groups": {
+    "Internal": {
+      "pool": "10.10.30.0/24",
+      "exclude": []
+    }
+  },
+  "segments": {
+    "a": {
+      "group": "Internal",
+      "prefix": 30,
+      "subnet": "",
+      "fixed": {}
+    },
+    "b": {
+      "group": "Internal",
+      "prefix": 30,
+      "subnet": "10.10.30.0/30",
+      "fixed": {
+        "3|GigabitEthernet0/0": "10.10.30.2"
+      }
+    }
+  }
+}

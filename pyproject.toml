@@ -13,7 +13,7 @@ authors = [{name = "Carlos Alvarado"}]
 dependencies = ["PyYAML>=6.0.2,<7", "textual>=8.2.8,<9", "paramiko>=3.5,<5"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<10", "ruff>=0.14,<1"]
+dev = ["pytest>=8,<10", "ruff>=0.14,<1", "pexpect>=4.9,<5"]
 ansible = ["ansible-core>=2.19,<2.20", "paramiko>=3,<4"]
 
 [project.scripts]
