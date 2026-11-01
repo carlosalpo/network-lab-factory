@@ -1,6 +1,7 @@
 """Interactive workshop wizard with explicit, reviewable deployment."""
 
 import base64
+import getpass
 import json
 import os
 import queue
@@ -32,22 +33,73 @@ def ask(label, default=None):
 class EveSSH:
     backend = "eve"
 
-    def __init__(self, host, user="root", control=None, *, batch=False, cancel=None):
+    def __init__(
+        self,
+        host,
+        user="root",
+        control=None,
+        *,
+        batch=False,
+        cancel=None,
+        port=22,
+        password=None,
+        auth_method=None,
+    ):
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9.-]*", host):
             raise ValueError("Invalid host name")
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]*", user):
             raise ValueError("Invalid SSH user")
         self.host, self.user, self.control = host, user, control
         self.batch, self.cancel = batch, cancel
+        if type(port) is not int or not 1 <= port <= 65535:
+            raise ValueError("SSH port must be between 1 and 65535")
+        self.port, self.password = port, password or None
+        self.auth_method = auth_method or ("password" if password else "key")
+        if self.auth_method not in ("key", "password"):
+            raise ValueError("Unknown SSH authentication method")
 
     def ssh_args(self):
         args = ["ssh", "-o", "ConnectTimeout=10", "-o", "StrictHostKeyChecking=yes"]
+        if self.port != 22:
+            args += ["-p", str(self.port)]
         if self.control:
             args += ["-S", str(self.control)]
         return args + [f"{self.user}@{self.host}"]
 
     def connection(self):
-        return {"host": self.host, "user": self.user, "control": self.control}
+        record = {"host": self.host, "user": self.user, "control": self.control}
+        if self.port != 22:
+            record["port"] = self.port
+        if self.auth_method == "password":
+            record["auth_method"] = "password"
+        return record
+
+    def redact(self, value):
+        secrets = [self.password, getattr(self, "api_password", None)]
+        if isinstance(value, str):
+            for secret in secrets:
+                if secret:
+                    value = value.replace(secret, "[redacted]")
+            return value
+        if isinstance(value, dict):
+            return {k: self.redact(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [self.redact(v) for v in value]
+        return value
+
+    def open_console_at(self, port):
+        port = int(port)
+        if not 1 <= port <= 65535:
+            raise ValueError("Invalid console port")
+        if self.password:
+            from .secure_ssh import console
+
+            console(self, port)
+        else:
+            args = self.ssh_args()
+            subprocess.run(
+                args[:-1] + ["-tt", args[-1], "telnet -K -c 127.0.0.1 " + str(port)], check=False
+            )
 
     def worker_source(self):
         source = Path(__file__).with_name("eve_worker.py").read_text()
@@ -56,6 +108,10 @@ class EveSSH:
         return source
 
     def run(self, action, callback=None, **values):
+        if self.auth_method == "password" and not self.password:
+            raise RuntimeError(
+                "Re-enter the SSH password in the assistant to reconnect this saved lab."
+            )
         if "plan" in values:
             validate_plan(values["plan"])
             if values["plan"].get("backend", "eve") != self.backend:
@@ -66,6 +122,12 @@ class EveSSH:
             + repr(base64.b64encode(source).decode())
             + "),'<nlf-eve-worker>','exec'))"
         )
+        if self.password:
+            from .secure_ssh import run
+
+            return run(
+                self, "python3 -c " + shlex.quote(code), {"action": action, **values}, callback
+            )
         events = []
         args = self.ssh_args()
         if self.batch:
@@ -124,6 +186,7 @@ class EveSSH:
                         continue
                     if not isinstance(event, dict):
                         continue
+                    event = self.redact(event)
                     events.append(event)
                     if callback:
                         callback(event)
@@ -149,7 +212,7 @@ class EveSSH:
                 diagnostic
                 or "SSH failed. Check the connection and authenticate from the terminal.",
             )
-            raise RuntimeError(message)
+            raise RuntimeError(self.redact(message))
         return events[-1]
 
 
@@ -192,6 +255,10 @@ def connector_from_record(record, **options):
         from .gns3 import GNS3SSH
 
         transport = values.pop("transport", "ssh")
+        if transport == "portable-ssh":
+            from .gns3_portable import GNS3PortableSSH
+
+            return GNS3PortableSSH(**values, **options)
         if transport == "qga":
             from .gns3_qga import GNS3QGA
 
@@ -219,7 +286,12 @@ def deploy_plan(connector, plan, out, *, callback=None, quiet=False):
     if plan.get("backend") == "gns3":
         from .gns3_render import native_graph
 
-        save_json(out / "gns3-request.json", native_graph(plan))
+        save_json(
+            out / "gns3-request.json",
+            connector.export_graph(plan)
+            if hasattr(connector, "export_graph")
+            else native_graph(plan),
+        )
     else:
         (out / (plan["name"] + ".unl")).write_text(xml)
     configs = {n["name"]: config_lines(plan, n) for n in plan["nodes"]}
@@ -283,6 +355,9 @@ def practice_menu(connector, plan, result, out):
                     connector.open_console(plan, names[int(choice) - 1])
                     continue
                 port = int(result["ports"][names[int(choice) - 1]])
+                if getattr(connector, "password", None):
+                    connector.open_console_at(port)
+                    continue
                 print("To return: Ctrl+], then quit.")
                 subprocess.run(
                     connector.ssh_args()[:-1]
@@ -339,7 +414,7 @@ def run_wizard():
     )
     user = ask(
         "SSH user",
-        ("root" if gns3_transport_options() else "gns3admin")
+        ("root" if gns3_transport_options() else "gns3")
         if backend == "gns3"
         else os.environ.get("NLF_EVE_USER", "root"),
     )
@@ -351,10 +426,24 @@ def run_wizard():
             "NLF_GNS3_SSH_CONTROL" if backend == "gns3" else "NLF_SSH_CONTROL"
         ),
     }
-    if backend == "gns3":
-        record.update(gns3_transport_options())
+    guest = gns3_transport_options() if backend == "gns3" else {}
+    secrets = {}
+    if guest:
+        record.update(guest)
         record["auth_file"] = os.environ.get("NLF_GNS3_AUTH_FILE", "/etc/gns3/nexo-admin.json")
-    connector = connector_from_record(record)
+    else:
+        record["port"] = int(ask("SSH port", "22"))
+        secrets["password"] = getpass.getpass("SSH password (blank for SSH key): ") or None
+        if backend == "gns3":
+            record.update(
+                transport="portable-ssh",
+                api_url=ask("GNS3 API address from the SSH server", "http://127.0.0.1:3080"),
+                api_version=ask("API version: auto / 2 / 3", "auto"),
+                api_user=ask("GNS3 API username (blank if API v2 has no authentication)"),
+                projects_path=ask("Existing GNS3 projects directory (blank to discover)"),
+            )
+            secrets["api_password"] = getpass.getpass("GNS3 API password: ") or None
+    connector = connector_from_record(record, **secrets)
     inv = connector.run("inventory")
     print(f"Server: {inv['profile']} · Available RAM: {inv['memory_mib']} MiB")
     while True:
@@ -375,6 +464,17 @@ def run_wizard():
             sample = make_catalog_plan(sid, name, backend=backend)
             images = {}
             for family in sorted({n["profile"] for n in sample["nodes"]}):
+                if inv.get("portable"):
+                    kind = "vpcs" if family == "vpcs" else "qemu"
+                    choices = [t for t in inv["templates"] if t["template_type"] == kind]
+                    for i, template in enumerate(choices, 1):
+                        print(f"  {i}  {template['name']}")
+                    index = int(ask("Matching OS-family template for " + family)) - 1
+                    if not 0 <= index < len(choices):
+                        raise ValueError("Choose a listed template number")
+                    connector.template_map[family] = choices[index]["template_id"]
+                    connector.template_fingerprints = {}
+                    continue
                 if family == "vpcs":
                     if not inv.get("vpcs"):
                         raise ValueError("VPCS is missing on the server.")
@@ -459,10 +559,22 @@ def run_wizard():
         return 0 if result["status"] == "ready" else 1
 
 
+def session_credentials(connection):
+    """Prompt only for secrets intentionally omitted from a saved connection."""
+    options = {}
+    if connection.get("auth_method") == "password":
+        options["password"] = getpass.getpass("SSH password for saved lab: ")
+    if connection.get("transport") == "portable-ssh":
+        options["api_password"] = getpass.getpass("GNS3 API password for saved lab: ")
+    return options
+
+
 def resume_workshop(path):
     plan = validate_plan(json.loads((path / "plan.json").read_text()))
     current = path / "latest-result.json"
     result = json.loads((current if current.exists() else path / "result.json").read_text())
     connection = json.loads((path / "connection.json").read_text())
-    practice_menu(connector_from_record(connection), plan, result, path)
+    practice_menu(
+        connector_from_record(connection, **session_credentials(connection)), plan, result, path
+    )
     return 0

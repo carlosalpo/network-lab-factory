@@ -15,3 +15,7 @@ The harness uses `WorkshopApp.run_test`, allows only fixture discovery/preflight
 - [Review before deployment](review.svg)
 
 Network validation is recorded separately in [the catalog evidence](../../evidence/catalog/README.md). The [native EVE-NG capture](../platforms/README.md) keeps its original provenance.
+
+
+## Connection form (portable connector)
+`connection.svg` is exported by `scripts/capture_connections.py` from the actual Textual widgets. It uses `gns3.example`, public fixture account labels and masked fixture passwords. The export is checked for literal secret strings. No network authentication or deployment is performed. The earlier scenario/preparation/review captures remain historical English UI examples.

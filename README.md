@@ -30,7 +30,7 @@ The generated lab appears in EVE-NG with device names, interface labels and addr
 
 ### 3. Use the GNS3 backend
 
-Choose GNS3 in the same assistant to create the scenario as a native GNS3 project, including nodes, links and labels. The [GNS3 setup guide](docs/workshop-wizard.md#gns3) documents the supported installation profile; the [validation matrix](docs/catalog-validation.md) links the recorded device checks for every scenario.
+Choose GNS3 in the same assistant to create the scenario as a native GNS3 project, including nodes, links and labels. The [GNS3 setup guide](docs/workshop-wizard.md#gns3) documents the portable connection requirements and template selection; the [validation matrix](docs/catalog-validation.md) links the recorded device checks for every scenario.
 
 ## What you can build
 
@@ -93,9 +93,21 @@ nlf plan A02 --backend gns3 --name evpn-practice --output build/evpn-practice
 | Platform | Documented profile | Access |
 | --- | --- | --- |
 | **EVE-NG** | Professional 7.2.0-4, admin / tenant 0 | SSH to the EVE host; required templates, runtime and compatible images installed |
-| **GNS3** | Server 3.0.6 with the documented QEMU image/resource profiles | Direct SSH, or the explicitly authorized Proxmox guest-agent transport |
+| **GNS3** | API v2 (2.2.x) or v3 (3.x), subject to capability checks | SSH to a Linux server / GNS3 VM with a local compute and existing QEMU/VPCS templates |
 
-Follow the **[setup and troubleshooting guide](docs/workshop-wizard.md#conectores-disponibles)** for host prerequisites, authentication and environment variables. Compatible operating-system images must already be installed; this repository does not distribute or download vendor images. The GNS3 connector targets a documented installation profile, so other server versions and image layouts require adaptation and validation.
+Follow the **[setup and troubleshooting guide](docs/workshop-wizard.md#conectores-disponibles)** for host prerequisites, authentication and environment variables. Compatible operating-system images must already be installed; this repository does not distribute or download vendor images. The portable assistant discovers the server API and uses your installed templates, including their disk names, BIOS and QEMU path. It does not infer operating-system compatibility from a template name. Multi-compute deployments, non-Telnet consoles and non-QEMU/VPCS emulators are outside this connector’s current scope. The original Nexo/Proxmox transport remains available for existing saved labs.
+
+### Enter credentials in the assistant
+
+In **Server**, enter the host, SSH user and masked **SSH password** (or leave it blank for your existing SSH key). For GNS3, enter the separate **API username** and **API password**, then choose **Check connection**. The default API address is server loopback, reached inside the encrypted SSH connection.
+
+![Actual connection form with masked fixture credentials](docs/screenshots/workshop/connection.svg)
+
+*Actual terminal widgets with public fixture values; no server was contacted. Passwords are masked and excluded from the SVG. [Setup, compatibility and security](docs/portable-connections.md).*
+
+Passwords and API tokens are held only for the active session: no password file, shell argument, environment variable or saved lab record is used. SSH host keys and HTTPS certificates remain verified. Reopening a saved lab requests its passwords again. In **Preparation**, choose an installed template for each OS family; the assistant checks adapter counts, image availability and actual template RAM before confirmation.
+
+**Validation boundary:** the historical 24/24 GNS3 campaign below used the original Nexo connector. It does not certify the new portable transport. The new transport has automated API, security and UI coverage; a fresh hardware campaign remains pending.
 
 ## How it works
 
