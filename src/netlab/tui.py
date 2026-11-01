@@ -127,9 +127,11 @@ class WorkshopApp(App):
         output_root=Path("build/workshops"),
         resume=None,
         theme=None,
+        existing=False,
     ):
         super().__init__()
         self.connector_factory = connector_factory
+        self.existing_mode = existing
         self.output_root = Path(output_root)
         self.resume_path = Path(resume) if resume else None
         self.connector = None
@@ -214,6 +216,7 @@ class WorkshopApp(App):
             with ContentSwitcher(initial="server", id="pages"):
                 with VerticalScroll(id="server", classes="page"):
                     yield Static("Connect your server", classes="title")
+                    yield Button("Prepare existing lab", id="existing-open", variant="primary" if self.existing_mode else "default")
                     yield Static(
                         "First, check server access, installed images and available resources.",
                         classes="muted",
@@ -796,6 +799,15 @@ class WorkshopApp(App):
             return
         if self.busy:
             return
+        if action == "existing-open" or (action == "connect" and self.existing_mode):
+            try:
+                from .existing_ui import ExistingLabScreen
+
+                connector = self.make_connector()
+                self.push_screen(ExistingLabScreen(connector))
+            except ValueError as exc:
+                self.query_one("#server-error", Static).update(str(exc))
+            return
         if action == "connect":
             try:
                 self.connector = self.make_connector()
@@ -1371,6 +1383,9 @@ class WorkshopApp(App):
             self.notify("Interrupting and saving the record…")
 
     def action_request_exit(self):
+        if getattr(self.screen, "busy", False) and self.screen is not self.screen_stack[0]:
+            self.notify("Existing-lab operation in progress. Wait for the result before leaving.")
+            return
         if self.busy:
             if len(self.screen_stack) == 1:
                 self.request_cancel()
@@ -1381,8 +1396,8 @@ class WorkshopApp(App):
             self.exit(return_code=1 if failed else 0)
 
 
-def run_tui(*, resume=None, theme=None):
-    app = WorkshopApp(resume=resume, theme=theme)
+def run_tui(*, resume=None, theme=None, existing=False):
+    app = WorkshopApp(resume=resume, theme=theme, existing=existing)
     app.run()
     if app.out:
         print(f"Recipe and evidence: {app.out.resolve()}")

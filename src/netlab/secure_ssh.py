@@ -63,9 +63,14 @@ def run(connector, command, payload, callback=None):
 
         thread = threading.Thread(target=read, daemon=True)
         thread.start()
-        deadline = time.monotonic() + {"deploy": 3600, "verify": 1800, "stop": 600}.get(
-            payload["action"], 120
-        )
+        deadline = time.monotonic() + {
+            "deploy": 3600,
+            "verify": 1800,
+            "stop": 600,
+            "existing-read": 3600,
+            "existing-apply": 3600,
+            "existing-save": 3600,
+        }.get(payload["action"], 120)
         events = []
         while True:
             if connector.cancel and connector.cancel.is_set():

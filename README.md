@@ -8,6 +8,8 @@ Network Lab Factory is a guided terminal application that prepares network labs 
 
 Use **Practice** mode to configure the exercise yourself, or **Reference** mode to deploy and check the supplied solution. The same recipe supplies the topology, addressing, configuration and acceptance checks.
 
+Already built your topology? The new **[existing-lab addressing assistant](docs/existing-labs.md)** lets you organize IPv4 pools by group, pin selected subnets or hosts, and fill the remaining connections automatically. This preview preserves existing addresses and shows the commands before application. Fresh real-server validation of this new mode is pending.
+
 [Quick start](#quick-start) · [24 scenarios](docs/catalog/README.md) · [How it works](#how-it-works) · [Validation](#tested-on-real-lab-platforms) · [Setup guide](docs/workshop-wizard.md)
 
 ## From the assistant to your lab
@@ -77,6 +79,16 @@ nlf wizard --theme light
 nlf wizard --theme mono
 nlf wizard --plain
 ```
+
+### Prepare an existing laboratory
+
+Run `nlf existing`, enter the server details, then choose **Prepare existing lab**. Browse your EVE-NG folders or GNS3 projects, read the running routers, and add pools such as `Internal: 10.10.30.0/24` and `External: 10.20.0.0/24`. Include all eligible direct links at once or set each connection individually. Fixed choices are reserved before automatic assignment.
+
+![Existing-lab addressing review with group pools, fixed and automatic subnets](docs/screenshots/workshop/existing-review.svg)
+
+*Actual application widgets with a synthetic four-router topology; no real server was contacted for this capture. Existing lab discovery, allocation, failure handling and the UI are covered by automated tests. [Scope, safety gates and walkthrough](docs/existing-labs.md).*
+
+This first version supports observed IOS/IOSv physical routed IPv4 interfaces. It does not configure VLANs, VRFs, routing protocols or interface activation. **Export** writes a private plan; **Apply** requires the exact lab name and backs up running configurations on the SSH server; **Save permanently** is a separate confirmation after verification. Unread or unsupported lab nodes make the plan export-only.
 
 ### Explore before connecting a server
 

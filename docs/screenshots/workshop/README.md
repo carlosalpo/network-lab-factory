@@ -1,6 +1,6 @@
 # Terminal interface captures
 
-These English SVGs were exported from the actual Textual widgets in version 0.2.1 at 150 × 44 cells, using fixture inventory (`lab.example`). They show B03 scenario selection, preparation and review. They are interface demonstrations, not live EVE-NG or GNS3 captures or protocol test evidence.
+These English SVGs were exported from the actual Textual widgets at 150 × 44 cells, using fixture inventory (`lab.example`). First captured in 0.2.1 and refreshed for 0.3.0rc2, they show B03 scenario selection, preparation and review. They are interface demonstrations, not live EVE-NG or GNS3 captures or protocol test evidence.
 
 Reproduce them from an installed checkout:
 
@@ -18,4 +18,14 @@ Network validation is recorded separately in [the catalog evidence](../../eviden
 
 
 ## Connection form (portable connector)
-`connection.svg` is exported by `scripts/capture_connections.py` from the actual Textual widgets. It uses `gns3.example`, public fixture account labels and masked fixture passwords. The export is checked for literal secret strings. No network authentication or deployment is performed. The earlier scenario/preparation/review captures remain historical English UI examples.
+`connection.svg` is exported by `scripts/capture_connections.py` from the actual Textual widgets. It uses `gns3.example`, public fixture account labels and masked fixture passwords. The export is checked for literal secret strings. No network authentication or deployment is performed. It was refreshed for 0.3.0rc2, including the entry to the existing-lab assistant.
+
+## Existing-lab addressing review
+
+`scripts/capture_existing.py` exports the actual new assistant widgets from the public, synthetic four-router example in `examples/existing-lab/`. It performs no network requests or device changes. These captures demonstrate UI behavior, not live platform validation:
+
+- [Dark review, 150 × 58 cells](existing-review.svg)
+- [Light review, 150 × 58 cells](existing-review-light.svg)
+- [Compact review, 80 × 32 cells](existing-review-narrow.svg); scroll vertically for export/application controls.
+
+The reviewed layout shows automatic and fixed subnets together, with generated IOS commands behind an expandable disclosure. Original catalog captures retain their historical provenance.

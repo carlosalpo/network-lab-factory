@@ -53,6 +53,8 @@ def main(argv=None):
     wizard = commands.add_parser(
         "wizard", help="Choose and prepare a catalog workshop interactively"
     )
+    existing = commands.add_parser("existing", help="Prepare IPv4 addressing in an existing lab")
+    existing.add_argument("--theme", choices=("dark", "light", "mono"))
     workshop = commands.add_parser("workshop", help="Reopen a deployed workshop and its consoles")
     workshop.add_argument("directory", type=Path)
     for command in (wizard, workshop):
@@ -76,6 +78,12 @@ def main(argv=None):
     verify.add_argument("--reports", type=Path, default=Path("reports"))
     args = parser.parse_args(argv)
     try:
+        if args.command == "existing":
+            if not sys.stdin.isatty() or not sys.stdout.isatty():
+                raise ValueError("Run nlf existing in an interactive terminal.")
+            from .tui import run_tui
+
+            return run_tui(theme=args.theme, existing=True)
         if args.command == "catalog":
             from .catalog import CATALOG
 

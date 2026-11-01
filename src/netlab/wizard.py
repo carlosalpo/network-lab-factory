@@ -157,6 +157,9 @@ class EveSSH:
             reader = threading.Thread(target=read_events, daemon=True)
             reader.start()
             deadline = time.monotonic() + {
+                "existing-read": 3600,
+                "existing-apply": 3600,
+                "existing-save": 3600,
                 "deploy": 3600,
                 "verify": 1800,
                 "stop": 600,
