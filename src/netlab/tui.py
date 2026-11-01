@@ -149,6 +149,7 @@ class WorkshopApp(App):
         self.backend = "eve"
         self.user = os.environ.get("NLF_EVE_USER", "root")
         self.control = os.environ.get("NLF_SSH_CONTROL")
+        self.resume_connection = None
         self.initial_theme = theme or ("mono" if "NO_COLOR" in os.environ else "dark")
         self.register_theme(
             Theme(
@@ -219,7 +220,7 @@ class WorkshopApp(App):
                     )
                     yield Static("Platform", classes="label")
                     yield Select(
-                        [("EVE-NG", "eve"), ("GNS3 · Nexo 3.0.6 profile", "gns3")],
+                        [("EVE-NG", "eve"), ("GNS3 · installed templates", "gns3")],
                         value="eve",
                         allow_blank=False,
                         id="backend",
@@ -233,6 +234,15 @@ class WorkshopApp(App):
                             )
                             yield Static("User", classes="label")
                             yield Input(self.user, id="user")
+                            yield Static("SSH password · blank to use SSH keys", classes="label")
+                            yield Input(
+                                password=True,
+                                id="ssh-password",
+                                placeholder="Used for this session only",
+                            )
+                            with Collapsible(title="SSH options", collapsed=True):
+                                yield Static("SSH port", classes="label")
+                                yield Input("22", id="ssh-port", type="integer")
                             yield Static(
                                 "Supported profile: admin / tenant 0",
                                 classes="muted",
@@ -243,6 +253,45 @@ class WorkshopApp(App):
                             yield Static("SERVER STATUS", classes="section")
                             yield Static("Not checked yet.", id="inventory", markup=False)
                     yield Static("", id="server-error", classes="error", markup=False)
+                    with VerticalGroup(id="gns3-settings"):
+                        yield Static("GNS3 API", classes="section")
+                        yield Static(
+                            "Separate from SSH. Passwords stay in memory and are never saved in lab records.",
+                            classes="muted",
+                        )
+                        yield Static("API username", classes="label")
+                        yield Input("admin", id="api-user")
+                        yield Static("API password", classes="label")
+                        yield Input(
+                            password=True, id="api-password", placeholder="GNS3 account password"
+                        )
+                        with Collapsible(title="API and storage options", collapsed=True):
+                            yield Static("API address · from the SSH server", classes="label")
+                            yield Input("http://127.0.0.1:3080", id="api-url")
+                            yield Static("API version", classes="label")
+                            yield Select(
+                                [
+                                    ("Auto-detect", "auto"),
+                                    ("GNS3 2.2 / API v2", "2"),
+                                    ("GNS3 3.x / API v3", "3"),
+                                ],
+                                value="auto",
+                                allow_blank=False,
+                                id="api-version",
+                            )
+                            yield Static(
+                                "Projects directory · leave blank to discover", classes="label"
+                            )
+                            yield Input(
+                                "",
+                                id="projects-path",
+                                placeholder="Existing directory on the Linux server",
+                            )
+                    yield Static(
+                        "Use a Linux server or GNS3 VM with a local compute, Python 3, pexpect and telnet. Template OS families must match the scenario.",
+                        id="gns3-help",
+                        classes="muted",
+                    )
                 with VerticalScroll(id="scenario", classes="page"):
                     yield Static("Choose what to practice", classes="title")
                     yield Static("Level", classes="label")
@@ -286,13 +335,13 @@ class WorkshopApp(App):
                                 title="Operating systems · choose versions", collapsed=False
                             ):
                                 for family in PROFILES:
-                                    if family == "vpcs":
-                                        continue
                                     yield Static(
                                         family.upper(), id="label-image-" + family, classes="label"
                                     )
                                     yield Select(
-                                        [], id="image-" + family, prompt="No compatible image"
+                                        [],
+                                        id="image-" + family,
+                                        prompt="Choose an installed image or template",
                                     )
                         with VerticalGroup(classes="column"):
                             yield Static("EXERCISE MODE", classes="section")
@@ -376,6 +425,10 @@ class WorkshopApp(App):
         yield Footer()
 
     def on_mount(self):
+        self.query_one("#gns3-settings").display = False
+        self.query_one("#gns3-help").display = False
+        self.query_one("#image-vpcs").display = False
+        self.query_one("#label-image-vpcs").display = False
         self.set_layout(self.size.width, self.size.height)
         self.refresh_scenario()
         self.update_mode_note()
@@ -453,7 +506,20 @@ class WorkshopApp(App):
     def on_input_changed(self, event: Input.Changed):
         if event.input.id == "confirmation":
             self.query_one("#start", Button).disabled = event.value != "DEPLOY" or self.busy
-        elif event.input.id in ("host", "user") and self.is_mounted:
+        elif (
+            event.input.id
+            in (
+                "host",
+                "user",
+                "ssh-port",
+                "ssh-password",
+                "api-url",
+                "api-user",
+                "api-password",
+                "projects-path",
+            )
+            and self.is_mounted
+        ):
             self.inventory = None
             self.query_one("#choose", Button).disabled = True
             self.query_one("#inventory", Static).update("Connection not checked yet.")
@@ -512,6 +578,10 @@ class WorkshopApp(App):
     def on_select_changed(self, event: Select.Changed):
         if not self.is_mounted:
             return
+        if event.select.id == "api-version":
+            self.inventory = None
+            self.query_one("#inventory", Static).update("Connection not checked yet.")
+            self.update_navigation()
         if (
             event.select.id == "backend"
             and event.value != self.backend
@@ -527,16 +597,21 @@ class WorkshopApp(App):
             )
             guest = gns3_transport_options() if self.backend == "gns3" else {}
             self.user = (
-                ("root" if guest else "gns3admin")
+                ("root" if guest else "gns3")
                 if self.backend == "gns3"
                 else os.environ.get("NLF_EVE_USER", "root")
             )
+            self.query_one("#ssh-password", Input).value = ""
+            self.query_one("#api-password", Input).value = ""
+            self.connector = None
+            self.query_one("#gns3-settings").display = self.backend == "gns3" and not guest
+            self.query_one("#gns3-help").display = self.backend == "gns3" and not guest
             self.query_one("#host", Input).value = self.host
             self.query_one("#user", Input).value = self.user
             self.query_one("#server-profile", Static).update(
                 f"GNS3 in VM {guest['guest_id']} · access through the temporary Proxmox session."
                 if guest
-                else "Local GNS3 API over SSH; private configuration stays on the server."
+                else "GNS3 2.2 / 3.x · local templates · credentials held only for this session."
                 if self.backend == "gns3"
                 else "Supported profile: admin / tenant 0"
             )
@@ -586,6 +661,31 @@ class WorkshopApp(App):
         sample = make_catalog_plan(self.scenario_id, "preview", backend=self.backend)
         families = {n["profile"] for n in sample["nodes"]}
         images = (self.inventory or {}).get("images", [])
+        if (self.inventory or {}).get("portable"):
+            templates = self.inventory["templates"]
+            for family in PROFILES:
+                sel = self.query_one("#image-" + family, Select)
+                self.query_one("#label-image-" + family).display = sel.display = family in families
+                kind = "vpcs" if family == "vpcs" else "qemu"
+                options = [
+                    (t["name"], t["template_id"]) for t in templates if t["template_type"] == kind
+                ]
+                sel.set_options(options)
+                # Only a unique matching name is a convenience suggestion; user reviews every binding.
+                suggested = [
+                    t
+                    for t in templates
+                    if t["template_type"] == kind
+                    and (family in t["name"].lower() or family == "vpcs")
+                ]
+                if len(suggested) == 1:
+                    sel.value = suggested[0]["template_id"]
+            self.query_one("#image", Static).update(
+                "Select a matching OS-family template for each device type. Existing template disks, BIOS and QEMU settings are preserved; resources are checked before review."
+            )
+            return
+        self.query_one("#image-vpcs").display = False
+        self.query_one("#label-image-vpcs").display = False
         for family, p in PROFILES.items():
             if family == "vpcs":
                 continue
@@ -636,6 +736,13 @@ class WorkshopApp(App):
     def make_connector(self):
         host = self.query_one("#host", Input).value.strip()
         user = self.query_one("#user", Input).value.strip()
+        if self.resume_connection:
+            saved = dict(self.resume_connection)
+            password = self.query_one("#ssh-password", Input).value or None
+            options = {"password": password} if saved.get("auth_method") == "password" else {}
+            if saved.get("transport") == "portable-ssh":
+                options["api_password"] = self.query_one("#api-password", Input).value or None
+            return connector_from_record(saved, batch=True, cancel=self.cancel_event, **options)
         # A control socket is bound to the previously authenticated host and user.
         if (host, user) != (self.host, self.user):
             self.control = None
@@ -645,13 +752,42 @@ class WorkshopApp(App):
             return self.connector_factory(
                 host, user, self.control, batch=True, cancel=self.cancel_event
             )
+        try:
+            port = int(self.query_one("#ssh-port", Input).value)
+        except ValueError:
+            raise ValueError("Enter an SSH port between 1 and 65535") from None
+        password = self.query_one("#ssh-password", Input).value or None
         connection = {"backend": self.backend, "host": host, "user": user, "control": self.control}
         if self.backend == "gns3":
-            connection.update(gns3_transport_options())
-            connection["auth_file"] = os.environ.get(
-                "NLF_GNS3_AUTH_FILE", "/etc/gns3/nexo-admin.json"
+            guest = gns3_transport_options()
+            if guest:
+                if password or port != 22:
+                    raise ValueError(
+                        "Legacy Proxmox access uses the existing OpenSSH session. Use direct server access for password fields."
+                    )
+                connection.update(guest)
+                connection["auth_file"] = os.environ.get(
+                    "NLF_GNS3_AUTH_FILE", "/etc/gns3/nexo-admin.json"
+                )
+                return connector_from_record(connection, batch=True, cancel=self.cancel_event)
+            connection.update(
+                transport="portable-ssh",
+                api_url=self.query_one("#api-url", Input).value.strip(),
+                api_version=self.query_one("#api-version", Select).value,
+                api_user=self.query_one("#api-user", Input).value.strip(),
+                projects_path=self.query_one("#projects-path", Input).value.strip(),
             )
-        return connector_from_record(connection, batch=True, cancel=self.cancel_event)
+            return connector_from_record(
+                connection,
+                batch=True,
+                cancel=self.cancel_event,
+                port=port,
+                password=password,
+                api_password=self.query_one("#api-password", Input).value or None,
+            )
+        return connector_from_record(
+            connection, batch=True, cancel=self.cancel_event, port=port, password=password
+        )
 
     def on_button_pressed(self, event: Button.Pressed):
         action = event.button.id
@@ -766,7 +902,15 @@ class WorkshopApp(App):
                 sample = make_catalog_plan(self.scenario_id, "preview", backend=self.backend)
                 families = {n["profile"] for n in sample["nodes"]}
                 images = {}
-                for family in families - {"vpcs"}:
+                if self.inventory.get("portable"):
+                    self.connector.template_map = {}
+                    self.connector.template_fingerprints = {}
+                    for family in families:
+                        chosen = self.query_one("#image-" + family, Select).value
+                        if not isinstance(chosen, str):
+                            raise ValueError("Choose an installed template for " + family)  # noqa: TRY004 — missing UI selection
+                        self.connector.template_map[family] = chosen
+                for family in set() if self.inventory.get("portable") else families - {"vpcs"}:
                     chosen = self.query_one("#image-" + family, Select).value
                     if not isinstance(chosen, str):
                         raise ValueError("No compatible image for " + family)  # noqa: TRY004 — missing selection, not a programmer type error.
@@ -825,15 +969,25 @@ class WorkshopApp(App):
     def operation_done(self, action, result):
         self.set_busy(False)
         if action == "inventory":
+            if self.resume_connection:
+                self.resume_connection = None
+                if self.result.get("status") == "incomplete":
+                    self.operation_failed("deploy", self.result.get("reason", "No final result"))
+                else:
+                    self.render_result()
+                    self.show_page("result")
+                return
             valid = any(
                 p["image"] in result.get("images", []) for p in PROFILES.values() if p["image"]
             )
+            if result.get("portable"):
+                valid = any(t["template_type"] == "qemu" for t in result.get("templates", []))
             enough = result.get("memory_mib", 0) >= 1536 and result.get("free_gib", 0) >= 2
             self.inventory = result if valid and enough else None
             self.query_one("#inventory", Static).update(
                 ("READY TO CONTINUE\n\n" if valid and enough else "NEEDS ATTENTION\n\n")
                 + f"{'GNS3' if self.backend == 'gns3' else 'EVE-NG'} {result.get('version', '')}\n"
-                f"{('[+]' if valid else '[!]')} Profile-compatible images: "
+                f"{('[+]' if valid else '[!]')} {'Local QEMU templates' if result.get('portable') else 'Profile-compatible images'}: "
                 f"{'available' if valid else 'not installed'}\n"
                 f"Available RAM: {result.get('memory_mib', '?')} MiB\n"
                 f"Free disk space: {result.get('free_gib', '?')} GiB\n"
@@ -862,7 +1016,7 @@ class WorkshopApp(App):
             self.query_one("#review-summary", Static).update(
                 self.server_destination() + "\n"
                 f"Destination: {p['folder']}/{p['name']}{'' if self.backend == 'gns3' else '.unl'}\n"
-                f"Devices: {len(p['nodes'])} · {p['cpu']} vCPU · {p['ram_mib']} MiB RAM + headroom\n"
+                f"Devices: {len(p['nodes'])} · {result.get('required_ram_mib', p['ram_mib'])} MiB RAM + headroom\n"
                 f"Mode: {'Practice' if p['mode'] == 'practice' else 'Reference'}\nExercise: "
                 + english(p.get("exercise", CATALOG["B01"]["exercise"]))
             )
@@ -1064,6 +1218,38 @@ class WorkshopApp(App):
             )
             self.connector = factory(connection, batch=True, cancel=self.cancel_event)
             self.out = path
+            if (
+                connection.get("auth_method") == "password"
+                or connection.get("transport") == "portable-ssh"
+            ):
+                self.resume_connection = connection
+                self.query_one("#backend", Select).value = self.backend
+                self.query_one("#host", Input).value = connection["host"]
+                self.query_one("#user", Input).value = connection["user"]
+                self.query_one("#ssh-port", Input).value = str(connection.get("port", 22))
+                for field in ("host", "user", "ssh-port"):
+                    self.query_one("#" + field, Input).disabled = True
+                self.query_one("#backend", Select).disabled = True
+                portable = connection.get("transport") == "portable-ssh"
+                self.query_one("#gns3-settings").display = portable
+                self.query_one("#gns3-help").display = portable
+                if portable:
+                    for field, key in (
+                        ("api-url", "api_url"),
+                        ("api-user", "api_user"),
+                        ("projects-path", "projects_path"),
+                    ):
+                        self.query_one("#" + field, Input).value = connection.get(key, "")
+                        self.query_one("#" + field, Input).disabled = True
+                    self.query_one("#api-version", Select).value = connection.get(
+                        "api_version", "auto"
+                    )
+                    self.query_one("#api-version", Select).disabled = True
+                self.show_page("server")
+                self.query_one("#server-error", Static).update(
+                    "Saved lab loaded. Re-enter your session passwords and choose Check connection; no new lab will be created."
+                )
+                return
             if self.result.get("status") == "incomplete":
                 self.events = (
                     json.loads((path / "events.json").read_text())
@@ -1080,6 +1266,11 @@ class WorkshopApp(App):
     def authenticate(self):
         try:
             connector = self.make_connector()
+            if getattr(connector, "password", None):
+                self.query_one("#server-error", Static).update(
+                    "Password entered. Select Check connection to authenticate inside the assistant."
+                )
+                return
             if not self.control:
                 self.control = str(Path(tempfile.mkdtemp(prefix="nlf-ssh-")) / "session")
                 connector.control = self.control
@@ -1106,6 +1297,13 @@ class WorkshopApp(App):
             port = int(self.result["ports"][node])
             if not 1 <= port <= 65535:
                 raise ValueError("Invalid console port")
+            if getattr(self.connector, "password", None):
+                with self.suspend():
+                    self.connector.open_console_at(port)
+                self.query_one("#check-result", Static).update(
+                    "Console closed. Verify again to refresh the results."
+                )
+                return
             args = self.connector.ssh_args()
             with self.suspend():
                 print(f"Console {node}. To return: Ctrl+], then quit.")

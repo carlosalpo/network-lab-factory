@@ -62,31 +62,62 @@ Perfil EVE-NG Professional 7.2.0-4, usuario admin / tenant 0, acceso al host por
 El host necesita Python 3, pexpect, telnet, sus plantillas y las imágenes declaradas.
 El destino es `/opt/unetlab/labs/<carpeta>/<nombre>.unl`.
 
-Variables opcionales: `NLF_EVE_HOST`, `NLF_EVE_USER` y `NLF_SSH_CONTROL`.
-La autenticación interactiva se realiza en OpenSSH, fuera del formulario; no se guarda
-la contraseña. Se mantiene la comprobación de identidad del servidor SSH.
+En **Server**, escribí la IP, el usuario SSH y la contraseña en **SSH password**.
+El campo oculta el valor. **Check connection** autentica sin salir del asistente.
+Dejá la contraseña vacía para usar tus claves SSH o la sesión OpenSSH existente.
+**SSH options** permite cambiar el puerto. La contraseña no se guarda.
+
+Variables opcionales de conexión sin secretos: `NLF_EVE_HOST`, `NLF_EVE_USER` y
+`NLF_SSH_CONTROL`. La clave del host debe estar previamente verificada en
+`~/.ssh/known_hosts`; una clave desconocida o cambiada bloquea el acceso.
 
 ### GNS3
 
-Perfil explícito **GNS3 3.0.6 en el host Nexo**. Usa la API local del servidor y los perfiles
-QEMU de esa instalación; no es un adaptador universal para cualquier instalación de GNS3.
-Consulta las imágenes locales y crea nodos, conexiones y dibujos nativos en un proyecto nuevo.
-El destino es `/srv/gns3/projects/<carpeta>/<nombre>`.
+El asistente usa ahora el conector portable: **GNS3 2.2.x (API v2) o 3.x (API v3)**,
+con comprobación de capacidades. Necesita un servidor Linux o una GNS3 VM con el
+controlador y un compute local en ese mismo servidor, Python 3, `pexpect` y `telnet`.
+No depende de Nexo, de nombres fijos de discos ni de una ruta fija de QEMU.
 
-Admite dos accesos:
+1. Seleccioná **GNS3 · installed templates**.
+2. Completá **SSH server**, **User** y **SSH password**, o usá tu clave SSH existente.
+3. Completá **API username** y **API password** con la cuenta de GNS3, distinta de SSH.
+4. En **API and storage options**, dejá `http://127.0.0.1:3080` si la API escucha
+   en ese puerto del servidor. La conexión hasta el servidor viaja cifrada por SSH.
+   Podés cambiar el puerto o usar HTTPS en el mismo host SSH con certificado válido. HTTP fuera de
+   loopback y redirecciones se rechazan; no existe una opción para omitir TLS.
+5. Dejá **API version** en Auto o elegí v2/v3 explícitamente. API v2 permite campos
+   de cuenta vacíos si la instalación no requiere autenticación; v3 exige cuenta.
+6. **Projects directory** se descubre desde `/settings` cuando está disponible.
+   Si la versión o los permisos no lo permiten, escribí la ruta existente de
+   proyectos que usa GNS3 en ese servidor; no una ruta de tu PC.
+7. Pulsá **Check connection**. En **Preparation**, seleccioná la plantilla correcta
+   para cada familia del escenario, incluyendo VPCS cuando corresponda.
 
-- SSH directo al servidor GNS3.
-- Una sesión temporal de Proxmox autorizada, que ejecuta las operaciones dentro de la VM
-  GNS3 mediante el agente del invitado. La pantalla identifica la VM y el host de acceso.
+Las plantillas deben usar QEMU o VPCS, compute local y consola Telnet. Su sistema
+operativo y numeración de interfaces deben coincidir con la receta: una plantilla
+con un nombre parecido no demuestra compatibilidad. No se modifica la plantilla
+original, no se descargan imágenes y no se conectan interfaces a redes externas.
+Se verifican imágenes, cantidad de adaptadores y RAM de las plantillas elegidas;
+si cambian después de Review, se bloquea el despliegue hasta revisarlas otra vez.
 
-Variables: `NLF_GNS3_HOST`, `NLF_GNS3_SSH_CONTROL`, `NLF_GNS3_AUTH_FILE` y, para el segundo
-acceso, `NLF_GNS3_GUEST_ID`. La ruta de configuración privada se interpreta en el servidor
-GNS3; el archivo y su contraseña no se copian al equipo del usuario. La sesión administrativa
-puede expirar y debe renovarse mediante el procedimiento autorizado; NLF no agrega claves,
-usuarios ni permisos. La disponibilidad de ASA depende de que su imagen esté instalada.
+Las contraseñas se mantienen solo en memoria y no se incluyen en resultados,
+comandos, capturas ni archivos de conexión. Al reabrir el laboratorio, el asistente
+pide nuevamente los secretos. El modo `--plain` usa entradas ocultas equivalentes.
 
-Los perfiles, discos, BIOS y recursos declarados están en `gns3_profiles.py`. Se comprueba
-la versión del servidor antes de crear; una versión diferente requiere adaptar y validar el perfil.
+**Compatibilidad y pruebas:** el conector nuevo tiene pruebas automatizadas con
+API v2/v3 y widgets reales. La campaña histórica 24/24 corresponde a Nexo 3.0.6,
+no al nuevo conector portable. La validación real nueva está pendiente. Consultá
+[configuración portable](portable-connections.md) para límites y diagnóstico.
+
+#### Conexiones anteriores
+
+Los registros existentes conservan el transporte anterior y sus parámetros.
+El acceso Proxmox/QGA sigue siendo una opción avanzada explícita mediante
+`NLF_GNS3_GUEST_ID`, `NLF_GNS3_HOST`, `NLF_GNS3_SSH_CONTROL` y
+`NLF_GNS3_AUTH_FILE`. Ese transporte conserva su perfil original y utiliza una
+sesión OpenSSH autorizada; no admite el nuevo campo de contraseña SSH.
+El comando avanzado `nlf deploy` también conserva su contrato anterior;
+para conexiones portables nuevas, usá `nlf wizard` o `nlf wizard --plain`.
 
 ## Práctica y referencia
 

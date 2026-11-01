@@ -127,7 +127,12 @@ def main(argv=None):
             print(f"Deployment: {result['status']}; {result['path']}")
             return 0 if result["status"] == "ready" else 1
         if args.command == "lab-action":
-            from .wizard import connector_from_record, save_json, update_observation
+            from .wizard import (
+                connector_from_record,
+                save_json,
+                session_credentials,
+                update_observation,
+            )
             from .workshop import validate_plan
 
             p = validate_plan(json.loads((args.directory / "plan.json").read_text()))
@@ -142,7 +147,7 @@ def main(argv=None):
                 else "NLF_SSH_CONTROL",
                 connection.get("control"),
             )
-            c = connector_from_record(connection, batch=True)
+            c = connector_from_record(connection, batch=True, **session_credentials(connection))
             checking = args.action.startswith("check-")
             if not checking and args.confirm != p["name"]:
                 raise ValueError("Confirmation must match the exact lab name")

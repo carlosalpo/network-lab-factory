@@ -75,8 +75,9 @@ def test_cancel_never_calls_deploy(monkeypatch, tmp_path):
         return {"images": [PROFILE], "memory_mib": 4096, "profile": "test"}
 
     monkeypatch.setattr(EveSSH, "run", fake_run)
+    monkeypatch.setattr("netlab.wizard.getpass.getpass", lambda _: "")
     monkeypatch.chdir(tmp_path)
-    answers = iter(["eve", "lab.example", "", "B01", "", "", "1", "1", "", "", ""])
+    answers = iter(["eve", "lab.example", "", "22", "B01", "", "", "1", "1", "", "", ""])
     monkeypatch.setattr("builtins.input", lambda _: next(answers))
     assert run_wizard() == 0
     assert actions == ["inventory", "preflight"]
