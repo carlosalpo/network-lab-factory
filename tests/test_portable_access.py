@@ -296,3 +296,28 @@ def test_password_transport_uses_encrypted_stdin_and_redacts_events(monkeypatch)
         client_socket.close()
         server_socket.close()
         thread.join(5)
+
+
+def test_api_cannot_target_a_different_controller():
+    with pytest.raises(ValueError, match="this SSH server"):
+        GNS3PortableSSH("ssh.example", api_url="https://other.example:3080")
+
+
+@pytest.mark.parametrize(
+    "options",
+    ["-netdev tap,id=external", "-device=e1000,netdev=external", "-readconfig /tmp/external.conf"],
+)
+def test_template_cannot_add_external_networks_or_config_files(options):
+    ns = worker()
+    with pytest.raises(ValueError, match="external"):
+        ns["checked_template"](
+            {
+                "template_id": "11a11111-1111-4111-8111-111111111111",
+                "name": "fixture",
+                "template_type": "qemu",
+                "hda_disk_image": "fixture.qcow2",
+                "ram": 1024,
+                "adapters": 4,
+                "options": options,
+            }
+        )

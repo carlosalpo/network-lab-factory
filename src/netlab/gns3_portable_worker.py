@@ -206,7 +206,12 @@ def inventory():
         templates.append(t)
     root = portable.get("projects_path")
     if not root:
-        settings = api.request("GET", "/settings", missing=True)
+        try:
+            settings = api.request("GET", "/settings", missing=True)
+        except APIError as exc:
+            if exc.status != 403:
+                raise
+            settings = None
         root = ((settings or {}).get("Server") or {}).get("projects_path")
     if (
         not root
