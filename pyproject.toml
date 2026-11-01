@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "network-lab-factory"
-version = "0.3.0rc1"
+version = "0.3.0rc2"
 description = "Prepare and verify repeatable EVE-NG and GNS3 labs through a guided terminal."
 readme = "README.md"
 requires-python = ">=3.11"

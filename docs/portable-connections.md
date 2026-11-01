@@ -1,6 +1,6 @@
 # Portable connections and session credentials
 
-**Preview release: 0.3.0rc1.** The owner approved automated validation with real-lab testing deferred.
+**Preview release: 0.3.0rc2.** The owner approved automated validation with real-lab testing deferred. This preview also includes the [existing-lab addressing assistant](existing-labs.md).
 
 The assistant accepts SSH credentials for EVE-NG and GNS3, plus the separate GNS3 API account. The default new GNS3 connection discovers API v2/v3 and uses the target server's existing templates. It does not require Nexo paths or its administrator credential file.
 

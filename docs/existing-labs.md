@@ -2,11 +2,13 @@
 
 This preview adds IPv4 addressing to a topology you already built. It does not recreate the laboratory. The catalog wizard, saved workshops and legacy connections keep their existing behavior.
 
+Available in **v0.3.0-rc.2** (Python package version `0.3.0rc2`).
+
 **Validation status:** automated tests and synthetic console/API fixtures only. Fresh EVE-NG/GNS3 hardware tests are deferred at the owner's request. Earlier catalog campaign results do not certify this feature.
 
 ## Start and connect
 
-Install the branch under review, then run `nlf existing` in an interactive terminal. The same flow is available through **Prepare existing lab** on the regular `nlf wizard` server screen. Dark, light and monochrome themes remain available.
+Install the preview release, then run `nlf existing` in an interactive terminal. The same flow is available through **Prepare existing lab** on the regular `nlf wizard` server screen. Dark, light and monochrome themes remain available.
 
 1. Enter the SSH server, user and password or use an existing SSH key. Known-host verification is required, as in the [portable connection guide](portable-connections.md).
 2. For GNS3, enter the API credentials on the server form. For EVE-NG, the next screen asks for the separate EVE **web account**, password and API origin. EVE API sessions can end the same account's active browser session; consider a dedicated existing account with access to the intended labs.
